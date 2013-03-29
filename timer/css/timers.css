@@ -400,7 +400,7 @@ header .selection{
 }
 .box input.color { border:none; }
 
-.controls a { float:left; background:#333333 url('btn_bg_2.png') center; text-shadow:#000000 1px 1px 2px; margin:0.7em 0; margin-left:1.2em; width:43%; text-align:center; line-height:2.4em; color:#FFFFFF; text-decoration:none; border-radius:0.3em 0.3em 0.3em 1.8em / 0.3em 0.3em 0.3em 3.5em; box-shadow:rgba(0, 0, 0, 0.5) 1px 1px 0; }
+.controls a { float:left; background:#333333 url('btn_bg_2.png') center; text-shadow:#000000 1px 1px 2px; margin:0.7em 0; margin-left:1.2em; width:43%; text-align:center; line-height:2.3em; color:#FFFFFF; text-decoration:none; border-radius:0.3em 0.3em 0.3em 1.8em / 0.3em 0.3em 0.3em 3.5em; box-shadow:rgba(0, 0, 0, 0.5) 1px 1px 0; }
 .controls a:hover { background-image:url('btn_bg.png'); }
 .controls a:active { position:relative; top:1px; box-shadow:none; }
 

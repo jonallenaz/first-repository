@@ -280,7 +280,11 @@ var TimeTracker = {
 	initObj : function(obj){
 		var hex = (obj) ? '#'+obj.color : ( TimeTracker.colors[Math.floor(Math.random()*TimeTracker.colors.length)] );
 		var today = new Date();
-		var date = (today.getMonth()+1) + "/" + today.getDate() + "/" + today.getFullYear();
+		var date = (today.getMonth()+1) + "/" + today.getDate()/* + "/" + today.getFullYear()*/;
+
+		if(obj && obj.hasOwnProperty('date') && obj.date.split('/').length > 2){
+			obj.date = obj.date.substring(0, obj.date.lastIndexOf('/'));
+		}
 
 		if(typeof obj != 'object'){ obj = {}; save = false; }
 		if(!obj.hasOwnProperty('date')){ obj.date = date; }
