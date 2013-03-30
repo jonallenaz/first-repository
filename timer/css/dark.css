@@ -1,0 +1,107 @@
+/* General CSS */
+body {
+	background:#222;
+	-webkit-transition: background .2s;
+	-moz-transition: background .2s;
+	-ms-transition: background .2s;
+	-o-transition: background .2s;
+	transition: background .2s;
+}
+
+/* Top Section */
+header {
+	background:#555; background:rgba(100,100,115,.96);
+	border-bottom:1px solid #777; border-top:1px solid #333;
+	 box-shadow:inset 0 0 4em #999;
+	 -webkit-transition: background .2s;
+	 -moz-transition: background .2s;
+	 -ms-transition: background .2s;
+	 -o-transition: background .2s;
+	 transition: background .2s;
+}
+.paypal:hover{
+	box-shadow: .1em .1em 1.5em #ccc, inset 0 0 3em #ccc;
+}
+
+.tab_name {
+	background: transparent;
+	border: .4em solid rgba(50,50,60,.9);
+	box-shadow: .1em .1em 1em #444, inset 0 0 2em #444;
+}
+.tab_name.selected{
+	box-shadow: .1em .1em 1em #ccc, inset 0 0 1em #444;
+}
+.tab_name:hover{
+	box-shadow: .1em .1em 1em #ccc, inset 0 0 2em #ccc;
+}
+
+.btn{
+	background: transparent;
+	color: #fff;
+	border: .5em solid rgb(50, 50, 60);
+	border: .5em solid rgba(50, 50, 60, .9);
+	box-shadow: .1em .1em 1.5em #444, inset 0 0 2em #444;
+}
+.btn:hover{
+	background: transparent;
+	box-shadow: .1em .1em 1.5em #ccc, inset 0 0 3em #ccc;
+}
+
+.selection span{
+	color: #fff;
+}
+.onoffswitch-label:hover{
+	box-shadow: .1em .1em 1.3em #ccc;
+}
+.onoffswitch-inner:before {
+	box-shadow: .1em .1em 1.5em #ccc, inset 0 0 3em #ccc;
+	background: transparent;
+	color:#fff;
+}
+.onoffswitch-inner:after {
+	box-shadow: .1em .1em 1.5em #444, inset 0 0 2em #444;
+	background: transparent;
+	color:#aaa;
+}
+.onoffswitch-label {
+	border: 0.4em solid rgb(50, 50, 60);
+	border: 0.4em solid rgba(50, 50, 60, .9);
+}
+
+
+/* Timer Section */
+
+.hours {
+	background:#555; background:rgba(50, 50, 60, .45);
+	color:#fff;
+	text-shadow:#000 0 1px 0;
+}
+
+.front, .top_box {
+	box-shadow: 0 0 1.5em #555, inset 0 0 20em #222;
+}
+
+.box label{ color:#fff; text-shadow:#444 0 1px 0; }
+.box input { background:#555; background:rgba(50, 50, 60, .45); color:#fff; }
+
+.controls a { background:#333333 url('btn_bg.png') center; }
+.controls a:hover { background-image:url('btn_bg_2.png'); }
+
+.date {
+	color: #fff;
+	text-shadow: #000 0 1px 0;
+	background: rgb(50,50,60);
+	background: rgba(50,50,60,.6);
+}
+.changeColor input.color { background:#555 !important; background:rgba(50, 50, 60, .45) !important; }
+.remove,.removeCheck {
+	box-shadow: 0 0 .5em #555, inset 0 0 1em #444;
+}
+
+.splits { background:#444; color:#fff; }
+.splits li { text-shadow:#000 0 1px 0; border-bottom:1px solid #333; border-top:1px solid #555; }
+.splits li span { color:#999; background:#000; }
+
+.more { box-shadow: 0 0 .7em #555, inset 0 0 1.2em #444; }
+
+.running .front, .running .back { box-shadow: 0 0 5.5em #fff, inset 0 0 20em #222; }
