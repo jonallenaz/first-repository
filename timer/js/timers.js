@@ -79,7 +79,12 @@ $(function() {
 					t.splits[s].end = t.splits[s].start + t.splits[s].duration;
 					// console.log($('li.split-'+(s+1), $box));
 					$('li.split-'+(s+1), $box).html(TimeTracker.formatSplit(t.splits[s].start, t.splits[s].duration, s+1));
-					start_clock(num, t.total, t.running);
+					var totalTime = 0;
+					// total time
+					for(s2=0,ss=t.splits.length; s2<ss; s2++){
+						totalTime += parseInt(t.splits[s2].duration,10);
+					}
+					start_clock(totalTime, num, t.running);
 					break;
 				default:
 					t[$this.attr('name')] = $this.val();
@@ -101,6 +106,7 @@ $(function() {
 
 		$('body').on('click',' .splits span', function(){
 			$(this).closest('li').find('.elapsed').toggle();
+			$('input[name="split"]').blur();
 		});
 
 		$('.boxes').on("ss-event-dropped", function(e, selected) {
@@ -158,7 +164,7 @@ var TimeTracker = {
 			var href = $('#stylesheet').attr('href');
 			if(options.css != href){
 				$('.go_dark').find('span').toggle();
-				$('#stylesheet').attr('href', options.css);
+				$('#stylesheet').attr('href', options.css.replace('timer-dark','dark'));
 			}
 		}
 

@@ -484,11 +484,11 @@ header .selection{
 	opacity:0.4 !important;
 	box-shadow: none;
 	/*border: .5em solid rgba(100,100,100,.25);*/
-	-webkit-transition: opacity .6s, box-shadow .6s, border .6s;
-	-moz-transition: opacity .6s, box-shadow .6s, border .6s;
-	-ms-transition: opacity .6s, box-shadow .6s, border .6s;
-	-o-transition: opacity .6s, box-shadow .6s, border .6s;
-	transition: opacity .6s, box-shadow .6s, border .6s;
+	-webkit-transition: opacity .6s, box-shadow .6s, border .6s, -webkit-transform .4s ease-in-out;
+	-moz-transition: opacity .6s, box-shadow .6s, border .6s, -moz-transform .4s ease-in-out;
+	-ms-transition: opacity .6s, box-shadow .6s, border .6s, -ms-transform .4s ease-in-out;
+	-o-transition: opacity .6s, box-shadow .6s, border .6s, -o-transform .4s ease-in-out;
+	transition: opacity .6s, box-shadow .6s, border .6s, transform .4s ease-in-out;
 }
 .running .front, .running .back { box-shadow: 0 0 5.5em #005500; /*border-color: #005500;*/ }
 

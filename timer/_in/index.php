@@ -1,4 +1,5 @@
 <?
+session_set_cookie_params(172800,"/timer/");
 session_start();
 if(!isset($_SESSION['t_username'])){
 	session_destroy();
@@ -16,7 +17,9 @@ if(!isset($_SESSION['t_username'])){
 	<link rel="icon" href="favicon.ico" type="image/x-icon">
 	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 	<link href='http://fonts.googleapis.com/css?family=Cutive+Mono' rel='stylesheet' type='text/css'>
-	<link id="stylesheet" rel="stylesheet" href="css/timers.css">
+	<link rel="stylesheet" href="css/timers.css">
+	<link id="stylesheet" rel="stylesheet" href="css/blank.css">
+	<link rel="stylesheet" href="css/analog.css">
 </head>
 <body>
 
@@ -54,11 +57,21 @@ if(!isset($_SESSION['t_username'])){
 	</section>
 
 	<section id="tab_options">
-		<div class="btn_wrap"><a class="show_splits btn"><span>show</span><span class="hidden">hide</span> splits</a></div>
+		<!-- <div class="btn_wrap"><a class="show_splits btn"><span>show</span><span class="hidden">hide</span> splits</a></div> -->
 		<div class="btn_wrap"><a class="stopAll btn">stop all</a></div>
 		<div class="btn_wrap"><a class="removeTracked btn">removed tracked<div class="removeCheck">Click again to remove.</div></a></div>
 		<div class="btn_wrap"><a class="go_dark btn"><span>go dark</span><span class="hidden">lighten up</span></a></div>
 		<div class="btn_wrap"><a class="match_color btn"><span>match color</span><span class="hidden">keep color</span></a></div>
+		<div class="selection">
+			<span>Default Analog Face</span>
+			<div class="onoffswitch">
+				<input type="checkbox" name="default_analog" class="onoffswitch-checkbox" id="default_analog">
+				<label class="onoffswitch-label" for="default_analog">
+					<div class="onoffswitch-inner"></div>
+					<div class="onoffswitch-switch"></div>
+				</label>
+			</div>
+		</div>
 	</section>
 
 	<section id="tab_profile">
@@ -72,7 +85,7 @@ if(!isset($_SESSION['t_username'])){
 <?php
 	}
 ?>
-		<div class="top_box">
+		<div class="top_box paypal">
 			<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
 				<input type="hidden" name="cmd" value="_s-xclick">
 				<input type="hidden" name="hosted_button_id" value="3VVH4K8JQNQL2">
@@ -99,26 +112,66 @@ if(!isset($_SESSION['t_username'])){
 <div class="box hidden template">
 	<div class="remove">X</div>
 	<div class="removeCheck">Are you sure?<br>Click to remove.</div>
-	<input type="text" name="cust" value="" placeholder="Project">
-	<input type="text" name="task" value="" placeholder="Task">
-	<input type="hidden" class="tt" name="tt" value="">
+	<div class="front digital">
+		<input type="text" name="cust" value="" placeholder="Project">
+		<input type="text" name="task" value="" placeholder="Task">
+		<input type="hidden" class="tt" name="tt" value="">
 
-	<input type="text'" class="timer" value="00:00:00.00">
-	<div class="labels">HOUR<span>MIN</span><span>SEC</span><span>1/100</span></div>
-	<ul class="splits">
-		<li></li>
-	</ul>
-	<div class="clear"></div>
-	<div class="controls">
-		<a href="#" class="start" alternate="Stop">Start</a>
-		<div class="hours">Hrs: <span>0.00</span></div>
+		<input type="text'" class="timer" value="00:00:00.00">
+		<div class="labels">HOUR<span>MIN</span><span>SEC</span><span>1/100</span></div>
+		<div class="clear"></div>
+		<div class="edit">&Xi;</div>
+		<div class="controls">
+			<a href="#" class="start" alternate="Stop">Start</a>
+			<div class="hours">Hrs: <span>0.00</span></div>
+		</div>
+
+		<div class="date-wrap"><div class="date"></div></div>
+		<div class="color-wrap"><div class="changeColor"><input class="color" name="color" value="66ff00"></div></div>
+		<div class="clear"></div>
+		<label class="tracked">tracked<br/><input type="checkbox" name="tracked"></label>
+	
+		<div class="clock">
+			<div class="hour-hand"></div>
+			<div class="minute-hand"></div>
+			<div class="second-hand"></div>
+			<ul class="hour-numbers">
+				<li><span>1</span></li>
+				<li><span>2</span></li>
+				<li><span>3</span></li>
+				<li><span>4</span></li>
+				<li><span>5</span></li>
+				<li><span></span></li>
+				<li><span>7</span></li>
+				<li><span>8</span></li>
+				<li><span>9</span></li>
+				<li><span>10</span></li>
+				<li><span>11</span></li>
+				<li><span>12</span></li>
+			</ul>
+			<ul class="minute-lines">
+				<li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li>
+			</ul>
+		</div>
+		<style></style>
 	</div>
-
-	<div class="date"></div>
-	<div class="changeColor"><input class="color" name="color" value="66ff00"></div>
-	<div class="clear"></div>
-	<label class="tracked">tracked<br/><input type="checkbox" name="tracked"></label>
-
+	
+	<div class="back">
+		<div class="edit">&Xi;</div>
+		<ul class="splits">
+			<li></li>
+		</ul>
+		<div class="selection">
+			<span>Analog Face</span>
+			<div class="onoffswitch">
+				<input type="checkbox" name="analog" class="onoffswitch-checkbox" id="analog##">
+				<label class="onoffswitch-label" for="analog##">
+					<div class="onoffswitch-inner"></div>
+					<div class="onoffswitch-switch"></div>
+				</label>
+			</div>
+		</div>
+	</div>
 </div>
 <div class="boxes">
 </div>
@@ -129,6 +182,7 @@ if(!isset($_SESSION['t_username'])){
 <script src="js/jquery.ui.touch-punch.min.js" type="text/javascript"></script>
 <script src="js/timers.js" type="text/javascript"></script>
 <script src="jscolor/jscolor.js" type="text/javascript"></script>
+<script src="js/analog.js" type="text/javascript"></script>
 <script type="text/javascript">
 	// Google Analytics
 	var _gaq = _gaq || [];

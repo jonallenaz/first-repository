@@ -1,4 +1,5 @@
 <?php
+	session_set_cookie_params(172800,"/timer");
 	session_start();
 	// username and password sent from form
 	$t_username = $_POST['t_username'];
