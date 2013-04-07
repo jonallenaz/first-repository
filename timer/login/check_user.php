@@ -23,7 +23,7 @@
 		if($count < 1){
 			echo 'true';
 		} else {
-			echo 'Email already registered';
+			echo 'Email already taken!';
 		}
 	} else{
 		echo("no_data");

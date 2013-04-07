@@ -4,7 +4,7 @@
 	$t_email = $_POST['t_email']; 
 	$t_password = $_POST['t_password']; 
 
-	if($t_username && $t_password){
+	if($t_username && $t_email && $t_password){
 		require_once('/home3/jonandan/etc/ellatek.com/_includes_db.php');
 
 		$t_username = stripslashes($t_username);
@@ -25,31 +25,38 @@
 <?
 	} else{
 ?>
-		<form name="form_new_user" method="post" action="">
-			<table width="190" border="0" align="center" cellpadding="0" cellspacing="0">
-				<tr>
-					<td colspan="3"><strong>Register </strong></td>
-				</tr>
-				<tr>
-					<td align="right"></td>
-					<td><input placeholder="Username" name="t_username" type="text" id="t_username"> <span class="mark"></span></td>
-				</tr>
-				<tr>
-					<td align="right"></td>
-					<td><input placeholder="Email" name="t_email" type="text" id="t_email"> <span class="mark"></span></td>
-				</tr>
-				<tr>
-					<td align="right"></td>
-					<td><input placeholder="Password" name="t_password" type="password" id="t_password"></td>
-				</tr>
-				<tr>
-					<td colspan="3" align="center"><input type="submit" value="Submit"></td>
-				</tr>
-				<tr>
-					<td colspan="3" id="message"></td>
-				</tr>
-			</table>
-		</form>
+	<style>
+			#message {
+			color: #cc0000;
+			font-size: 12px;
+			padding-top:5px;
+		}
+	</style>
+	<form id="form_new_user" name="form_new_user" method="post" action="">
+		<table width="190" border="0" align="center" cellpadding="0" cellspacing="0">
+			<tr>
+				<td colspan="3"><strong>Register</strong> <small>(free for first 50 users)</small></td>
+			</tr>
+			<tr>
+				<td align="right"></td>
+				<td><input placeholder="Username" name="t_username" type="text" id="t_username"> <span class="mark"></span></td>
+			</tr>
+			<tr>
+				<td align="right"></td>
+				<td><input placeholder="Email" name="t_email" type="text" id="t_email"> <span class="mark"></span></td>
+			</tr>
+			<tr>
+				<td align="right"></td>
+				<td><input placeholder="Password" name="t_password" type="password" id="t_password"></td>
+			</tr>
+			<tr>
+				<td colspan="3" align="center"><input id="submit" type="submit" value="Register" disabled="disabled"></td>
+			</tr>
+			<tr>
+				<td colspan="3" id="message"></td>
+			</tr>
+		</table>
+	</form>
 <?php
 	}
 ?>

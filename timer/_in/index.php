@@ -29,13 +29,14 @@ if(!isset($_SESSION['t_username'])){
 		<div class="tab_name" data-section="tab_profile"><span>Profile</span><img src="images/ico_profile.png" alt="profile"></div>
 	</div>
 
-	<section id="tab_time">
-		<div class="top_box totalTime">
-			<p>Total Time:<p>
-			<div class="timer">00:00:00.00</div>
-			<div class="labels">HOUR<span>MIN</span><span>SEC</span><span>1/100</span></div>
-			<p>Hours: <span class="totalHours">0.00</span></p>
-		</div>
+	<div class="top_box totalTime">
+		<p>Total Time:<p>
+		<div class="timer">00:00:00.00</div>
+		<div class="labels">HOUR<span>MIN</span><span>SEC</span><span>1/100</span></div>
+		<p>Hours: <span class="totalHours">0.00</span></p>
+	</div>
+
+		<section id="tab_time">
 		<div class="btn_wrap">
 			<a class="stopAll btn">stop all</a>
 			<br>
@@ -60,7 +61,7 @@ if(!isset($_SESSION['t_username'])){
 		<div class="btn_wrap"><a class="stopAll btn">stop all</a></div>
 		<div class="btn_wrap"><a class="removeTracked btn">removed tracked<div class="removeCheck">Click again to remove.</div></a></div>
 		<div class="btn_wrap"><a class="go_dark btn"><span>go dark</span><span class="hidden">lighten up</span></a></div>
-		<div class="btn_wrap"><a class="match_color btn"><span>match color</span><span class="hidden">keep color</span></a></div>
+		<div class="btn_wrap"><a class="match_color btn"><span>match project color</span><span class="hidden">don't match color</span></a></div>
 		<div class="selection">
 			<span>Default Analog Face</span>
 			<div class="onoffswitch">
@@ -71,6 +72,8 @@ if(!isset($_SESSION['t_username'])){
 				</label>
 			</div>
 		</div>
+		<div class="clear"></div>
+		<div class="link_wrap"><a target="_blank" href="https://trello.com/board/jon-s-timer-http-ellatek-com-timer/5033ec5cbba4dedc0be88b2f">Request features or report bugs on Trello</a></div>
 	</section>
 
 	<section id="tab_profile">
@@ -84,26 +87,27 @@ if(!isset($_SESSION['t_username'])){
 <?php
 	}
 ?>
-		<div class="top_box paypal">
-			<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
-				<input type="hidden" name="cmd" value="_s-xclick">
-				<input type="hidden" name="hosted_button_id" value="3VVH4K8JQNQL2">
-				<input type="hidden" name="on0" value="Buy me a:">
-				<p>Help the cause, buy me a: </p>
-				<p>
-					<select name="os0">
-						<option value="Cookie">Cookie $1.00 USD</option>
-						<option value="Ice Cream Cone">Ice Cream Cone $5.00 USD</option>
-						<option value="Date Night">Date Night $20.00 USD</option>
-					</select>
-				</p><p>
-					<input type="hidden" name="currency_code" value="USD">
-					<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_buynow_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-					<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
-				</p>
-			</form>
-		</div>
 	</section>
+	
+	<div class="top_box paypal">
+		<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+			<input type="hidden" name="cmd" value="_s-xclick">
+			<input type="hidden" name="hosted_button_id" value="3VVH4K8JQNQL2">
+			<input type="hidden" name="on0" value="Buy me a:">
+			<p>Help the cause, buy me a: </p>
+			<p>
+				<select name="os0">
+					<option value="Cookie">Cookie $1.00 USD</option>
+					<option value="Ice Cream Cone">Ice Cream Cone $5.00 USD</option>
+					<option value="Date Night">Date Night $20.00 USD</option>
+				</select>
+			</p><p>
+				<input type="hidden" name="currency_code" value="USD">
+				<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_buynow_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+				<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+			</p>
+		</form>
+	</div>
 </header>
 
 <div class="more">+</div>

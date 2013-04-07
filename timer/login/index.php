@@ -4,6 +4,7 @@
 	$t_username = $_POST['t_username'];
 	$t_password = $_POST['t_password'];
 	$show_form = false;
+	$message = "";
 
 	if($t_username && $t_password){
 		require_once('/home3/jonandan/etc/ellatek.com/_includes_db.php');
@@ -29,7 +30,7 @@
 			</script>
 <?
 		} else{
-			echo "Wrong Username or Password<br>";
+			$message = "Incorrect username or password.";
 			$show_form = true;
 		}
 	} else{
@@ -38,24 +39,34 @@
 
 	if($show_form == true){
 ?>
-		<form name="form1" method="post" action="">
-			<table width="190" border="0" align="center" cellpadding="0" cellspacing="0">
-				<tr>
-					<td colspan="3"><strong>Login </strong></td>
-				</tr>
-				<tr>
-					<td align="right"></td>
-					<td><input placeholder="Username" name="t_username" type="text" id="t_username"> <span class="mark"></span></td>
-				</tr>
-				<tr>
-					<td align="right"></td>
-					<td><input placeholder="Password" name="t_password" type="password" id="t_password"></td>
-				</tr>
-				<tr>
-					<td colspan="3" align="center"><input type="submit" value="Login"></td>
-				</tr>
-			</table>
-		</form>
+	<style>
+		#message {
+			color: #cc0000;
+			font-size: 12px;
+			padding-top:5px;
+		}
+	</style>
+	<form name="form1" method="post" action="">
+		<table width="190" border="0" align="center" cellpadding="0" cellspacing="0">
+			<tr>
+				<td colspan="3"><strong>Login </strong></td>
+			</tr>
+			<tr>
+				<td align="right"></td>
+				<td><input placeholder="Username" name="t_username" type="text" id="t_username"> <span class="mark"></span></td>
+			</tr>
+			<tr>
+				<td align="right"></td>
+				<td><input placeholder="Password" name="t_password" type="password" id="t_password"></td>
+			</tr>
+			<tr>
+				<td colspan="3" align="center"><input type="submit" value="Login"></td>
+			</tr>
+			<tr>
+				<td colspan="3" id="message"><?= $message ?></td>
+			</tr>
+		</table>
+	</form>
 <?php
 	}
 ?>

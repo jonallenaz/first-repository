@@ -21,11 +21,11 @@ header {
 	height: 11em;
 	background:#cccccc; background:rgba(200,200,215,.96);
 	overflow: hidden;
-	position:fixed; top:0; width:100%;
-	border-bottom:1px solid #aaa; border-top:1px solid #eee;
+	position: fixed; top: 0; width: 100%;
+	border-bottom: 1px solid #aaa; border-top: 1px solid #eee;
 	 z-index:999;
 }
-header section{ display:none; }
+header section{ display:none; float: left; }
 #tab_time{ display:block; }
 .tabs{
 	position: absolute;
@@ -74,20 +74,23 @@ header section{ display:none; }
 	height: 1.2em;
 }
 section{
-	padding-left:7em;
+	padding-left: 7em;
 }
 header .top_box{
-	padding:5em 0;
-	height:11em;
+	padding: 5em 0;
+	height: 11em;
 	border-radius: 11em;
 	position: relative;
-	top:-5em;
+	top: -5em;
 	background-color: rgb(235,235,250);
-	margin-right:1em;
+	margin-right: 1em;
 }
 .top_box p{
 	font-size: 1.4em;
 	margin:.5em;
+}
+header .totalTime{
+	left: 7em;
 }
 header .untrackedTime, header .trackedTime{
 	background-color: rgb(60,60,80);
@@ -112,28 +115,19 @@ header .paypal{
 	right:0 !important;
 }
 
-.infoBar { display:none; background:#cccccc; background:rgba(200,200,215,.98); border-bottom:1px solid #aaa; border-top:1px solid #eee; position:fixed; top:0; width:100%; font-size:1.6em; padding:1em; z-index:999; }
-.infoBar .info { float:left; width:13em; }
-.infoBar .auto { width:3.3em; margin-right:.5em; }
-.infoBar .wide { width:20em; margin-right:2em; }
-.infoBar .narrow { width:12em; }
-.infoBar .help {
-	position:absolute; font-size:1em; right:1.4em; top:.5em; width:3.5em; height:4em; overflow:hidden; text-decoration:underline; background-color:#eeeeee; background-color:rgba(255,255,255,.4); padding:10px; border-radius:5px;
-	-webkit-transition:width 1s; -moz-transition:width 1s; -o-transition:width 1s; -ms-transition:width 1s; transition:width 1s;
-	box-shadow:1px 1px 2px black, inset 1px 1px 1px white;
-}
-.infoBar .help .info {
-	white-space:nowrap; clear:both; text-decoration:underline; overflow:hidden; width:55px;
-	-o-text-overflow:ellipsis; -ms-text-overflow:ellipsis; text-overflow:ellipsis;
-	-webkit-transition:width 1s; -moz-transition:width 1s; -o-transition:width 1s; -ms-transition:width 1s; transition:width 1s;
-}
-.infoBar .help:hover, .infoBar .help:hover .info { width:220px; text-decoration:none; }
-.infoBar .help .hide { display:none; }
-.infoBar .help:hover .hide { display:block; }
-
 .btn_wrap{
 	float: left;
 	margin: -.1em 1em 0 0;
+}
+.link_wrap{
+	float: left;
+	margin: .5em;
+}
+.link_wrap a{
+	color: #444;
+}
+.link_wrap a:hover{
+	color: #000;
 }
 .btn{
 	display: table-cell;

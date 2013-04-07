@@ -29,11 +29,40 @@
 	.login-link:hover, .register-link:hover{
 		color: #444444;
 	}
+	.login .info{
+		height: auto;
+		overflow: auto;
+	}
+	.login .info h3{
+		margin: 10px;
+	}
+	.login .info ul {
+		margin: 0;
+		padding: 0 0 0 30px;
+		list-style-type: square;
+	}
+	.login .info img{
+		margin: 10px auto;
+		display: block;
+	}
 </style>
 <div class="login">
 	<iframe src="login/" width="200" height="140" frameborder="0" scrolling="no"></iframe>
 	<a href="register/" class="register-link">New user? Click here to register.</a>
 	<a href="login/" class="login-link hidden">Already registered? Click here to login.</a>
+	<div class="info">
+		<h3>Why login?</h3>
+		<ul>
+			<li>New design</li>
+			<li>Drag and drop</li>
+			<li>Analog timer option</li>
+			<li>Select light or dark theme</li>
+			<li>See total time marked as tracked</li>
+			<li>Match color of other timers with same project</li>
+			<li>Request features or report bugs</li>
+		</ul>
+		<img src="images/new_timer.png">
+	</div>
 </div>
 
 <div class="infoBar">
