@@ -84,9 +84,6 @@ $('#form_new_user').submit(function(){
 	var t_username = $('#t_username').val();
 	var t_email = $('#t_email').val();
 	var t_password = $('#t_password').val();
-	console.log('username: ' + t_username, valid_username);
-	console.log('email: ' + t_email, valid_email);
-	console.log('password: ' + t_password);
 	if(!t_username || !valid_username){
 		$('#t_username').focus();
 		return false;
@@ -99,8 +96,7 @@ $('#form_new_user').submit(function(){
 		$('#t_password').focus();
 		return false;
 	}
-	console.log('submit');
-	return false;
+	return true;
 });
 
 function isValidEmailAddress(emailAddress) {

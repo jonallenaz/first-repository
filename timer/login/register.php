@@ -18,9 +18,10 @@
 		$sql = "INSERT INTO $db_table (username, password, email) VALUES ('$t_username', '$t_password', '$t_email')";
 		$result = mysql_query($sql);
 
+		$_SESSION["t_username"] = $t_username;
 ?>
 	<script type="text/javascript">
-		window.location.reload();
+		window.top.location.href = window.top.location.href;
 	</script>
 <?
 	} else{
