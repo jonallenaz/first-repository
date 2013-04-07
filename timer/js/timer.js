@@ -26,7 +26,7 @@ $(function() {
 		$start = $('div.box:first').find('.start');
 		TimeTracker.startText = $start.text() || TimeTracker.startText;
 		TimeTracker.stopText = $start.attr('alternate') || TimeTracker.stopText;
-		
+
 		// load stored timers or create new one if no timers are stored
 		TimeTracker.loadTimers();
 
@@ -64,6 +64,24 @@ $(function() {
 
 		window.onresize = function(e){ TimeTracker.resize(); };
 	}
+
+	// register
+	$('body').on('click', '.register-link', function(e){
+		e.preventDefault();
+		$('.login iframe').attr('src', 'login/register.php');
+		$(this).fadeOut(function(){
+			$('.login-link').fadeIn();
+		});
+		return false;
+	});
+	$('body').on('click', '.login-link', function(e){
+		e.preventDefault();
+		$('.login iframe').attr('src', 'login/');
+		$(this).fadeOut(function(){
+			$('.register-link').fadeIn();
+		});
+		return false;
+	});
 });
 
 var TimeTracker = {
@@ -124,7 +142,7 @@ var TimeTracker = {
 			if(i in TimeTracker.int) obj[i] = parseInt(obj[i],10);
 		}
 		$box.data('num', TimeTracker.timers);
-		
+
 		$splits = $box.find('.splits').empty();
 		for(i=0,ii=obj.splits.length; i<ii; i++){
 			$('<li class="split-'+(i+1)+'"></li>').html(TimeTracker.formatSplit(obj.splits[i].start, obj.splits[i].duration, (i+1))).prependTo($splits.show()).slideDown('fast');

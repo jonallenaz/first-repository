@@ -1,12 +1,12 @@
 <?php
-	session_set_cookie_params(172800,"/timer");
 	session_start();
 	// username and password sent from form
 	$t_username = $_POST['t_username'];
 	$t_password = $_POST['t_password'];
+	$show_form = false;
 
 	if($t_username && $t_password){
-		require_once('_includes_db.php');
+		require_once('/home3/jonandan/etc/ellatek.com/_includes_db.php');
 
 		$t_username = stripslashes($t_username);
 		$t_password = stripslashes($t_password);
@@ -30,8 +30,13 @@
 <?
 		} else{
 			echo "Wrong Username or Password<br>";
+			$show_form = true;
 		}
 	} else{
+		$show_form = true;
+	}
+
+	if($show_form == true){
 ?>
 		<form name="form1" method="post" action="">
 			<table width="190" border="0" align="center" cellpadding="0" cellspacing="0">
@@ -40,7 +45,7 @@
 				</tr>
 				<tr>
 					<td align="right"></td>
-					<td><input placeholder="Username" name="t_username" type="text" id="t_username"></td>
+					<td><input placeholder="Username" name="t_username" type="text" id="t_username"> <span class="mark"></span></td>
 				</tr>
 				<tr>
 					<td align="right"></td>
@@ -54,3 +59,32 @@
 <?php
 	}
 ?>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.js"></script>
+<script type="text/javascript">
+	$('#t_username').on('keyup', function(){
+		$('#t_username').siblings('.mark').html('');
+		$('#message').html('');
+	});
+	$('#t_username').on('blur', function(){
+		var t_username = $(this).val();
+		if(!t_username){ return; }
+		var data = 't_username=' + t_username;
+		$('#t_username').siblings('.mark').html('');
+		var check_username = $.ajax({
+			type: 'POST',
+			url: 'check_user.php',
+			data: data
+		});
+		check_username.done(function(data){
+			switch(data){
+				case 'true':
+					$('#t_username').siblings('.mark').html('&#x2717;').css('color','#CC0000');
+					break;
+				case 'no_data':
+					break;
+				default:
+					$('#t_username').siblings('.mark').html('&#x2713;').css('color','#00CC00');
+			}
+		});
+	});
+</script>

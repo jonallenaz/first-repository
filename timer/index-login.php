@@ -21,10 +21,19 @@
 		background: rgba(200,200,215,.98);
 		border-left: 1px solid #aaa;
    }
+   .login-link, .register-link {
+		font-size: 9px;
+		margin: 0 10px;
+		color: #777777;
+	}
+	.login-link:hover, .register-link:hover{
+		color: #444444;
+	}
 </style>
 <div class="login">
-	<iframe src="login/" width="200" height="300" frameborder="0" scrolling="no"></iframe>
-	
+	<iframe src="login/" width="200" height="140" frameborder="0" scrolling="no"></iframe>
+	<a href="register/" class="register-link">New user? Click here to register.</a>
+	<a href="login/" class="login-link hidden">Already registered? Click here to login.</a>
 </div>
 
 <div class="infoBar">

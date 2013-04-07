@@ -1,5 +1,4 @@
 <?
-session_set_cookie_params(172800,"/timer/");
 session_start();
 if(!isset($_SESSION['t_username'])){
 	session_destroy();
@@ -77,7 +76,7 @@ if(!isset($_SESSION['t_username'])){
 	<section id="tab_profile">
 		<div class="btn_wrap"><a class="btn" href="logout/">logout</a></div>
 <?php
-	if($_SESSION['t_username'] == 'thejon76'){
+	if($_SESSION['t_username'] == 'jonallenaz'){
 ?>
 		<div class="top_box">
 			<iframe src="login/new_user.php" width="220" height="200" scrolling="no" frameborder="0"></iframe>

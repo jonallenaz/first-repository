@@ -19,28 +19,34 @@
 		$result = mysql_query($sql);
 
 ?>
-			<script type="text/javascript">
-				window.location.reload();
-			</script>
+	<script type="text/javascript">
+		window.location.reload();
+	</script>
 <?
 	} else{
 ?>
 		<form name="form_new_user" method="post" action="">
-			<table width="150" border="0" align="center" cellpadding="0" cellspacing="0">
+			<table width="190" border="0" align="center" cellpadding="0" cellspacing="0">
 				<tr>
-					<td align="right"></td>
-					<td><input placeholder="Username" name="t_username" type="text" id="t_username"></td>
+					<td colspan="3"><strong>Register </strong></td>
 				</tr>
 				<tr>
 					<td align="right"></td>
-					<td><input placeholder="Email" name="t_email" type="text" id="t_email"></td>
+					<td><input placeholder="Username" name="t_username" type="text" id="t_username"> <span class="mark"></span></td>
+				</tr>
+				<tr>
+					<td align="right"></td>
+					<td><input placeholder="Email" name="t_email" type="text" id="t_email"> <span class="mark"></span></td>
 				</tr>
 				<tr>
 					<td align="right"></td>
 					<td><input placeholder="Password" name="t_password" type="password" id="t_password"></td>
 				</tr>
 				<tr>
-					<td colspan="3" align="center"><input type="submit" value="Create New User"></td>
+					<td colspan="3" align="center"><input type="submit" value="Submit"></td>
+				</tr>
+				<tr>
+					<td colspan="3" id="message"></td>
 				</tr>
 			</table>
 		</form>
@@ -48,18 +54,4 @@
 	}
 ?>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.js"></script>
-<script type="text/javascript">
-	$('#t_username').on('blur', function(){
-		var t_username = $(this).val();
-		if(!t_username){ return; }
-		var data = 't_username=' + t_username;
-		var check_username = $.ajax({
-			type: 'POST',
-			url: 'check_user.php',
-			data: data
-		});
-		check_username.done(function(data){
-			console.log(data);
-		});
-	});
-</script>
+<script type="text/javascript" src="/timer/js/register.js"></script>
