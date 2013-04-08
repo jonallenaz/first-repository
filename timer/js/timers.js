@@ -163,8 +163,9 @@ var TimeTracker = {
 		if(options.css){
 			var href = $('#stylesheet').attr('href');
 			if(options.css != href){
-				$('.go_dark').find('span').toggle();
-				$('#stylesheet').attr('href', options.css.replace('timer-dark','dark'));
+				$(function(){
+					$('.go_dark').click();
+				});
 			}
 		}
 
