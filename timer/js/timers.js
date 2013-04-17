@@ -46,6 +46,7 @@ $(function() {
 		$('body').on('change', '#default_analog', function(){ $('.box').eq(0).find('.front').toggleClass('analog').toggleClass('digital'); TimeTracker.saveOption('default_analog', $(this).is(':checked')); });
 		$('body').on('click', '.remove', function(){ TimeTracker.remove($(this).closest('.box')); });
 		$("body").on('click', '.removeTracked', function(){ TimeTracker.removeTracked(); });
+		$("body").on('click', '.removeAll', function(){ TimeTracker.removeAll(); });
 		$("body").on('dblclick','.removeCheck', function(e){ e.preventDefault(); });
 		$('body').on('click', '.tracked input', function(){ TimeTracker.track($(this).closest('.box')); });
 		$('body').on('click', '.edit', function(){ $(this).closest('.box').toggleClass('flip'); });
@@ -379,6 +380,40 @@ var TimeTracker = {
 			if(tmpHours.untracked != $('.untrackedTime .totalHours').text()){ $('.untrackedTime .totalHours').text(tmpHours.untracked); }
 		} else{
 			TimeTracker.removeTrackedCheck();
+		}
+	},
+
+	removeAllCheck : function(){
+		$('.removeAll .removeCheck').show().on('click',function(){TimeTracker.removeAll(true);}).delay('1500').fadeOut();
+	},
+
+	removeAll : function(rem){
+		if(rem){
+			$('div.box').each(function(){
+				$this = $(this);
+				if(!$this.hasClass('hidden')){
+					var el = $this.data('num');
+					var t = JSON.parse(localStorage['TimeTracker'+el]);
+					// if(t.tracked){
+						if(t.running){ TimeTracker.startStop($this); }
+						TimeTracker.remove($this,true, true);
+					// }
+				}
+			});
+			TimeTracker.resize();
+			//display total time
+			var tmpTotal = TimeTracker.formatTime(TimeTracker.totalTime());
+			if(tmpTotal.total == tmpTotal.untracked){ $('.trackedTime, .untrackedTime').fadeOut(600); } else{ $('.trackedTime, .untrackedTime').fadeIn(600); }
+			$('.totalTime .timer').text(tmpTotal.total);
+			$('.trackedTime .timer').text(tmpTotal.tracked);
+			$('.untrackedTime .timer').text(tmpTotal.untracked);
+			document.title = tmpTotal.total.toString().slice(0,-3);
+			var tmpHours = TimeTracker.formatHours(TimeTracker.totalTime());
+			if(tmpHours.total != $('.totalTime .totalHours').text()){ $('.totalTime .totalHours').text(tmpHours.total); }
+			if(tmpHours.tracked != $('.trackedTime .totalHours').text()){ $('.trackedTime .totalHours').text(tmpHours.tracked); }
+			if(tmpHours.untracked != $('.untrackedTime .totalHours').text()){ $('.untrackedTime .totalHours').text(tmpHours.untracked); }
+		} else{
+			TimeTracker.removeAllCheck();
 		}
 	},
 
