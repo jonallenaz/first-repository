@@ -24,6 +24,12 @@
 		if($count == 1){
 			// Register $t_username, $t_password and redirect to file "login_success.php"
 			$_SESSION["t_username"] = $t_username;
+			
+			$login_ip = $_SERVER['REMOTE_ADDR'];
+			$login_date = date("Y-m-d H:i:s");
+
+			$sql = "UPDATE $db_table SET login_ip='$login_ip', login_date='$login_date' WHERE username='$t_username' and password='$t_password'";
+			$result = mysql_query($sql);
 ?>
 			<script type="text/javascript">
 				window.top.location.href = window.top.location.href;
