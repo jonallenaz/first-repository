@@ -36,7 +36,7 @@ if(!isset($_SESSION['t_username'])){
 		<p>Hours: <span class="totalHours">0.00</span></p>
 	</div>
 
-		<section id="tab_time">
+	<section id="tab_time">
 		<div class="btn_wrap">
 			<a class="stopAll btn">stop all</a>
 			<br>
@@ -60,6 +60,7 @@ if(!isset($_SESSION['t_username'])){
 		<!-- <div class="btn_wrap"><a class="show_splits btn"><span>show</span><span class="hidden">hide</span> splits</a></div> -->
 		<div class="btn_wrap"><a class="stopAll btn">stop all</a></div>
 		<div class="btn_wrap"><a class="removeTracked btn">removed tracked<div class="removeCheck">Click again to remove.</div></a></div>
+		<div class="btn_wrap"><a class="removeAll btn">remove all timers<div class="removeCheck">Click again to remove.</div></a></div>
 		<div class="btn_wrap"><a class="go_dark btn"><span>go dark</span><span class="hidden">lighten up</span></a></div>
 		<div class="btn_wrap"><a class="match_color btn"><span>match project color</span><span class="hidden">don't match color</span></a></div>
 		<div class="selection">
@@ -88,7 +89,7 @@ if(!isset($_SESSION['t_username'])){
 	}
 ?>
 	</section>
-	
+
 	<div class="top_box paypal">
 		<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
 			<input type="hidden" name="cmd" value="_s-xclick">
@@ -133,7 +134,7 @@ if(!isset($_SESSION['t_username'])){
 		<div class="color-wrap"><div class="changeColor"><input class="color" name="color" value="66ff00"></div></div>
 		<div class="clear"></div>
 		<label class="tracked">tracked<br/><input type="checkbox" name="tracked"></label>
-	
+
 		<div class="clock">
 			<div class="hour-hand"></div>
 			<div class="minute-hand"></div>
@@ -158,7 +159,7 @@ if(!isset($_SESSION['t_username'])){
 		</div>
 		<style></style>
 	</div>
-	
+
 	<div class="back">
 		<div class="edit">&Xi;</div>
 		<ul class="splits">

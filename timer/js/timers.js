@@ -195,6 +195,20 @@ var TimeTracker = {
 		localStorage['TimerOptions'] = JSON.stringify(options);
 	},
 
+	saveToDB : function(){
+		var db = {};
+		var db_size = 0;
+		for(var key in localStorage){
+			if(key.indexOf('TimeTracker') === 0 || key == 'TimerOptions'){
+				db_size++;
+				db[key] = localStorage[key];
+			}
+		}
+		if(db_size){
+
+		}
+	},
+
 	loadTimers : function(){
 		var localTimers = [];
 		var obj;

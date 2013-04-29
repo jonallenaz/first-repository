@@ -1,0 +1,230 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"print",
+				"print_r"
+			],
+			[
+				"confi",
+				"configurationID"
+			],
+			[
+				"rec",
+				"recordID"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 374.0,
+		"selected_items":
+		[
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 417.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/jon/git/first-repository/timer/login/_includes_db.php",
+		"/Users/jon/git/first-repository/timer/update/index.php",
+		"/Users/jon/git/first-repository/timer/login/index.php",
+		"/Users/jon/git/first-repository/timer/login/register.php",
+		"/Users/jon/Documents/MyWebs/CC-takeitofftraining.com/smartclubmarketing/60day/video2.php",
+		"/Users/jon/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/jon/Documents/MyWebs/CC-takeitofftraining.com/smartclubmarketing/60day/updateProgress.js",
+		"/Users/jon/Documents/MyWebs/CC-takeitofftraining.com/smartclubmarketing/60day/updateProgress.php",
+		"/Users/jon/Documents/MyWebs/CC-takeitofftraining.com/smartclubmarketing/60day/updateViewed.php",
+		"/Users/jon/evogi/_toolbox/trello.css",
+		"/Users/jon/Documents/MyWebs/TrueCloud/Dropbox/TrueCloud Web/GrantVictor-719970/Tetralink/_templates/(TL) MB Item Drilldown.html",
+		"/Users/jon/Documents/MyWebs/TrueCloud/Dropbox/TrueCloud Web/GrantVictor-719970/Tetralink/SuiteScripts/machineBuilder_ss.js",
+		"/Users/jon/Documents/MyWebs/TrueCloud/Dropbox/TrueCloud Web/GrantVictor-719970/Tetralink/SuiteScripts/tcSearch_ss.v2.js",
+		"/Users/jon/Documents/MyWebs/TrueCloud/Dropbox/TrueCloud Web/GrantVictor-719970/Tetralink/SuiteScripts/tcSearch_xml_machineConfigurations.xml",
+		"/Users/jon/Documents/MyWebs/TrueCloud/Dropbox/TrueCloud Web/GrantVictor-719970/Tetralink/SuiteScripts/tcSearch_xml_savedEstimates.xml",
+		"/Users/jon/Documents/MyWebs/TrueCloud/Dropbox/TrueCloud Web/GrantVictor-719970/Tetralink/js/machineBuilder.js",
+		"/Users/jon/Documents/MyWebs/TrueCloud/Dropbox/TrueCloud Web/e2020-1291624/102/js/tcSearch_client.v3.js",
+		"/Users/jon/Documents/MyWebs/TrueCloud/Dropbox/TrueCloud Web/GrantVictor-719970/Tetralink/SuiteScripts/tcSearch_xml_configurationItem.xml",
+		"/Users/jon/Documents/MyWebs/TrueCloud/Dropbox/TrueCloud Web/IPSA-381460/SuiteScripts/_portal_supervisor_approve_time.js",
+		"/Users/jon/Documents/MyWebs/TrueCloud/Dropbox/TrueCloud Web/ABRFID - 838870/110/_templates/Logo and Tabs Template.html",
+		"/Users/jon/Documents/MyWebs/TrueCloud/Dropbox/TrueCloud Web/ABRFID - 838870/110/_templates/Addition to Head.html",
+		"/Users/jon/Documents/MyWebs/TrueCloud/Dropbox/TrueCloud Web/GrantVictor-719970/Tetralink/js/tooltip.js",
+		"/Users/jon/Documents/MyWebs/TrueCloud/Dropbox/TrueCloud Web/GrantVictor-719970/Tetralink/selectHardware.html",
+		"/Users/jon/Documents/MyWebs/TrueCloud/Dropbox/TrueCloud Web/GrantVictor-719970/Tetralink/selectModel.html",
+		"/Users/jon/Library/Application Support/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
+		"/Users/jon/Documents/MyWebs/TrueCloud/Dropbox/TrueCloud Web/getShippingRateFromServer.js"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"allowed",
+			"string",
+			"sizeof",
+			"string",
+			"trim_trailing_white_space_on_save",
+			"ajaxEstimateURL",
+			"ajaxEstimates",
+			"loadEstimateList",
+			"_ESTIMATES",
+			">f<",
+			">l<",
+			">s<",
+			"custbody_tl_config_id",
+			"joinnickname",
+			"nlapiLogExecution",
+			"items",
+			"json",
+			",item_id.length",
+			"custcol12317",
+			"custcol118",
+			"recordID",
+			"customer",
+			"recordID",
+			"		date:{\n			created:20130101,\n			modified:20130101,\n			ordered:20130101\n		},\n",
+			"getClass",
+			"getclass",
+			"text",
+			"plain",
+			"getclas"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"project": "timer.sublime-project",
+	"replace":
+	{
+		"height": 0.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"ipsasuper",
+				"IPSA-381460/SuiteScripts/_portal_supervisor_approve_time.js"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 281.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+		"max_columns": 2
+	}
+}
