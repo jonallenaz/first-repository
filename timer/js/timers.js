@@ -140,6 +140,8 @@ var TimeTracker = {
 	startText : 'Start',
 	stopText : 'Stop',
 	saveInterval : 5, // seconds between saving
+	saveToDBInterval : 15, // minutes between saving to db
+	timeLastSavedToDB: 0,
 	o : new Date(1970, 1, 1, 0, 0, 0, 0).valueOf(),
 	// colors : ['3F5D7D','279B61','008AB8','993333','A3E496','95CAE4','CC3333','FFCC33','FFFF7A','CC6699','108070','D29F28','C19A6B','F1868E','872514','3B444B','4D5D53','5B92E5','738678','592720','123456','FFFFFF','000000'],
 	colors : ['000000','FFFFFF','7777777','CCCCCC','CC1111','FFC7DD','661166','FFFF33','339933','CCFFCC','000077','CCCCFF'],
@@ -205,7 +207,19 @@ var TimeTracker = {
 			}
 		}
 		if(db_size){
-
+			db = {'t_data':db};
+			// console.log(db);
+			$.ajax({
+				type: "POST",
+				url: "update/",
+				data: db,
+				success: function(data){
+					// console.log(data);
+				},
+				error: function(a,b){
+					console.log(a,b);
+				}
+			});
 		}
 	},
 
@@ -524,6 +538,10 @@ var TimeTracker = {
 			t.splits[t.splits.length-1].end = currentTime.valueOf() - timeZoneOffset;
 			t.splits[t.splits.length-1].duration = splitTime;
 			localStorage['TimeTracker'+el] = JSON.stringify(t);
+		}
+		if(includeLastSplit || totalTime - TimeTracker.timeLastSavedToDB > TimeTracker.saveToDBInterval * 60000){
+			TimeTracker.timeLastSavedToDB = totalTime;
+			TimeTracker.saveToDB();
 		}
 
 		// display timer time and hours
