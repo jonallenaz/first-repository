@@ -34,6 +34,13 @@ header {
 .tab_name:hover{
 	box-shadow: .1em .1em 1em #ccc, inset 0 0 2em #ccc;
 }
+.link_wrap a{
+	color: #fff;
+	border-bottom: 1px solid #fff;
+}
+.link_wrap a:hover{
+	color: #ccc;
+}
 
 .btn{
 	background: transparent;

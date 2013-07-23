@@ -68,7 +68,8 @@ $(function() {
 			$(this).attr('value',$this.val());
 			var $box = $this.closest('.box');
 			var num = $box.data('num') || (++TimeTracker.timers);
-			var t = JSON.parse(localStorage['TimeTracker'+num] || "{}");
+			var key = $box.data('key') || new Date().getTime();
+			var t = JSON.parse(localStorage[key] || "{}");
 			switch($this.attr('name')){
 				case 'analog':
 				case 'tracked':
@@ -101,7 +102,7 @@ $(function() {
 					t.color = tmp_color;
 				}
 			}
-			localStorage['TimeTracker'+num] = JSON.stringify(t);
+			localStorage[key] = JSON.stringify(t);
 			TimeTracker.updateDisplay($box,true);
 		});
 
@@ -114,10 +115,10 @@ $(function() {
 			// Save position of each timer
 			$objects = $(this).children();
 			$objects.each(function(i) {
-				var el = $(this).data('num');
-				var t = JSON.parse(localStorage['TimeTracker'+el]);
+				var key = $(this).data('key');
+				var t = JSON.parse(localStorage[key]);
 				t.order = i+1;
-				localStorage['TimeTracker'+el] = JSON.stringify(t);
+				localStorage[key] = JSON.stringify(t);
 			});
 		});
 
@@ -236,7 +237,7 @@ var TimeTracker = {
 
 		// load timers from local storage
 		for(var key in localStorage){
-			if(key.indexOf('TimeTracker') === 0){
+			if(key.indexOf('TimerOptions') !== 0){
 				obj = JSON.parse(localStorage[key]);
 				localTimers.push(obj);
 				localStorage.removeItem(key);
@@ -281,6 +282,7 @@ var TimeTracker = {
 			if(i in TimeTracker.int) obj[i] = parseInt(obj[i],10);
 		}
 		$box.data('num', TimeTracker.timers);
+		$box.data('key', obj.timer_key);
 
 		$splits = $box.find('.splits').empty();
 		for(i=0,ii=obj.splits.length; i<ii; i++){
@@ -309,7 +311,7 @@ var TimeTracker = {
 		$box.find('input.color').val(obj.color);
 		jscolor.init();
 		start_clock(obj.total, TimeTracker.timers, obj.running);
-		if(save || true){ localStorage['TimeTracker'+TimeTracker.timers] = JSON.stringify(obj); }
+		if(save || true){ localStorage[obj.timer_key] = JSON.stringify(obj); }
 		TimeTracker.resize();
 	},
 
@@ -323,6 +325,13 @@ var TimeTracker = {
 		}
 
 		if(typeof obj != 'object'){ obj = {}; save = false; }
+		if(!obj.hasOwnProperty('timer_key') || new Date(obj.timer_key) == 'Invalid Date'){
+			var tmp = today.getTime();
+			while(tmp == today.getTime()){
+				today = new Date();
+			}
+			obj.timer_key = today.getTime();
+		}
 		if(!obj.hasOwnProperty('date')){ obj.date = date; }
 		if(!obj.hasOwnProperty('running')){ obj.running = false; }
 		if(!obj.hasOwnProperty('total')){ obj.total = 0; }
@@ -339,10 +348,10 @@ var TimeTracker = {
 	resize : function(){
 		$('.boxes').shapeshift({minHeight:230, centerGrid: false});
 		$('.boxes .box').each(function(i) {
-			var el = $(this).data('num');
-			var t = JSON.parse(localStorage['TimeTracker'+el]);
+			var key = $(this).data('key');
+			var t = JSON.parse(localStorage[key]);
 			t.order = i+1;
-			localStorage['TimeTracker'+el] = JSON.stringify(t);
+			localStorage[key] = JSON.stringify(t);
 		});
 	},
 
@@ -386,8 +395,8 @@ var TimeTracker = {
 			$('div.box').each(function(){
 				$this = $(this);
 				if(!$this.hasClass('hidden')){
-					var el = $this.data('num');
-					var t = JSON.parse(localStorage['TimeTracker'+el]);
+					var key = $this.data('key');
+					var t = JSON.parse(localStorage[key]);
 					if(t.tracked){
 						if(t.running){ TimeTracker.startStop($this); }
 						TimeTracker.remove($this,true, true);
@@ -420,8 +429,8 @@ var TimeTracker = {
 			$('div.box').each(function(){
 				$this = $(this);
 				if(!$this.hasClass('hidden')){
-					var el = $this.data('num');
-					var t = JSON.parse(localStorage['TimeTracker'+el]);
+					var key = $this.data('key');
+					var t = JSON.parse(localStorage[key]);
 					// if(t.tracked){
 						if(t.running){ TimeTracker.startStop($this); }
 						TimeTracker.remove($this,true, true);
@@ -447,7 +456,8 @@ var TimeTracker = {
 
 	startStop : function($box) {
 		var el = $box.data('num');
-		var t = TimeTracker.initObj(JSON.parse(localStorage['TimeTracker'+el] || "{}"));
+		var key = $box.data('key');
+		var t = TimeTracker.initObj(JSON.parse(localStorage[key] || "{}"));
 		var $start = $box.find('.start');
 		var $timer = $box.find('.timer');
 		var $splits = $box.find('.splits');
@@ -502,13 +512,13 @@ var TimeTracker = {
 
 			t.interval = setInterval(function(){ TimeTracker.updateDisplay($box); }, 43);
 		}
-		localStorage['TimeTracker'+el] = JSON.stringify(t);
+		localStorage[key] = JSON.stringify(t);
 		return false;
 	},
 
 	updateDisplay : function($box, includeLastSplit){
-		var el = $box.data('num');
-		var t = JSON.parse(localStorage['TimeTracker'+el]);
+		var key = $box.data('key');
+		var t = JSON.parse(localStorage[key]);
 		var $timer = $box.find('.timer');
 		var $hours = $box.find('.hours span');
 		var currentTime = new Date();
@@ -537,7 +547,7 @@ var TimeTracker = {
 			t.total = totalTime;
 			t.splits[t.splits.length-1].end = currentTime.valueOf() - timeZoneOffset;
 			t.splits[t.splits.length-1].duration = splitTime;
-			localStorage['TimeTracker'+el] = JSON.stringify(t);
+			localStorage[key] = JSON.stringify(t);
 		}
 		if(includeLastSplit || totalTime - TimeTracker.timeLastSavedToDB > TimeTracker.saveToDBInterval * 60000){
 			TimeTracker.timeLastSavedToDB = totalTime;
@@ -651,16 +661,16 @@ var TimeTracker = {
 		$('div.box').each(function(){
 			$this = $(this);
 			if(!$this.hasClass('hidden')){
-				var el = $this.data('num'),
-					t = JSON.parse(localStorage['TimeTracker'+el]);
+					key = $this.data('key'),
+					t = JSON.parse(localStorage[key]);
 				if(t.running) TimeTracker.startStop($this);
 			}
 		});
 	},
 
 	track : function($box){
-		var ele = $box.data('num');
-		var t = JSON.parse(localStorage['TimeTracker'+ele]);
+		var key = $box.data('key');
+		var t = JSON.parse(localStorage[key]);
 
 		if($box.find('.tracked input').is(':checked')){
 			t.tracked = true;
@@ -669,7 +679,7 @@ var TimeTracker = {
 			t.tracked = false;
 			$box.removeClass('show_tracked');
 		}
-		localStorage['TimeTracker'+ele] = JSON.stringify(t);
+		localStorage[key] = JSON.stringify(t);
 	},
 
 	endTimeTracker : true
