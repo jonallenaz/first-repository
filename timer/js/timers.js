@@ -132,6 +132,12 @@ $(function() {
 
 		setTimeout(function(){$('.paypal').css('right','-21.8em');},2000);
 
+		$(window).focus(function() {
+			window_focus = true;
+		}).blur(function() {
+			window_focus = false;
+		});
+
 		// window.onresize = function(e){ TimeTracker.resize(); };
 	}
 });
@@ -150,6 +156,7 @@ var TimeTracker = {
 	int : {total:1, start:1, end:1, duration:1}, // parameters to set as Integer
 	timers : 0, // number of timers
 	match_color : false,
+	focus : true,
 
 	checkLocalStore : function(){
 		try{ return 'localStorage' in window && window.localStorage !== null; } catch(e){ return false; }
@@ -202,10 +209,10 @@ var TimeTracker = {
 		var db = {};
 		var db_size = 0;
 		for(var key in localStorage){
-			if(key.indexOf('TimeTracker') === 0 || key == 'TimerOptions'){
+			// if(key.indexOf('TimeTracker') === 0 || key == 'TimerOptions'){
 				db_size++;
 				db[key] = localStorage[key];
-			}
+			// }
 		}
 		if(db_size){
 			db = {'t_data':db};
@@ -226,6 +233,7 @@ var TimeTracker = {
 
 	loadTimers : function(){
 		var localTimers = [];
+		var localTimerKeys = {};
 		var obj;
 
 		// remove timers already on the page
@@ -239,10 +247,45 @@ var TimeTracker = {
 		for(var key in localStorage){
 			if(key.indexOf('TimerOptions') !== 0){
 				obj = JSON.parse(localStorage[key]);
+				if(obj.hasOwnProperty('timer_key')){
+					localTimerKeys[obj.timer_key.toString()] = localTimers.length;
+				}
 				localTimers.push(obj);
 				localStorage.removeItem(key);
 			}
 		}
+
+		// load timers from db
+		$.ajax({
+			type: 'GET',
+			dataType: 'jsonp',
+			data: {},
+			url: "http://www.ellatek.com/timer/_in/load_timers.php",
+			success: function(data){
+				// console.log(localTimers);
+				// console.log(data);
+				var key, json;
+				for(var i = 0; i < data.length; i++){
+					json = JSON.parse(data[i].timer_json);
+					key = json.hasOwnProperty('timer_key') ? json.timer_key : data[i].timer_key;
+					if(!localTimerKeys.hasOwnProperty(key) && key != 'TimerOptions'){
+						localTimerKeys[key] = localTimers.length;
+						localTimers.push(json);
+					}
+				}
+				// console.log(localTimerKeys);
+				TimeTracker.finishLoadTimers(localTimers);
+			},
+			error: function(a,b){
+				console.log(a,b);
+				TimeTracker.finishLoadTimers(localTimers);
+			}
+		});
+
+	},
+
+	finishLoadTimers : function(localTimers){
+
 		if(!localTimers.length){
 			TimeTracker.createTimer();
 		} else{
@@ -365,12 +408,13 @@ var TimeTracker = {
 		}
 		if(rem){
 			var num = $box.data('num');
-			var t = JSON.parse(localStorage['TimeTracker'+num]);
+			var key = $box.data('key');
+			var t = JSON.parse(localStorage[key]);
 			if(t.running){ TimeTracker.startStop($box); }
 			$box.remove();
 			if(!loop){ TimeTracker.resize(); }
 			if(num){
-				localStorage.removeItem('TimeTracker'+num);
+				localStorage.removeItem(key);
 			}
 			//display total time
 			var tmpTotal = TimeTracker.formatTime(TimeTracker.totalTime());
@@ -578,7 +622,7 @@ var TimeTracker = {
 		var currentTime = new Date();
 		var timeZoneOffset = currentTime.getTimezoneOffset() * 60000;
 		for(var key in localStorage){
-			if(key.indexOf('TimeTracker') === 0){
+			if(key.indexOf('TimerOptions') !== 0){
 				obj = JSON.parse(localStorage[key]);
 
 				for(s=0, ss=obj.splits.length-1; s<ss; s++){
