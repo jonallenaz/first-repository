@@ -184,7 +184,17 @@ if(!isset($_SESSION['t_username'])){
 <script src="js/jquery-ui-1.9.2.custom.min.js" type="text/javascript"></script>
 <script src="js/jquery.shapeshift.min.js" type="text/javascript"></script>
 <script src="js/jquery.ui.touch-punch.min.js" type="text/javascript"></script>
+<?php
+	if($_SESSION['t_username'] == 'jonallenaz'){
+?>
+<script src="js/timers-test.js" type="text/javascript"></script>
+<?php
+	} else{
+?>
 <script src="js/timers.js" type="text/javascript"></script>
+<?php
+	}
+?>
 <script src="jscolor/jscolor.js" type="text/javascript"></script>
 <script src="js/analog.js" type="text/javascript"></script>
 <script type="text/javascript">
