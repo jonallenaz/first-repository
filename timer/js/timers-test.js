@@ -260,7 +260,7 @@ var TimeTracker = {
 			type: 'GET',
 			dataType: 'jsonp',
 			data: {},
-			url: "http://www.ellatek.com/timer/_in/load_timers.php",
+			url: "/timer/_in/load_timers.php",
 			success: function(data){
 				// console.log(localTimers);
 				// console.log(data);
@@ -427,6 +427,7 @@ var TimeTracker = {
 			if(tmpHours.total != $('.totalTime .totalHours').text()){ $('.totalTime .totalHours').text(tmpHours.total); }
 			if(tmpHours.tracked != $('.trackedTime .totalHours').text()){ $('.trackedTime .totalHours').text(tmpHours.tracked); }
 			if(tmpHours.untracked != $('.untrackedTime .totalHours').text()){ $('.untrackedTime .totalHours').text(tmpHours.untracked); }
+			TimeTracker.saveToDB();
 		}
 	},
 
@@ -459,6 +460,7 @@ var TimeTracker = {
 			if(tmpHours.total != $('.totalTime .totalHours').text()){ $('.totalTime .totalHours').text(tmpHours.total); }
 			if(tmpHours.tracked != $('.trackedTime .totalHours').text()){ $('.trackedTime .totalHours').text(tmpHours.tracked); }
 			if(tmpHours.untracked != $('.untrackedTime .totalHours').text()){ $('.untrackedTime .totalHours').text(tmpHours.untracked); }
+			TimeTracker.saveToDB();
 		} else{
 			TimeTracker.removeTrackedCheck();
 		}
@@ -493,6 +495,7 @@ var TimeTracker = {
 			if(tmpHours.total != $('.totalTime .totalHours').text()){ $('.totalTime .totalHours').text(tmpHours.total); }
 			if(tmpHours.tracked != $('.trackedTime .totalHours').text()){ $('.trackedTime .totalHours').text(tmpHours.tracked); }
 			if(tmpHours.untracked != $('.untrackedTime .totalHours').text()){ $('.untrackedTime .totalHours').text(tmpHours.untracked); }
+			TimeTracker.saveToDB();
 		} else{
 			TimeTracker.removeAllCheck();
 		}
