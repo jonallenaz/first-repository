@@ -162,12 +162,17 @@ var TimeTracker = {
 		try{ return 'localStorage' in window && window.localStorage !== null; } catch(e){ return false; }
 	},
 
-	loadOptions : function(){
+	loadOptions : function(db_options){
 		var options = localStorage['TimerOptions'] || '{}';
 		options = JSON.parse(options);
 
 		if(!localStorage['TimerOptions']){
 			localStorage['TimerOptions'] = JSON.stringify(options);
+		}
+
+		// get most recently saved options
+		if(db_options){
+
 		}
 
 		// load css
