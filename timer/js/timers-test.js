@@ -104,6 +104,7 @@ $(function() {
 			}
 			localStorage[key] = JSON.stringify(t);
 			TimeTracker.updateDisplay($box,true);
+			TimeTracker.saveToDB();
 		});
 
 		$('body').on('click',' .splits span', function(){
@@ -213,6 +214,9 @@ var TimeTracker = {
 	saveToDB : function(){
 		var db = {};
 		var db_size = 0;
+		var today = new Date();
+		today = today.getFullYear().toString() + leftPad(today.getMonth()+1,2) + leftPad(today.getDate(),2) + leftPad(today.getHours(),2) + leftPad(today.getMinutes(),2) + leftPad(today.getSeconds(),2);
+		TimeTracker.saveOption('saved',today);
 		for(var key in localStorage){
 			// if(key.indexOf('TimeTracker') === 0 || key == 'TimerOptions'){
 				db_size++;
@@ -228,6 +232,7 @@ var TimeTracker = {
 				data: db,
 				success: function(data){
 					// console.log(data);
+					console.log('saved to db');
 				},
 				error: function(a,b){
 					console.log(a,b);
@@ -250,8 +255,8 @@ var TimeTracker = {
 
 		// load timers from local storage
 		for(var key in localStorage){
+			obj = JSON.parse(localStorage[key]);
 			if(key.indexOf('TimerOptions') !== 0){
-				obj = JSON.parse(localStorage[key]);
 				if(obj.hasOwnProperty('timer_key')){
 					localTimerKeys[obj.timer_key.toString()] = localTimers.length;
 				}
@@ -269,7 +274,22 @@ var TimeTracker = {
 			success: function(data){
 				// console.log(localTimers);
 				// console.log(data);
-				var key, json;
+				var key, json, localSaved, dbSaved;
+				localSaved = parseInt(JSON.parse(localStorage['TimerOptions']).saved,10);
+				for(var i = 0; i < data.length; i++){
+					json = JSON.parse(data[i].timer_json);
+					key = json.hasOwnProperty('timer_key') ? json.timer_key : data[i].timer_key;
+					if(key == 'TimerOptions'){
+						dbSaved = parseInt(json.saved,10);
+						break;
+					}
+				}
+				// console.log(localSaved, dbSaved);
+				if(dbSaved > localSaved){
+					localTimers = [];
+					localTimerKeys = {};
+					console.log('cleared local storage');
+				}
 				for(var i = 0; i < data.length; i++){
 					json = JSON.parse(data[i].timer_json);
 					key = json.hasOwnProperty('timer_key') ? json.timer_key : data[i].timer_key;
@@ -541,6 +561,7 @@ var TimeTracker = {
 			start_clock(t.total, el, t.running);
 
 			TimeTracker.updateDisplay($box);
+			TimeTracker.saveToDB();
 
 			$('li.split-'+t.splits.length, $box).html(TimeTracker.formatSplit(t.splits[t.splits.length-1].start, t.splits[t.splits.length-1].duration, t.splits.length));
 		} else {
@@ -753,4 +774,8 @@ function fnSort(a,b,order){
 		if( order[o].fnBefore(a[order[o].field]) > order[o].fnBefore(b[order[o].field]) ) return ((order[o].reverse.toString() == 'true') ? -1 : 1);
 	}
 	return 0;
+}
+
+function leftPad(num, n, str){
+	return Array(n-String(num).length+1).join(str||'0')+num;
 }
