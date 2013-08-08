@@ -1,5 +1,5 @@
 <?
-session_start();
+// session_start();
 if(!isset($_SESSION['t_username'])){
 	session_destroy();
 ?>

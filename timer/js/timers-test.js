@@ -79,7 +79,7 @@ $(function() {
 					var s = parseInt($this.closest('li').find('span').text(),10)-1;
 					t.splits[s].duration = $this.val() * 60000;
 					t.splits[s].end = t.splits[s].start + t.splits[s].duration;
-					// console.log($('li.split-'+(s+1), $box));
+					// _log($('li.split-'+(s+1), $box));
 					$('li.split-'+(s+1), $box).html(TimeTracker.formatSplit(t.splits[s].start, t.splits[s].duration, s+1));
 					var totalTime = 0;
 					// total time
@@ -91,12 +91,12 @@ $(function() {
 				default:
 					t[$this.attr('name')] = $this.val();
 			}
-			// console.log($this.attr('name'));
+			// _log($this.attr('name'));
 			if(TimeTracker.match_color && $this.val() && $this.attr('name') == 'cust'){
 				var match = $box.siblings().find('input[name="cust"][value="'+$this.val()+'"]');
-				// console.log('match',match);
+				// _log('match',match);
 				var tmp_color = match.closest('.box').find('.color').val();
-				// console.log('tmp_color',tmp_color);
+				// _log('tmp_color',tmp_color);
 				if(tmp_color){
 					$box.find('.color').val(tmp_color).change();
 					t.color = tmp_color;
@@ -167,14 +167,15 @@ var TimeTracker = {
 		var options = localStorage['TimerOptions'] || '{}';
 		options = JSON.parse(options);
 
-		if(!localStorage['TimerOptions']){
-			localStorage['TimerOptions'] = JSON.stringify(options);
-		}
-
 		// get most recently saved options
 		if(db_options){
-
+			options = (typeof db_options == 'object') ? db_options : JSON.parse(db_options);
+			_log('loading options',options);
 		}
+
+		// if(!localStorage['TimerOptions']){
+			localStorage['TimerOptions'] = JSON.stringify(options);
+		// }
 
 		// load css
 		if(options.css){
@@ -225,17 +226,17 @@ var TimeTracker = {
 		}
 		if(db_size){
 			db = {'t_data':db};
-			// console.log(db);
+			// _log(db);
 			$.ajax({
 				type: "POST",
 				url: "update/",
 				data: db,
 				success: function(data){
-					// console.log(data);
-					console.log('saved to db');
+					// _log(data);
+					// _log('saved to db');
 				},
 				error: function(a,b){
-					console.log(a,b);
+					_log(a,b);
 				}
 			});
 		}
@@ -272,23 +273,25 @@ var TimeTracker = {
 			data: {},
 			url: "/timer/_in/load_timers.php",
 			success: function(data){
-				// console.log(localTimers);
-				// console.log(data);
-				var key, json, localSaved, dbSaved;
-				localSaved = parseInt(JSON.parse(localStorage['TimerOptions']).saved,10);
+				// _log(localTimers);
+				// _log(data);
+				var key, json, local_saved, db_saved, db_options;
+				local_saved = parseInt(JSON.parse(localStorage['TimerOptions']).saved,10);
 				for(var i = 0; i < data.length; i++){
 					json = JSON.parse(data[i].timer_json);
 					key = json.hasOwnProperty('timer_key') ? json.timer_key : data[i].timer_key;
 					if(key == 'TimerOptions'){
-						dbSaved = parseInt(json.saved,10);
+						db_saved = parseInt(json.saved,10);
+						db_options = json;
 						break;
 					}
 				}
-				// console.log(localSaved, dbSaved);
-				if(dbSaved > localSaved){
+				// _log(local_saved, db_saved);
+				if(db_saved > local_saved){
 					localTimers = [];
 					localTimerKeys = {};
-					console.log('cleared local storage');
+					TimeTracker.loadOptions(db_options);
+					// _log('cleared local storage');
 				}
 				for(var i = 0; i < data.length; i++){
 					json = JSON.parse(data[i].timer_json);
@@ -298,11 +301,11 @@ var TimeTracker = {
 						localTimers.push(json);
 					}
 				}
-				// console.log(localTimerKeys);
+				// _log(localTimerKeys);
 				TimeTracker.finishLoadTimers(localTimers);
 			},
 			error: function(a,b){
-				console.log(a,b);
+				_log(a,b);
 				TimeTracker.finishLoadTimers(localTimers);
 			}
 		});
@@ -778,4 +781,8 @@ function fnSort(a,b,order){
 
 function leftPad(num, n, str){
 	return Array(n-String(num).length+1).join(str||'0')+num;
+}
+
+function _log(a,b){
+	window.console && console.log && console.log(a,b);
 }
