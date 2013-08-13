@@ -1,5 +1,5 @@
 <?php
-	// session_start();
+	session_start();
 	if( isset($_SESSION['t_username']) && isset($_GET['callback']) ){
 		require_once('/home3/jonandan/etc/ellatek.com/_includes_db.php');
 

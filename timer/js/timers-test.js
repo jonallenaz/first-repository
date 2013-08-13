@@ -198,7 +198,7 @@ var TimeTracker = {
 			// $('.splits').slideToggle(600, function(){ TimeTracker.resize(); });
 		// }
 
-		// load color
+		// load match color
 		if(options.match_color){
 			$('.match_color').find('span').toggle();
 			TimeTracker.match_color = true;
@@ -216,7 +216,7 @@ var TimeTracker = {
 		var db = {};
 		var db_size = 0;
 		var today = new Date();
-		today = today.getFullYear().toString() + leftPad(today.getMonth()+1,2) + leftPad(today.getDate(),2) + leftPad(today.getHours(),2) + leftPad(today.getMinutes(),2) + leftPad(today.getSeconds(),2);
+		today = today.getFullYear().toString() + leftPad(today.getMonth()+1,2) + leftPad(today.getDate(),2) + leftPad(today.getHours(),2) + leftPad(today.getMinutes(),2) + leftPad(today.getSeconds(),2) + leftPad(today.getMilliseconds(),3);
 		TimeTracker.saveOption('saved',today);
 		for(var key in localStorage){
 			// if(key.indexOf('TimeTracker') === 0 || key == 'TimerOptions'){
@@ -397,11 +397,12 @@ var TimeTracker = {
 
 		if(typeof obj != 'object'){ obj = {}; save = false; }
 		if(!obj.hasOwnProperty('timer_key') || new Date(obj.timer_key) == 'Invalid Date'){
-			var tmp = today.getTime();
-			while(tmp == today.getTime()){
+			var tmp = today = today.getFullYear().toString() + leftPad(today.getMonth()+1,2) + leftPad(today.getDate(),2) + leftPad(today.getHours(),2) + leftPad(today.getMinutes(),2) + leftPad(today.getSeconds(),2) + leftPad(today.getMilliseconds(),3);
+			while(tmp == today){
 				today = new Date();
+				today = today.getFullYear().toString() + leftPad(today.getMonth()+1,2) + leftPad(today.getDate(),2) + leftPad(today.getHours(),2) + leftPad(today.getMinutes(),2) + leftPad(today.getSeconds(),2) + leftPad(today.getMilliseconds(),3);
 			}
-			obj.timer_key = today.getTime();
+			obj.timer_key = today;
 		}
 		if(!obj.hasOwnProperty('date')){ obj.date = date; }
 		if(!obj.hasOwnProperty('running')){ obj.running = false; }
