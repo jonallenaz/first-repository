@@ -461,7 +461,7 @@ var TimeTracker = {
 	},
 
 	removeTrackedCheck : function(){
-		$('header .removeCheck').show().on('click',function(){TimeTracker.removeTracked(true);}).delay('1500').fadeOut();
+		$('.removeTracked .removeCheck').show().on('click',function(){TimeTracker.removeTracked(true);}).delay('1500').fadeOut();
 	},
 
 	removeTracked : function(rem){
@@ -501,15 +501,19 @@ var TimeTracker = {
 
 	removeAll : function(rem){
 		if(rem){
+			var today = new Date();
+			today.setHours(0,0,0,0);
 			$('div.box').each(function(){
 				$this = $(this);
 				if(!$this.hasClass('hidden')){
 					var key = $this.data('key');
 					var t = JSON.parse(localStorage[key]);
-					// if(t.tracked){
+					var t_date = new Date(t.date);
+					t_date.setFullYear(today.getFullYear());
+					if(today > t_date){
 						if(t.running){ TimeTracker.startStop($this); }
 						TimeTracker.remove($this,true, true);
-					// }
+					}
 				}
 			});
 			TimeTracker.resize();
