@@ -251,8 +251,10 @@ header .selection{
 	border: 1px solid #FFF;
 	border-radius: 2em;
 	position: absolute; top: 0; bottom: 0; right: 2.4em;
-	-moz-transition: all 0.3s ease-in 0s; -webkit-transition: all 0.3s ease-in 0s;
-	-o-transition: all 0.3s ease-in 0s; transition: all 0.3s ease-in 0s;
+	-moz-transition: all 0.3s ease-in 0s;
+	-webkit-transition: all 0.3s ease-in 0s;
+	-o-transition: all 0.3s ease-in 0s;
+	transition: all 0.3s ease-in 0s;
 }
 .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
 	margin-left: 0;
@@ -288,6 +290,10 @@ header .selection{
 .box{
 	position: absolute;
 	margin: 1em 0em 1em 2em;
+	-webkit-transition: left 0.6s ease-in-out, top 0.6s ease-in-out;
+	-mos-transition: left 0.6s ease-in-out, top 0.6s ease-in-out;
+	-o-transition: left 0.6s ease-in-out, top 0.6s ease-in-out;
+	transition: left 0.6s ease-in-out, top 0.6s ease-in-out;
 }
 .front{
 	height: 22em;
