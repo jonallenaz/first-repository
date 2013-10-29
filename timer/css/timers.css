@@ -324,16 +324,17 @@ header .selection{
 	padding: 0;
 	border-radius: 11em;
 	cursor: move;
+	opacity: 0;
 	-webkit-transform-style: preserve-3d;
 	-moz-transform-style: preserve-3d;
 	-ms-transform-style: preserve-3d;
 	transform-style: preserve-3d;
 	-webkit-backface-visibility: hidden;
-	-webkit-transition: -webkit-transform .4s ease-in-out;
-	-moz-transition: -moz-transform .4s ease-in-out;
-	-o-transition: -o-transform .4s ease-in-out;
-	-ms-transition: -ms-transform .4s ease-in-out;
-	transition: transform .4s ease-in-out;
+	-webkit-transition: -webkit-transform .4s ease-in-out, opacity .4s ease-in-out;
+	-moz-transition: -moz-transform .4s ease-in-out, opacity .4s ease-in-out;
+	-o-transition: -o-transform .4s ease-in-out, opacity .4s ease-in-out;
+	-ms-transition: -ms-transform .4s ease-in-out, opacity .4s ease-in-out;
+	transition: transform .4s ease-in-out, opacity .4s ease-in-out;
 	-webkit-transform: rotateX(0deg) rotateY(180deg);
 	-moz-transform: rotateX(0deg) rotateY(180deg);
 	-o-transform: rotateX(0deg) rotateY(180deg);
@@ -350,6 +351,7 @@ header .selection{
 }
 .flip .back{
 	z-index: 1;
+	opacity: 1;
 	-webkit-transform: rotateX(0deg) rotateY(0deg);
 	-moz-transform: rotateX(0deg) rotateY(0deg);
 	-o-transform: rotateX(0deg) rotateY(0deg);
