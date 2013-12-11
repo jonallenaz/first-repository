@@ -1,10 +1,10 @@
 <?php
 session_start();
 
-// username and password sent from form 
-$t_username = $_POST['t_username']; 
-$t_email = $_POST['t_email']; 
-$t_password = $_POST['t_password']; 
+// username and password sent from form
+$t_username = $_POST['t_username'];
+$t_email = $_POST['t_email'];
+$t_password = $_POST['t_password'];
 $message = '';
 
 if($t_username && $t_email && $t_password){
@@ -28,7 +28,9 @@ if($t_username && $t_email && $t_password){
 		$sql = "INSERT INTO $db_table (username, password, email, register_ip, register_date, login_ip, login_date) VALUES ('$t_username', '$t_password', '$t_email', '$register_ip', '$register_date', '$register_ip', '$register_date')";
 		$result = mysql_query($sql);
 
+		$_SESSION["t_loggedin"] = true;
 		$_SESSION["t_username"] = $t_username;
+		$_SESSION["t_signature"] = md5($t_username . $t_password);
 ?>
 		<script type="text/javascript">
 			window.top.location.href = window.top.location.href;
