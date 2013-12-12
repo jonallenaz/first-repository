@@ -151,8 +151,10 @@ var TimeTracker = {
 	timeLastSavedToDB: 0,
 	o : new Date(1970, 1, 1, 0, 0, 0, 0).valueOf(),
 	// colors : ['3F5D7D','279B61','008AB8','993333','A3E496','95CAE4','CC3333','FFCC33','FFFF7A','CC6699','108070','D29F28','C19A6B','F1868E','872514','3B444B','4D5D53','5B92E5','738678','592720','123456','FFFFFF','000000'],
-	colors : ['000000','FFFFFF','7777777','CCCCCC','CC1111','FFC7DD','661166','FFFF33','339933','CCFFCC','000077','CCCCFF'],
+	// colors : ['000000','FFFFFF','7777777','CCCCCC','CC1111','FFC7DD','661166','FFFF33','339933','CCFFCC','000077','CCCCFF'],
 	// black, white, dark grey, light grey, red, pink, purple, yellow, dark green, light green, dark blue, light blue
+	colors : ['c21717','3c8d0d','e0e0e0','052C99','F8FF39'], // christmas colors
+	current_color : 0,
 	int : {total:1, start:1, end:1, duration:1}, // parameters to set as Integer
 	timers : 0, // number of timers
 	match_color : false,
@@ -308,7 +310,8 @@ var TimeTracker = {
 	},
 
 	createTimer : function(obj){
-		var hex = (obj) ? '#'+obj.color : ( TimeTracker.colors[Math.floor(Math.random()*TimeTracker.colors.length)] );
+		// var hex = (obj) ? '#'+obj.color : ( TimeTracker.colors[Math.floor(Math.random()*TimeTracker.colors.length)] );
+		var hex = (obj) ? '#'+obj.color : (TimeTracker.colors[TimeTracker.current_color % TimeTracker.colors.length]);
 		var $box = $("<div data-num='"+(++TimeTracker.timers)+"'></div>");
 		$('.boxes').prepend($box);
 
@@ -359,7 +362,8 @@ var TimeTracker = {
 	},
 
 	initObj : function(obj){
-		var hex = (obj) ? '#'+obj.color : ( TimeTracker.colors[Math.floor(Math.random()*TimeTracker.colors.length)] );
+		// var hex = (obj) ? '#'+obj.color : ( TimeTracker.colors[Math.floor(Math.random()*TimeTracker.colors.length)] );
+		var hex = (obj) ? '#'+obj.color : (TimeTracker.colors[TimeTracker.current_color++ % TimeTracker.colors.length]);
 		var today = new Date();
 		var date = (today.getMonth()+1) + "/" + today.getDate()/* + "/" + today.getFullYear()*/;
 

@@ -59,8 +59,9 @@ if(!isset($_SESSION['t_username'])){
 	<section id="tab_options">
 		<!-- <div class="btn_wrap"><a class="show_splits btn"><span>show</span><span class="hidden">hide</span> splits</a></div> -->
 		<div class="btn_wrap"><a class="stopAll btn">stop all</a></div>
-		<div class="btn_wrap"><a class="removeTracked btn">removed tracked<div class="removeCheck">Click again to remove.</div></a></div>
-		<div class="btn_wrap"><a class="removeAll btn">remove all timers<div class="removeCheck">Click again to remove.</div></a></div>
+		<div class="btn_wrap"><a class="removeTracked btn">remove tracked<div class="removeCheck">Click again to remove.</div></a></div>
+		<div class="btn_wrap"><a class="removeAll btn"><span>remove all timers</span><div class="removeCheck">Click again to remove.</div></a></div>
+		<div class="btn_wrap hidden"><a class="removeEmpty btn"><span>remove 0:00 timers</span><div class="removeCheck">Click again to remove.</div></a></div>
 		<div class="btn_wrap"><a class="go_dark btn"><span>go dark</span><span class="hidden">lighten up</span></a></div>
 		<div class="btn_wrap"><a class="match_color btn"><span>match project color</span><span class="hidden">don't match color</span></a></div>
 		<div class="selection">
