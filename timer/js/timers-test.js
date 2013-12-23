@@ -217,7 +217,7 @@ var TimeTracker = {
 		localStorage['TimerOptions'] = JSON.stringify(options);
 	},
 
-	saveToDB : function(){
+	continueToSave : function(){
 		var db = {};
 		var db_size = 0;
 		var today = new Date();
@@ -245,6 +245,32 @@ var TimeTracker = {
 				}
 			});
 		}
+	},
+
+	relogin : function(){
+		$('header .top_box').css('background-color', '#c21717');
+	},
+
+	saveToDB : function(){
+		$.ajax({
+			async: false,
+			dataType: 'json',
+			url: "login/check_status.php",
+			data: {},
+			success: function(data){
+				if(typeof data != 'object'){
+					data = JSON.parse(data);
+				}
+				if(data.loggedin){
+					TimeTracker.continueToSave();
+				} else{
+					TimeTracker.relogin();
+				}
+			},
+			error: function(a,b){
+				_log(a,b);
+			}
+		});
 	},
 
 	loadTimers : function(){
@@ -403,7 +429,7 @@ var TimeTracker = {
 		}
 
 		if(typeof obj != 'object'){ obj = {}; save = false; }
-		if(!obj.hasOwnProperty('timer_key') || new Date(obj.timer_key) == 'Invalid Date'){
+		if(!obj.hasOwnProperty('timer_key')/* || new Date(obj.timer_key) == 'Invalid Date'*/){
 			var tmp = today = today.getFullYear().toString() + leftPad(today.getMonth()+1,2) + leftPad(today.getDate(),2) + leftPad(today.getHours(),2) + leftPad(today.getMinutes(),2) + leftPad(today.getSeconds(),2) + leftPad(today.getMilliseconds(),3);
 			while(tmp == today){
 				today = new Date();
@@ -578,6 +604,7 @@ var TimeTracker = {
 	},
 
 	startStop : function($box) {
+		$('input').blur();
 		var el = $box.data('num');
 		var key = $box.data('key');
 		var t = TimeTracker.initObj(JSON.parse(localStorage[key] || "{}"));
@@ -678,23 +705,26 @@ var TimeTracker = {
 			TimeTracker.saveToDB();
 		}
 
-		// display timer time and hours
-		$timer.val(TimeTracker.formatTime(totalTime));
-		var oldHours = $hours.text();
-		var newHours = TimeTracker.formatHours(totalTime);
-		if(oldHours != newHours){ $hours.text(newHours); }
 
-		//display total time
 		var tmpTotal = TimeTracker.formatTime(TimeTracker.totalTime());
-		if(tmpTotal.total == tmpTotal.untracked){ $('.trackedTime, .untrackedTime').fadeOut(600); } else{ $('.trackedTime, .untrackedTime').fadeIn(600); }
-		$('.totalTime .timer').text(tmpTotal.total);
-		$('.trackedTime .timer').text(tmpTotal.tracked);
-		$('.untrackedTime .timer').text(tmpTotal.untracked);
 		document.title = tmpTotal.total.toString().slice(0,-3);
-		var tmpHours = TimeTracker.formatHours(TimeTracker.totalTime());
-		if(tmpHours.total != $('.totalTime .totalHours').text()){ $('.totalTime .totalHours').text(tmpHours.total); }
-		if(tmpHours.tracked != $('.trackedTime .totalHours').text()){ $('.trackedTime .totalHours').text(tmpHours.tracked); }
-		if(tmpHours.untracked != $('.untrackedTime .totalHours').text()){ $('.untrackedTime .totalHours').text(tmpHours.untracked); }
+		if(document.hasFocus()){
+			// display timer time and hours
+			$timer.val(TimeTracker.formatTime(totalTime));
+			var oldHours = $hours.text();
+			var newHours = TimeTracker.formatHours(totalTime);
+			if(oldHours != newHours){ $hours.text(newHours); }
+			if(tmpTotal.total == tmpTotal.untracked){ $('.trackedTime, .untrackedTime').fadeOut(600); } else{ $('.trackedTime, .untrackedTime').fadeIn(600); }
+			
+			//display total time
+			$('.totalTime .timer').text(tmpTotal.total);
+			$('.trackedTime .timer').text(tmpTotal.tracked);
+			$('.untrackedTime .timer').text(tmpTotal.untracked);
+			var tmpHours = TimeTracker.formatHours(TimeTracker.totalTime());
+			if(tmpHours.total != $('.totalTime .totalHours').text()){ $('.totalTime .totalHours').text(tmpHours.total); }
+			if(tmpHours.tracked != $('.trackedTime .totalHours').text()){ $('.trackedTime .totalHours').text(tmpHours.tracked); }
+			if(tmpHours.untracked != $('.untrackedTime .totalHours').text()){ $('.untrackedTime .totalHours').text(tmpHours.untracked); }
+		}
 	},
 
 	totalTime : function(){
@@ -832,5 +862,5 @@ function leftPad(num, n, str){
 }
 
 function _log(a,b){
-	window.console && console.log && console.log(a,b);
+	window.console && console.log && console.log(a || '', b || '');
 }

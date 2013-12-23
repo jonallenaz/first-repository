@@ -14,7 +14,6 @@ if (isset($_SESSION['t_username']) && isset($_SESSION['t_signature']) && isset($
 $output = array(
 	"loggedin" => $loggedin,
 	"username" => $_SESSION['t_username'],
-	"HTTP_USER_AGENT" => $_SERVER['HTTP_USER_AGENT'],
 	'salt' => $salt
 );
 print(json_encode($output));
