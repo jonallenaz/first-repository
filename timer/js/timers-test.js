@@ -40,6 +40,7 @@ $(function() {
 		});
 		$(".stopAll").on('click', function(){ TimeTracker.stopAll(); });
 
+		$('body').on('keypress', 'input[type="text"]', function(e){ e.preventDefault(); TimeTracker.startStop($(this).closest('.box')); });
 		$('body').on('click', '.start', function(e){ e.preventDefault(); TimeTracker.startStop($(this).closest('.box')); });
 		$('body').on('change', '.color', function(){ $this = $(this); $box = $this.closest('.box'); if(true || !$box.find('input[name="tracked"]').is(':checked')){ $box.find('.front').css('background-color', '#'+$this.val()); } });
 		$('body').on('change', 'input[id^="analog"]', function(){ $(this).closest('.box').find('.front').toggleClass('analog').toggleClass('digital'); });
@@ -715,7 +716,7 @@ var TimeTracker = {
 			var newHours = TimeTracker.formatHours(totalTime);
 			if(oldHours != newHours){ $hours.text(newHours); }
 			if(tmpTotal.total == tmpTotal.untracked){ $('.trackedTime, .untrackedTime').fadeOut(600); } else{ $('.trackedTime, .untrackedTime').fadeIn(600); }
-			
+
 			//display total time
 			$('.totalTime .timer').text(tmpTotal.total);
 			$('.trackedTime .timer').text(tmpTotal.tracked);
