@@ -40,7 +40,7 @@ $(function() {
 		});
 		$(".stopAll").on('click', function(){ TimeTracker.stopAll(); });
 
-		$('body').on('keypress', 'input[type="text"]', function(e){ e.preventDefault(); TimeTracker.startStop($(this).closest('.box')); });
+		$('body').on('keypress', 'input[type="text"]', function(e){ if(e.which === 13){ e.preventDefault(); TimeTracker.startStop($(this).closest('.box')); } });
 		$('body').on('click', '.start', function(e){ e.preventDefault(); TimeTracker.startStop($(this).closest('.box')); });
 		$('body').on('change', '.color', function(){ $this = $(this); $box = $this.closest('.box'); if(true || !$box.find('input[name="tracked"]').is(':checked')){ $box.find('.front').css('background-color', '#'+$this.val()); } });
 		$('body').on('change', 'input[id^="analog"]', function(){ $(this).closest('.box').find('.front').toggleClass('analog').toggleClass('digital'); });
