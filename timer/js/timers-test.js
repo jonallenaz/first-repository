@@ -710,7 +710,7 @@ var TimeTracker = {
 
 		var tmpTotal = TimeTracker.formatTime(TimeTracker.totalTime());
 		document.title = tmpTotal.untracked.toString().slice(0,-3);
-		if(document.hasFocus()){
+		// if(document.hasFocus()){
 			// display timer time and hours
 			$timer.val(TimeTracker.formatTime(totalTime));
 			var oldHours = $hours.text();
@@ -726,7 +726,7 @@ var TimeTracker = {
 			if(tmpHours.total != $('.totalTime .totalHours').text()){ $('.totalTime .totalHours').text(tmpHours.total); }
 			if(tmpHours.tracked != $('.trackedTime .totalHours').text()){ $('.trackedTime .totalHours').text(tmpHours.tracked); }
 			if(tmpHours.untracked != $('.untrackedTime .totalHours').text()){ $('.untrackedTime .totalHours').text(tmpHours.untracked); }
-		}
+		// }
 	},
 
 	totalTime : function(){
