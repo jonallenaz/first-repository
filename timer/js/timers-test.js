@@ -172,6 +172,7 @@ var TimeTracker = {
 	loadOptions : function(db_options){
 		var options = localStorage.TimerOptions || '{}';
 		options = JSON.parse(options);
+		_log('options',JSON.stringify(options));
 
 		// get most recently saved options
 		if(db_options){
@@ -179,9 +180,9 @@ var TimeTracker = {
 			_log('loading options',options);
 		}
 
-		// if(!localStorage.TimerOptions){
+		if(JSON.stringify(options) != '{}'){
 			localStorage.TimerOptions = JSON.stringify(options);
-		// }
+		}
 
 		// load css
 		if(options.css){
@@ -308,7 +309,8 @@ var TimeTracker = {
 				// _log(localTimers);
 				// _log(data);
 				var key, json, local_saved, db_saved, db_options;
-				local_saved = parseInt(JSON.parse(localStorage.TimerOptions).saved,10);
+				var local_options = localStorage.TimerOptions || '{}';
+				local_saved = parseInt(JSON.parse(local_options).saved,10) || 0;
 				for(var i = 0; i < data.length; i++){
 					json = JSON.parse(data[i].timer_json);
 					key = json.hasOwnProperty('timer_key') ? json.timer_key : data[i].timer_key;
@@ -324,6 +326,9 @@ var TimeTracker = {
 					localTimerKeys = {};
 					TimeTracker.loadOptions(db_options);
 					// _log('cleared local storage');
+				} else if (local_options == '{}'){
+					_log('loadTimers db_options',db_options);
+					TimeTracker.loadOptions(db_options);
 				}
 				for(i = 0; i < data.length; i++){
 					json = JSON.parse(data[i].timer_json);
