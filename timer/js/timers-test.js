@@ -172,6 +172,7 @@ var TimeTracker = {
 	loadOptions : function(db_options){
 		var options = localStorage.TimerOptions || '{}';
 		options = JSON.parse(options);
+		_log('options',JSON.stringify(options));
 
 		// get most recently saved options
 		if(db_options){
@@ -179,9 +180,9 @@ var TimeTracker = {
 			_log('loading options',options);
 		}
 
-		// if(!localStorage.TimerOptions){
+		if(JSON.stringify(options) != '{}'){
 			localStorage.TimerOptions = JSON.stringify(options);
-		// }
+		}
 
 		// load css
 		if(options.css){
@@ -308,7 +309,8 @@ var TimeTracker = {
 				// _log(localTimers);
 				// _log(data);
 				var key, json, local_saved, db_saved, db_options;
-				local_saved = parseInt(JSON.parse(localStorage.TimerOptions).saved,10);
+				var local_options = localStorage.TimerOptions || '{}';
+				local_saved = parseInt(JSON.parse(local_options).saved,10) || 0;
 				for(var i = 0; i < data.length; i++){
 					json = JSON.parse(data[i].timer_json);
 					key = json.hasOwnProperty('timer_key') ? json.timer_key : data[i].timer_key;
@@ -324,6 +326,9 @@ var TimeTracker = {
 					localTimerKeys = {};
 					TimeTracker.loadOptions(db_options);
 					// _log('cleared local storage');
+				} else if (local_options == '{}'){
+					_log('loadTimers db_options',db_options);
+					TimeTracker.loadOptions(db_options);
 				}
 				for(i = 0; i < data.length; i++){
 					json = JSON.parse(data[i].timer_json);
@@ -431,8 +436,8 @@ var TimeTracker = {
 
 		if(typeof obj != 'object'){ obj = {}; save = false; }
 		if(!obj.hasOwnProperty('timer_key')/* || new Date(obj.timer_key) == 'Invalid Date'*/){
-			today = today.getFullYear().toString() + leftPad(today.getMonth()+1,2) + leftPad(today.getDate(),2) + leftPad(today.getHours(),2) + leftPad(today.getMinutes(),2) + leftPad(today.getSeconds(),2) + leftPad(today.getMilliseconds(),3);
-			var tmp = today;
+			var tmp = today.getFullYear().toString() + leftPad(today.getMonth()+1,2) + leftPad(today.getDate(),2) + leftPad(today.getHours(),2) + leftPad(today.getMinutes(),2) + leftPad(today.getSeconds(),2) + leftPad(today.getMilliseconds(),3);
+			today = tmp;
 			while(tmp == today){
 				today = new Date();
 				today = today.getFullYear().toString() + leftPad(today.getMonth()+1,2) + leftPad(today.getDate(),2) + leftPad(today.getHours(),2) + leftPad(today.getMinutes(),2) + leftPad(today.getSeconds(),2) + leftPad(today.getMilliseconds(),3);
@@ -582,7 +587,7 @@ var TimeTracker = {
 				if(!$this.hasClass('hidden')){
 					var key = $this.data('key');
 					var t = JSON.parse(localStorage[key]);
-					if(t.total === 0 && !t.running){
+					if(t.total == '0' && !t.running){
 						TimeTracker.remove($this,true, true);
 					}
 				}
@@ -709,8 +714,8 @@ var TimeTracker = {
 
 
 		var tmpTotal = TimeTracker.formatTime(TimeTracker.totalTime());
-		document.title = tmpTotal.total.toString().slice(0,-3);
-		if(document.hasFocus()){
+		document.title = tmpTotal.untracked.toString().slice(0,-3);
+		// if(document.hasFocus()){
 			// display timer time and hours
 			$timer.val(TimeTracker.formatTime(totalTime));
 			var oldHours = $hours.text();
@@ -726,7 +731,7 @@ var TimeTracker = {
 			if(tmpHours.total != $('.totalTime .totalHours').text()){ $('.totalTime .totalHours').text(tmpHours.total); }
 			if(tmpHours.tracked != $('.trackedTime .totalHours').text()){ $('.trackedTime .totalHours').text(tmpHours.tracked); }
 			if(tmpHours.untracked != $('.untrackedTime .totalHours').text()){ $('.untrackedTime .totalHours').text(tmpHours.untracked); }
-		}
+		// }
 	},
 
 	totalTime : function(){
@@ -817,8 +822,8 @@ var TimeTracker = {
 		$('div.box').each(function(){
 			$this = $(this);
 			if(!$this.hasClass('hidden')){
-					key = $this.data('key');
-					t = JSON.parse(localStorage[key]);
+				key = $this.data('key');
+				t = JSON.parse(localStorage[key]);
 				if(t.running) TimeTracker.startStop($this);
 			}
 		});
@@ -864,5 +869,5 @@ function leftPad(num, n, str){
 }
 
 function _log(a,b){
-	var log = window.console && console.log && console.log(a || '', b || '');
+	return window.console && console.log && console.log(a || '', b || '');
 }
