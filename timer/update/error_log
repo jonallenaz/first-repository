@@ -1,0 +1,9 @@
+[11-Apr-2014 16:56:47 America/Denver] PHP Warning:  mysql_fetch_array() expects parameter 1 to be resource, boolean given in /home3/jonandan/public_html/ellatek/timer/update/test.php on line 29
+[11-Apr-2014 16:56:47 America/Denver] PHP Notice:  Undefined variable: print_r in /home3/jonandan/public_html/ellatek/timer/update/test.php on line 30
+[11-Apr-2014 16:56:47 America/Denver] PHP Fatal error:  Function name must be a string in /home3/jonandan/public_html/ellatek/timer/update/test.php on line 30
+[11-Apr-2014 16:57:50 America/Denver] PHP Warning:  mysql_fetch_array() expects parameter 1 to be resource, boolean given in /home3/jonandan/public_html/ellatek/timer/update/test.php on line 29
+[11-Apr-2014 16:57:50 America/Denver] PHP Notice:  Undefined variable: print_r in /home3/jonandan/public_html/ellatek/timer/update/test.php on line 30
+[11-Apr-2014 16:57:50 America/Denver] PHP Fatal error:  Function name must be a string in /home3/jonandan/public_html/ellatek/timer/update/test.php on line 30
+[11-Apr-2014 16:59:45 America/Denver] PHP Warning:  mysql_fetch_array() expects parameter 1 to be resource, boolean given in /home3/jonandan/public_html/ellatek/timer/update/test.php on line 29
+[11-Apr-2014 16:59:45 America/Denver] PHP Notice:  Undefined variable: print_r in /home3/jonandan/public_html/ellatek/timer/update/test.php on line 30
+[11-Apr-2014 16:59:45 America/Denver] PHP Fatal error:  Function name must be a string in /home3/jonandan/public_html/ellatek/timer/update/test.php on line 30

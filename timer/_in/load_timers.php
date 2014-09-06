@@ -12,13 +12,12 @@
 		$user_id = $row['ID'];
 		// var_dump($row);
 
-		// delete previous timer entries
 		$sql = "SELECT * FROM $db_timers WHERE user_id='$user_id'";
 		$result = mysql_query($sql);
 
 		$rows = array();
 		while($r = mysql_fetch_assoc($result)) {
-		    $rows[] = $r;
+			$rows[] = $r;
 		}
 		print $callback."(".json_encode($rows).")";
 

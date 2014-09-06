@@ -12,6 +12,24 @@
 		$user_id = $row['ID'];
 		// var_dump($row);
 
+
+		// load all previous timer entries
+		$sql = "SELECT * FROM $db_timers WHERE user_id='$user_id'";
+		$result = msql_query($sql);
+		$row = mysql_fetch_array($result);
+
+		// update timer entries with current data
+
+		// delete previous time entries not updated
+
+
+
+
+
+
+
+
+
 		// delete previous timer entries
 		$sql = "DELETE FROM $db_timers WHERE user_id='$user_id'";
 		$result = mysql_query($sql);
@@ -19,7 +37,7 @@
 		// var_dump($t_data);
 		foreach($t_data as $key => $value){
 			// $value = stripslashes($value);
-			$sql = 'INSERT INTO '.$db_timers.' (`user_id`, `timer_key`, `timer_json`) VALUES ("'.$user_id.'", "'.$key.'", "'.$value.'")';
+			$sql = 'INSERT INTO '.$db_timers.' (`user_id`, `timer_key`, `timer_json`) VALUES ("'.$user_id.'", "'.$key.'", \''.$value.'\')';
 			var_dump($sql);
 			if (!mysql_query($sql)){
 				die('Error: ' . mysql_error());

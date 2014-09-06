@@ -170,7 +170,7 @@ var TimeTracker = {
 	},
 
 	loadOptions : function(db_options){
-		var options = localStorage['TimerOptions'] || '{}';
+		var options = localStorage.TimerOptions || '{}';
 		options = JSON.parse(options);
 
 		// get most recently saved options
@@ -179,8 +179,8 @@ var TimeTracker = {
 			_log('loading options',options);
 		}
 
-		// if(!localStorage['TimerOptions']){
-			localStorage['TimerOptions'] = JSON.stringify(options);
+		// if(!localStorage.TimerOptions){
+			localStorage.TimerOptions = JSON.stringify(options);
 		// }
 
 		// load css
@@ -212,10 +212,10 @@ var TimeTracker = {
 	},
 
 	saveOption : function(param, value){
-		var options = localStorage['TimerOptions'] || '{}';
+		var options = localStorage.TimerOptions || '{}';
 		options = JSON.parse(options);
 		options[param] = value;
-		localStorage['TimerOptions'] = JSON.stringify(options);
+		localStorage.TimerOptions = JSON.stringify(options);
 	},
 
 	continueToSave : function(){
@@ -232,14 +232,14 @@ var TimeTracker = {
 		}
 		if(db_size){
 			db = {'t_data':db};
-			// _log(db);
+			_log(db);
 			$.ajax({
 				type: "POST",
 				url: "update/",
 				data: db,
 				success: function(data){
-					// _log(data);
-					// _log('saved to db');
+					_log(data);
+					_log('saved to db');
 				},
 				error: function(a,b){
 					_log(a,b);
@@ -308,7 +308,7 @@ var TimeTracker = {
 				// _log(localTimers);
 				// _log(data);
 				var key, json, local_saved, db_saved, db_options;
-				local_saved = parseInt(JSON.parse(localStorage['TimerOptions']).saved,10);
+				local_saved = parseInt(JSON.parse(localStorage.TimerOptions).saved,10);
 				for(var i = 0; i < data.length; i++){
 					json = JSON.parse(data[i].timer_json);
 					key = json.hasOwnProperty('timer_key') ? json.timer_key : data[i].timer_key;
@@ -325,7 +325,7 @@ var TimeTracker = {
 					TimeTracker.loadOptions(db_options);
 					// _log('cleared local storage');
 				}
-				for(var i = 0; i < data.length; i++){
+				for(i = 0; i < data.length; i++){
 					json = JSON.parse(data[i].timer_json);
 					key = json.hasOwnProperty('timer_key') ? json.timer_key : data[i].timer_key;
 					if(!localTimerKeys.hasOwnProperty(key) && key != 'TimerOptions'){
@@ -431,7 +431,8 @@ var TimeTracker = {
 
 		if(typeof obj != 'object'){ obj = {}; save = false; }
 		if(!obj.hasOwnProperty('timer_key')/* || new Date(obj.timer_key) == 'Invalid Date'*/){
-			var tmp = today = today.getFullYear().toString() + leftPad(today.getMonth()+1,2) + leftPad(today.getDate(),2) + leftPad(today.getHours(),2) + leftPad(today.getMinutes(),2) + leftPad(today.getSeconds(),2) + leftPad(today.getMilliseconds(),3);
+			today = today.getFullYear().toString() + leftPad(today.getMonth()+1,2) + leftPad(today.getDate(),2) + leftPad(today.getHours(),2) + leftPad(today.getMinutes(),2) + leftPad(today.getSeconds(),2) + leftPad(today.getMilliseconds(),3);
+			var tmp = today;
 			while(tmp == today){
 				today = new Date();
 				today = today.getFullYear().toString() + leftPad(today.getMonth()+1,2) + leftPad(today.getDate(),2) + leftPad(today.getHours(),2) + leftPad(today.getMinutes(),2) + leftPad(today.getSeconds(),2) + leftPad(today.getMilliseconds(),3);
@@ -581,7 +582,7 @@ var TimeTracker = {
 				if(!$this.hasClass('hidden')){
 					var key = $this.data('key');
 					var t = JSON.parse(localStorage[key]);
-					if(t.total == 0 && !t.running){
+					if(t.total === 0 && !t.running){
 						TimeTracker.remove($this,true, true);
 					}
 				}
@@ -816,7 +817,7 @@ var TimeTracker = {
 		$('div.box').each(function(){
 			$this = $(this);
 			if(!$this.hasClass('hidden')){
-					key = $this.data('key'),
+					key = $this.data('key');
 					t = JSON.parse(localStorage[key]);
 				if(t.running) TimeTracker.startStop($this);
 			}
@@ -863,5 +864,5 @@ function leftPad(num, n, str){
 }
 
 function _log(a,b){
-	window.console && console.log && console.log(a || '', b || '');
+	var log = window.console && console.log && console.log(a || '', b || '');
 }

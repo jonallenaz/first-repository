@@ -92,6 +92,7 @@ input[type="checkbox"], label { cursor:pointer; }
     Overrides styles for devices with a
     device-pixel-ratio of 2+, such as iPhone 4.
 -----------------------------------------------    */
+/*
 @media
     only screen and (-webkit-min-device-pixel-ratio:2),
     only screen and (min-device-pixel-ratio:2) {
@@ -100,7 +101,7 @@ input[type="checkbox"], label { cursor:pointer; }
         .infoBar{ position:relative; margin-bottom:1em; }
         .infoBar .help{ display:none; }
 }
-
+*/
 
 
 
