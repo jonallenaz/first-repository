@@ -3,217 +3,37 @@
 <head>
 	<meta charset='utf-8'>
 	<title>Ractive test</title>
-	<style>
-		.box{
-			float: left;
-			padding: 10px;
-			margin: 10px;
-			background: #111;
-			color: #ccc;
-		}
-		.box span{
-			cursor: pointer;
-			display: block;
-		}
-	</style>
+	<link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-	<h1>Ractive test</h1>
 	<div id='container'></div>
 
 	<!-- Ractive Template -->
 	<script id='template' type='text/ractive'>
-		<div on-click='add'>+</div>
-		<ul proxy-sortable='sort-items'>
-		{{#each timers:num}}
+		<div>Total: {{total_time}}</div>
+		Sort By: <ul>
+			{{#sortable:num}}
+			<li class='{{sorted ? direction : ""}}'><button on-click='sortTimers:{{num}}'>{{name}}</button></li>
+			{{/sortable}}
+		</ul><br />
+		<span class='add' on-click='newTimer'>+</span>
+		<ul>
+		{{#each timers : num}}
 			{{>timer}}
 		{{/each}}
 		</ul>
 
 		<!-- {{>timer}} -->
 			<li class='box' data-num="{{num}}" data-id="{{id}}">
-				<div class='time'><input value='{{display_time}}'></div>
-				<span on-click='run:{{num}}'>{{display_text}}</span>
+				<input placeholder='project' value='{{project}}'><br/>
+				<input placeholder='task' value='{{task}}'><br/>
+				<input value='{{display_time}}'><br/>
+				<span on-click='runTimer:{{num}}'>{{display_text}}</span>
 			</li>
 		<!-- {{/timer}} -->
 	</script>
 
-<script src='http://cdn.ractivejs.org/latest/ractive.min.js'></script>
-<script>
-var Timer = function(id){
-	return {
-		id: id || ractive.data.formatId(),
-		start_time: '',
-		elapsed_time: 0,
-		display_time: ractive.data.formatTime(0),
-		display_text: 'Start'
-	};
-};
-
-var TimerList = Ractive.extend({
-	template: '#template',
-
-	addTimer: function(){
-		this.push('timers', new Timer());
-	},
-
-	removeTimer: function(index){
-		this.splice('timers', index, 1);
-	},
-
-	runTimer: function(index){
-		console.log(index);
-		this.set('timers['+index+'].display_time', ractive.data.elapsedTime(num));
-
-	},
-
-	elapsedTime: function(index){
-
-	},
-
-	formatTime: function(time){
-		var h = m = s = ms = 0;
-		var formatted_time = '';
-		h = Math.floor( time / (60 * 60 * 1000) );
-		time = time % (60 * 60 * 1000);
-		m = Math.floor( time / (60 * 1000) );
-		time = time % (60 * 1000);
-		s = Math.floor( time / 1000 );
-		ms = time % 1000;
-		formatted_time = this.pad(h, 2) + ':' + this.pad(m, 2) + ':' + this.pad(s, 2) + '.' + this.pad(ms, 3);
-		return formatted_time;
-	},
-
-	formatId: function(){
-		var today = new Date();
-		var id = today.getFullYear().toString() + this.pad(today.getMonth()+1,2) + this.pad(today.getDate(),2) + this.pad(today.getHours(),2) + this.pad(today.getMinutes(),2) + this.pad(today.getSeconds(),2) + this.pad(today.getMilliseconds(),3);
-		// check if id already exists
-		return id;
-	}
-
-	init: function(options){
-		var self = this;
-
-		this.on({
-			remove: function(event){
-				this.removeTimer(event.index.i);
-			},
-			newTimer: function(event){
-				this.addTimer();
-			},
-			runTimer: function(event){
-				this.runTimer(event.index.i);
-			}
-		})
-	}
-});
-
-var ractive = new TimerList({
-	el: container,
-	data: {
-		timers: {
-			"20140822131201": {
-				id: "20140822131201",
-				start_time: '',
-				elapsed_time: 0,
-				display_time: "00:00:00.000",
-				display_text: 'Start'
-			},
-			"20140822131202": {
-				id: "20140822131202",
-				start_time: '',
-				elapsed_time: 0,
-				display_time: "00:00:00.000",
-				display_text: 'Start'
-			},
-			"20140822131203": {
-				id: "20140822131203",
-				start_time: '',
-				elapsed_time: 0,
-				display_time: "00:00:00.000",
-				display_text: 'Start'
-			}
-		}
-	}
-});
-
-
-
-	var ractive = new Ractive({
-		el: 'container',
-		template: '#template',
-		data: {
-			timers: obj,
-			start_time: new Date(),
-			display_time: '',
-			run: function( num ){
-				// console.log(ractive.data.elapsedTime(ractive.data.timers[num].start_time));
-				ractive.set('timers['+num+'].display_time', ractive.data.elapsedTime(num));
-			},
-			formatTime: function(time){
-				var h = m = s = ms = 0;
-				var formatted_time = '';
-				h = Math.floor( time / (60 * 60 * 1000) );
-				time = time % (60 * 60 * 1000);
-				m = Math.floor( time / (60 * 1000) );
-				time = time % (60 * 1000);
-				s = Math.floor( time / 1000 );
-				ms = time % 1000;
-				formatted_time = this.pad(h, 2) + ':' + this.pad(m, 2) + ':' + this.pad(s, 2) + '.' + this.pad(ms, 3);
-				return formatted_time;
-			},
-			formatId: function(){
-				var today = new Date();
-				var tmp = today.getFullYear().toString() + this.pad(today.getMonth()+1,2) + this.pad(today.getDate(),2) + this.pad(today.getHours(),2) + this.pad(today.getMinutes(),2) + this.pad(today.getSeconds(),2) + this.pad(today.getMilliseconds(),3);
-				today = tmp;
-				while(tmp == today){
-					today = new Date();
-					today = today.getFullYear().toString() + this.pad(today.getMonth()+1,2) + this.pad(today.getDate(),2) + this.pad(today.getHours(),2) + this.pad(today.getMinutes(),2) + this.pad(today.getSeconds(),2) + this.pad(today.getMilliseconds(),3);
-				}
-				return today;
-			},
-			elapsedTime: function(num){
-				var format = format || 'HH:mm:ss:SS';
-				return this.formatTime(new Date() - ractive.data.timers[num].start_time + ractive.data.timers[num].elapsed_time);
-			},
-			pad: function (num, n, str){
-				return Array(n-String(num).length+1).join(str||'0')+num;
-			}
-		}
-	});
-
-	ractive.on('run', function(event, num){
-		if(ractive.data.timers[num].display_text == 'Start'){
-			ractive.data.timers[num].start_time = new Date();
-			ractive.data.timers[num].interval = setInterval( function(){ ractive.data.run(num); }, 43 );
-			ractive.set('timers['+num+'].display_text', 'Stop');
-		} else{
-			ractive.data.timers[num].elapsed_time = new Date() - ractive.data.timers[num].start_time + ractive.data.timers[num].elapsed_time;
-			clearInterval( ractive.data.timers[num].interval );
-			ractive.set('timers['+num+'].display_text', 'Start');
-		}
-	});
-
-	ractive.on('add', function(event){
-		if(ractive.data.timers instanceof Array){
-			ractive.data.timers.push( new Timer() );
-		} else{
-			var new_id = ractive.data.formatId();
-			ractive.data.timers[new_id] = new Timer(new_id);
-		}
-	});
-
-	if(ractive.data.timers instanceof Array){
-		if(!ractive.data.timers.length){
-			ractive.data.timers.push( new Timer() );
-		}
-	} else{
-		if(!Object.keys(ractive.data.timers).length){
-			var new_id = ractive.data.formatId();
-			ractive.data.timers[new_id] = new Timer(new_id);
-		}
-	}
-
-</script>
+<script src='js/ractive.min.js'></script>
+<script src='js/timer.js'></script>
 </body>

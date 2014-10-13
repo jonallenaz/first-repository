@@ -1,0 +1,14 @@
+.box{
+	float: left;
+	padding: 10px;
+	margin: 10px;
+	background: #111;
+	color: #ccc;
+}
+.box span{
+	cursor: pointer;
+	display: block;
+}
+.add{
+	cursor: pointer;
+}
