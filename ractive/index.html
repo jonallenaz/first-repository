@@ -3,6 +3,7 @@
 <head>
 	<meta charset='utf-8'>
 	<title>Ractive test</title>
+	<link rel="stylesheet" href="css/reset.css">
 	<link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -18,22 +19,23 @@
 			{{/sortable}}
 		</ul><br />
 		<span class='add' on-click='newTimer'>+</span>
-		<ul>
+		<ul proxy-sortable='sort-items'>
 		{{#each timers : num}}
 			{{>timer}}
 		{{/each}}
 		</ul>
 
 		<!-- {{>timer}} -->
-			<li class='box' data-num="{{num}}" data-id="{{id}}">
-				<input placeholder='project' value='{{project}}'><br/>
-				<input placeholder='task' value='{{task}}'><br/>
-				<input value='{{display_time}}'><br/>
+			<li decorator='sortable' class='timer' data-num='{{num}}' data-id='{{id}}'>
+				<input placeholder='project' value='{{project}}'>
+				<input placeholder='task' value='{{task}}'>
+				<input value='{{display_time}}'>
 				<span on-click='runTimer:{{num}}'>{{display_text}}</span>
 			</li>
 		<!-- {{/timer}} -->
 	</script>
 
 <script src='js/ractive.min.js'></script>
+<script src='js/ractive-decorators-sortable.js'></script>
 <script src='js/timer.js'></script>
 </body>

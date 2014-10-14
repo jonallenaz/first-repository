@@ -1,14 +1,44 @@
-.box{
+.timer{
 	float: left;
-	padding: 10px;
-	margin: 10px;
+	padding: 1em;
+	margin: 1em;
 	background: #111;
 	color: #ccc;
+	width: 11em;
+	height: 11em;
+	border-radius: 11em;
 }
-.box span{
+.timer input{
+	display: block;
+	width: 7em;
+	margin: .4em auto;
+}
+.timer span{
 	cursor: pointer;
 	display: block;
+	width: 5em;
+	padding: .2em;
+	text-align: center;
+	margin: .4em auto;
+	border: 1px solid #555;
 }
 .add{
 	cursor: pointer;
 }
+
+/* drag and drop */
+li.timer {
+	cursor: -webkit-grab;
+	cursor: -moz-grab;
+	cursor: grab;
+}
+li.droptarget {
+	border: 2px dotted #555;
+	background: #aaa;
+	background-image: none !important;
+	color: transparent;
+}
+li.droptarget input, li.droptarget span{
+	display: none;
+}
+/* end drag and drop */
