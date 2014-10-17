@@ -1,29 +1,89 @@
+body, input, button{
+	font-family: 'Play', sans-serif;
+}
+body{
+	background: #222;
+	background-image: url('../images/cf_trans_bg.png');
+	background-repeat: repeat;
+	color: #aaa;
+}
 .timer{
 	float: left;
-	padding: 1em;
 	margin: 1em;
-	background: #111;
+	padding: .8em;
+	background: rgb(20,20,20);
+	background: rgba(0,0,0,.4);
 	color: #ccc;
-	width: 11em;
-	height: 11em;
-	border-radius: 11em;
+	width: 14em;
+	height: 14em;
+	border-radius: 50%;
 }
 .timer input{
-	display: block;
+	display: none;
 	width: 7em;
 	margin: .4em auto;
 }
-.timer span{
+input.digital{
+	position: absolute;
+	top: 4.8em;
+	z-index: 1;
+	display: block;
+	font-size: 1.3em;
+	left: 1.5em;
+	text-align: center;
+	background: #222;
+	border: none;
+	border: 1px solid black;
+	border-radius: 0.2em;
+	color: #eee;
+}
+.start{
 	cursor: pointer;
 	display: block;
-	width: 5em;
-	padding: .2em;
-	text-align: center;
+	width: 3em;
+	padding: 1.2em 0.8em;
+	text-align: left;
 	margin: .4em auto;
 	border: 1px solid #555;
+	position: absolute;
+	z-index: 1;
+	bottom: -0.4em;
+	right: 0.4em;
+	height: 1.5em;
+	border: 1px solid black;
+	border-radius: .5em;
+	background: #222;
 }
+.dial-bg{
+	position: absolute;
+	top: 0.45em;
+	left: 0.45em;
+	z-index: 1;
+	width: 13em;
+	height: 13em;
+	border-radius: 50%;
+	background-color: yellow;
+	box-sizing: border-box;
+	overflow: hidden;
+}
+.hour-numbers{
+	color: rgb(235,235,250);
+	color: rgba(235,235,250, .9);
+	color: #111;
+}
+
 .add{
+	position: absolute;
 	cursor: pointer;
+	font-size: 1.8em;
+	width: 1em;
+	height: 1em;
+	border: 1px solid #555;
+	border-radius: 50%;
+	background: #000;
+	text-align: center;
+	margin: 0 .5em;
+	padding: .1em;
 }
 
 /* drag and drop */
@@ -31,14 +91,19 @@ li.timer {
 	cursor: -webkit-grab;
 	cursor: -moz-grab;
 	cursor: grab;
+	position: relative;
 }
 li.droptarget {
-	border: 2px dotted #555;
-	background: #aaa;
+	border: 3px dotted rgba(120,120,120,1);
+	background: rgba(76,76,76,.5);
 	background-image: none !important;
 	color: transparent;
+	position: relative;
+	z-index: 100;
 }
-li.droptarget input, li.droptarget span{
+li.droptarget input, li.droptarget span, li.droptarget div, li.droptarget ul, li.droptarget li{
 	display: none;
+	z-index: 0;
+	position: absolute;
 }
 /* end drag and drop */

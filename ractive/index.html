@@ -3,8 +3,10 @@
 <head>
 	<meta charset='utf-8'>
 	<title>Ractive test</title>
-	<link rel="stylesheet" href="css/reset.css">
-	<link rel="stylesheet" href="css/style.css">
+	<link rel='stylesheet' href='css/reset.css'>
+	<link rel='stylesheet' href='css/style.css'>
+	<link rel='stylesheet' href='css/dial.css'>
+	<link href='http://fonts.googleapis.com/css?family=Play:400,700' rel='stylesheet' type='text/css'>
 </head>
 
 <body>
@@ -27,10 +29,36 @@
 
 		<!-- {{>timer}} -->
 			<li decorator='sortable' class='timer' data-num='{{num}}' data-id='{{id}}'>
-				<input placeholder='project' value='{{project}}'>
-				<input placeholder='task' value='{{task}}'>
-				<input value='{{display_time}}'>
-				<span on-click='runTimer:{{num}}'>{{display_text}}</span>
+				<div class='dial'>
+					<div class='dial-bg' style='background-color: {{color}};'>
+						<input class='project' placeholder='project' value='{{project}}'>
+						<input class='task' placeholder='task' value='{{task}}'>
+						<input class='digital' value='{{display_time}}'>
+						<span class='start' on-click='runTimer:{{num}}'>{{display_text}}</span>
+						<div class='hour-hand' style='{{hour_css}}'></div>
+						<div class='minute-hand' style='{{minute_css}}'></div>
+						<div class='second-hand' style='{{second_css}}'></div>
+						<div class='pin'></div>
+						<ul class='hour-numbers'>
+							<li><span>1</span></li>
+							<li><span>2</span></li>
+							<li><span>3</span></li>
+							<li><span></span></li>
+							<li><span></span></li>
+							<li><span>6</span></li>
+							<li><span>7</span></li>
+							<li><span>8</span></li>
+							<li><span>9</span></li>
+							<li><span>10</span></li>
+							<li><span>11</span></li>
+							<li><span>12</span></li>
+						</ul>
+					</div>
+					<ul class='minute-lines'>
+						<li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li>
+					</ul>
+				</dial>
+				<style>{{dial_css}}</style>
 			</li>
 		<!-- {{/timer}} -->
 	</script>
@@ -38,4 +66,5 @@
 <script src='js/ractive.min.js'></script>
 <script src='js/ractive-decorators-sortable.js'></script>
 <script src='js/timer.js'></script>
+<script src='js/dial.js'></script>
 </body>

@@ -1,24 +1,28 @@
-var Timer = function(id) {
+var Timer = function(obj) {
 	return {
-		id: id || ractive.formatId(),
-		start_time: '',
-		elapsed_time: 0,
-		total_time: 0,
-		display_time: ractive.formatTime(0),
-		display_text: 'Start',
-		project: '',
-		task: '',
-		color: ''
+		id: obj.id || ractive.formatId(),
+		start_time: obj.start_time || '',
+		elapsed_time: obj.elapsed_time || 0,
+		total_time: obj.total_time || 0,
+		display_time: obj.display_time || ractive.formatTime(0),
+		display_text: obj.display_text || 'Start',
+		project: obj.project || '',
+		task: obj.task || '',
+		color: obj.color || 'yellow',
+		dial_css: obj.dial_css || '',
+		second_css: obj.second_css || 'text-decoration:none;',
+		minute_css: obj.minute_css || 'text-decoration:none;',
+		hour_css: obj.hour_css || 'text-decoration:none;'
 	};
 };
 
 var TimerList = Ractive.extend({
 	template: '#template',
+	colors: ['#FFFFFF', '#FCD112', '#F50505', '#000000', '#595854'],
+	color_idx: 0,
 
 	addTimer: function() {
-		// var id = this.formatId();
-		// this.set('timers.'+id, new Timer(id));
-		this.push('timers', new Timer());
+		this.push('timers', new Timer({'color': this.colors[(this.color_idx++ % this.colors.length)]}));
 	},
 
 	removeTimer: function(index) {
@@ -78,17 +82,25 @@ var TimerList = Ractive.extend({
 			},
 			runTimer: function(event) {
 				var num = event.index.num;
+				var css_obj;
 				if (this.data.timers[num].display_text == 'Start') {
 					this.data.timers[num].start_time = new Date();
 					this.data.timers[num].interval = setInterval(function() {
 						ractive.runTimer(num);
 					}, 43);
 					this.set('timers.' + num + '.display_text', 'Stop');
+					css_obj = getDialCSS(this.data.timers[num].elapsed_time, num, true);
 				} else {
 					this.data.timers[num].elapsed_time = new Date() - this.data.timers[num].start_time + this.data.timers[num].elapsed_time;
 					clearInterval(this.data.timers[num].interval);
 					this.set('timers.' + num + '.display_text', 'Start');
+					css_obj = getDialCSS(this.data.timers[num].elapsed_time, num, false);
 				}
+				/* update css */
+				ractive.set('timers.'+num+'.dial_css', css_obj.dial_css);
+				ractive.set('timers.'+num+'.hour_css', css_obj.hour_hand);
+				ractive.set('timers.'+num+'.minute_css', css_obj.minute_hand);
+				ractive.set('timers.'+num+'.second_css', css_obj.second_hand);
 			},
 			sortTimers: function(event, column) {
 				var sort = this.data.sortable[column];
@@ -135,5 +147,6 @@ ractive.observe('sortColumn sortDirection', function(new_value, old_value, keypa
 });
 
 if (!Object.keys(ractive.data.timers).length) {
+	ractive.addTimer();
 	ractive.addTimer();
 }
