@@ -6,6 +6,7 @@
 	<link rel='stylesheet' href='css/reset.css'>
 	<link rel='stylesheet' href='css/style.css'>
 	<link rel='stylesheet' href='css/dial.css'>
+	<link rel='stylesheet' href='css/colpick.css'>
 	<link href='http://fonts.googleapis.com/css?family=Play:400,700' rel='stylesheet' type='text/css'>
 </head>
 
@@ -30,9 +31,12 @@
 		<!-- {{>timer}} -->
 			<li decorator='sortable' class='timer' data-num='{{num}}' data-id='{{id}}'>
 				<div class='dial'>
-					<div class='dial-bg' style='background-color: {{color}};'>
+					<div class='dial-bg' style='background-color: {{bg_color}};'>
+						<span class='colorpick' style='background-color: {{bg_color}}; border-color: {{fg_color}};'><span class='arrow' style='border-top-color: {{bg_color}};'></span></span>
+						<span class='date' style='color: {{fg_color}}'>{{date}}</span>
+						<span class='hours' style='color: {{fg_color}}'>{{display_hours}}<small> hrs</small></span>
 						<input class='project' placeholder='project' value='{{project}}'>
-						<input class='task' placeholder='task' value='{{task}}'>
+						<input class='task' placeholder='project /  task' value='{{task}}'>
 						<input class='digital' value='{{display_time}}'>
 						<span class='start' on-click='runTimer:{{num}}'>{{display_text}}</span>
 						<div class='hour-hand' style='{{hour_css}}'></div>
@@ -65,6 +69,8 @@
 
 <script src='js/ractive.min.js'></script>
 <script src='js/ractive-decorators-sortable.js'></script>
+<script src='js/jquery-2.1.1.min.js'></script>
+<script src='js/colpick.js'></script>
 <script src='js/timer.js'></script>
 <script src='js/dial.js'></script>
 </body>

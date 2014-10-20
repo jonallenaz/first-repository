@@ -19,23 +19,78 @@ body{
 	border-radius: 50%;
 }
 .timer input{
-	display: none;
-	width: 7em;
+	padding: .1em .5em;
 	margin: .4em auto;
-}
-input.digital{
 	position: absolute;
-	top: 4.8em;
 	z-index: 1;
 	display: block;
-	font-size: 1.3em;
-	left: 1.5em;
-	text-align: center;
+	font-size: 1em;
+	text-align: left;
 	background: #222;
 	border: none;
 	border: 1px solid black;
 	border-radius: 0.2em;
 	color: #eee;
+	width: 7em;
+	left: 2.6em;
+}
+input.project{
+	display: none;
+	top: 2.2em;
+}
+input.task{
+	top: 4em;
+	width: 8em;
+	left: 2em;
+}
+input.digital{
+	font-size: 1.3em;
+	width: 6em;
+	left: 1.5em;
+	top: 4.8em;
+	text-align: center;
+}
+span.date {
+	position: absolute;
+	left: 3.4em;
+	top: 10.4em;
+	font-weight: bold;
+	text-align: right;
+	width: 4em;
+}
+span.hours {
+	position: absolute;
+	left: 3.5em;
+	top: 9.2em;
+	font-weight: bold;
+	text-align: right;
+}
+span.colorpick {
+	box-sizing: border-box;
+	position: absolute;
+	z-index: 5;
+	display: block;
+	left: 4.1em;
+	top: 2.4em;
+	width: 1.8em;
+	height: 1.5em;
+	border: 0.3em solid #222;
+	border-radius: 0.2em;
+	border-right-width: 0.6em;
+	cursor: pointer;
+}
+span.arrow {
+	width: 0;
+	height: 0;
+	border-left: 0.15em solid transparent;
+	border-right: .15em solid transparent;
+	border-top: 0.35em solid #ddd;
+	position: absolute;
+	bottom: 0.1em;
+	right: -0.4em;
+}
+small{
+	font-size: .8em;
 }
 .start{
 	cursor: pointer;
@@ -63,6 +118,8 @@ input.digital{
 	height: 13em;
 	border-radius: 50%;
 	background-color: yellow;
+	background-image: url('../images/dial_trans_bg.png');
+	background-repeat: repeat;
 	box-sizing: border-box;
 	overflow: hidden;
 }
