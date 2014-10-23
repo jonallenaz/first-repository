@@ -129,7 +129,6 @@ var TimerList = Ractive.extend({
 		return (len - String(num).length + 1 >= 0) ? Array(len - String(num).length + 1).join(pad_str || '0') + num : num.toString().substring(String(num).length - len + 1);
 	},
 
-
 	init: function(options) {
 		var self = this;
 		this.on({
@@ -224,5 +223,10 @@ if (!Object.keys(ractive.data.timers).length) {
 	ractive.addTimer({"id":"20141018071614515","start_time":"2014-10-20T20:23:50.276Z","elapsed_time":362808,"total_time":362806,"display_hours":"00.10","display_time":"00:06:02.806","display_text":"Start","task":"","bg_color":"#FFFFFF","fg_color":"#444444","dial_css":"","second_css":"-webkit-animation: none;animation: none;-webkit-transform: rotate(0.046799999999999994turn);transform: rotate(0.046799999999999994turn);","minute_css":"-webkit-animation: none;animation: none;-webkit-transform: rotate(0.10078000000000001turn);transform: rotate(0.10078000000000001turn);","hour_css":"-webkit-animation: none;animation: none;-webkit-transform: rotate(0.008398333333333334turn);transform: rotate(0.008398333333333334turn);","date":"10/18","interval":5});
 	ractive.addTimer();
 }
+
+$('body').on('click', '.close', function(){
+	$(this).addClass('confirm');
+	setTimeout(function(){$(this).removeClass('confirm');}, 2000);
+});
 
 

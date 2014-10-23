@@ -35,7 +35,7 @@ body{
 	left: 2.6em;
 }
 input.task{
-	top: 4em;
+	top: 4.3em;
 	width: 8em;
 	left: 2em;
 }
@@ -61,6 +61,26 @@ input.digital{
 	font-weight: bold;
 	text-align: right;
 }
+.close {
+	position: absolute;
+	z-index: 2;
+	left: 9.1em;
+	top: 2.7em;
+	width: 1.1em;
+	height: 1em;
+	background: #222;
+	border: 1px solid black;
+	border-radius: 0.5em;
+	text-align: center;
+	text-transform: uppercase;
+	font-size: 0.7em;
+	font-weight: bold;
+	padding: 0.2em;
+	cursor: pointer;
+}
+.close:hover {
+	z-index: 10;
+}
 .top-input {
 	width: 112px;
 	height: 20px;
@@ -68,7 +88,7 @@ input.digital{
 	background-repeat: no-repeat;
 	position: absolute;
 	left: 3em;
-	top: 2.5em;
+	top: 3em;
 }
 .colorpick {
 	box-sizing: border-box;
