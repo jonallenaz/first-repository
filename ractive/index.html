@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset='utf-8'>
-	<title>Ractive test</title>
+	<title>Ractive Timer</title>
 	<link rel='stylesheet' href='css/reset.css'>
 	<link rel='stylesheet' href='css/style.css'>
 	<link rel='stylesheet' href='css/dial.css'>
@@ -31,18 +31,20 @@
 		<!-- {{>timer}} -->
 			<li decorator='sortable' class='timer' data-num='{{num}}' data-id='{{id}}'>
 				<div class='dial'>
+					<div class='hour-hand' style='{{hour_css}}'></div>
+					<div class='minute-hand' style='{{minute_css}}'></div>
+					<div class='second-hand' style='{{second_css}}'></div>
+					<div class='pin'></div>
 					<div class='dial-bg' style='background-color: {{bg_color}};'>
-						<span class='colorpick' style='background-color: {{bg_color}}; border-color: {{fg_color}};'><span class='arrow' style='border-top-color: {{bg_color}};'></span></span>
+						<div class='top-input'>
+							<span class='colorpick' style='background-color: {{bg_color}};'><span class='arrow'></span>
+							</span>
+						</div>
 						<span class='date' style='color: {{fg_color}}'>{{date}}</span>
 						<span class='hours' style='color: {{fg_color}}'>{{display_hours}}<small> hrs</small></span>
-						<input class='project' placeholder='project' value='{{project}}'>
 						<input class='task' placeholder='project /  task' value='{{task}}'>
 						<input class='digital' value='{{display_time}}'>
 						<span class='start' on-click='runTimer:{{num}}'>{{display_text}}</span>
-						<div class='hour-hand' style='{{hour_css}}'></div>
-						<div class='minute-hand' style='{{minute_css}}'></div>
-						<div class='second-hand' style='{{second_css}}'></div>
-						<div class='pin'></div>
 						<ul class='hour-numbers'>
 							<li><span>1</span></li>
 							<li><span>2</span></li>

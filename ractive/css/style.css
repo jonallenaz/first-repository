@@ -34,10 +34,6 @@ body{
 	width: 7em;
 	left: 2.6em;
 }
-input.project{
-	display: none;
-	top: 2.2em;
-}
 input.task{
 	top: 4em;
 	width: 8em;
@@ -50,7 +46,7 @@ input.digital{
 	top: 4.8em;
 	text-align: center;
 }
-span.date {
+.date {
 	position: absolute;
 	left: 3.4em;
 	top: 10.4em;
@@ -58,36 +54,44 @@ span.date {
 	text-align: right;
 	width: 4em;
 }
-span.hours {
+.hours {
 	position: absolute;
 	left: 3.5em;
 	top: 9.2em;
 	font-weight: bold;
 	text-align: right;
 }
-span.colorpick {
+.top-input {
+	width: 112px;
+	height: 20px;
+	background-image: url('../images/top_input_bg.png');
+	background-repeat: no-repeat;
+	position: absolute;
+	left: 3em;
+	top: 2.5em;
+}
+.colorpick {
 	box-sizing: border-box;
 	position: absolute;
 	z-index: 5;
 	display: block;
-	left: 4.1em;
-	top: 2.4em;
-	width: 1.8em;
-	height: 1.5em;
-	border: 0.3em solid #222;
+	left: 1em;
+	top: 0.2em;
+	width: 0.8em;
+	height: 0.8em;
+	border: 1px solid #555555;
 	border-radius: 0.2em;
-	border-right-width: 0.6em;
 	cursor: pointer;
 }
-span.arrow {
+.arrow {
 	width: 0;
 	height: 0;
 	border-left: 0.15em solid transparent;
 	border-right: .15em solid transparent;
-	border-top: 0.35em solid #ddd;
+	border-top: 0.35em solid #aaaaaa;
 	position: absolute;
-	bottom: 0.1em;
-	right: -0.4em;
+	bottom: 0;
+	right: -0.5em;
 }
 small{
 	font-size: .8em;

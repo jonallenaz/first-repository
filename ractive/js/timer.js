@@ -32,11 +32,15 @@ var TimerList = Ractive.extend({
 		if (obj) this.color_idx++;
 		var bg = (obj && obj.bg_color) ? obj.bg_color : this.bg_colors[(this.color_idx % this.bg_colors.length)];
 		var fg = (obj && obj.fg_color) ? obj.fg_color : this.fg_colors[(this.color_idx++ % this.fg_colors.length)];
-		this.push('timers', new Timer(obj || {
+		this.unshift('timers', new Timer(obj || {
 			'bg_color': bg,
 			'fg_color': fg
 		}));
-		$('.colorpick').colpick({
+		this.updateColorPick(0);
+	},
+
+	updateColorPick: function(idx){
+		$('li[data-id="'+this.get('timers.'+idx+'.id')+'"] .colorpick').colpick({
 			layout:'hex',
 			submit: false,
 			onChange: function(hsb,hex,rgb,el){
@@ -45,8 +49,14 @@ var TimerList = Ractive.extend({
 				var fg = (hsb.b > 50) ? '#444444' : '#AAAAAA';
 				ractive.set('timers.'+num+'.fg_color', fg);
 			},
-			color: bg
+			color: this.get('timers.'+idx+'.bg_color')
 		});
+	},
+
+	updateAllColorPicks: function(){
+		for(var idx = ractive.data.timers.length-1; idx >= 0; idx--){
+			this.updateColorPick(idx);
+		}
 	},
 
 	removeTimer: function(index) {
@@ -176,17 +186,22 @@ var ractive = new TimerList({
 		},
 		sortable: [{
 			'id': 'id',
-			'name': 'Created',
+			'name': 'Time Created',
 			'direction': 'up',
 			'sorted': true
 		}, {
-			'id': 'project',
-			'name': 'Project',
+			'id': 'task',
+			'name': 'Project / Task',
+			'direction': 'up',
+			'sorted': false
+		}, {
+			'id': 'bg_color',
+			'name': 'Timer Color',
 			'direction': 'up',
 			'sorted': false
 		}, {
 			'id': 'total_time',
-			'name': 'Total',
+			'name': 'Total Time',
 			'direction': 'up',
 			'sorted': false
 		}, ],
@@ -206,7 +221,7 @@ ractive.observe('sortColumn sortDirection', function(new_value, old_value, keypa
 });
 
 if (!Object.keys(ractive.data.timers).length) {
-	ractive.addTimer({"id":"20141018071614515","start_time":"2014-10-20T20:23:50.276Z","elapsed_time":362808,"total_time":362806,"display_hours":"00.10","display_time":"00:06:02.806","display_text":"Start","project":"","task":"","bg_color":"#FFFFFF","fg_color":"#444444","dial_css":"","second_css":"-webkit-animation: none;animation: none;-webkit-transform: rotate(0.046799999999999994turn);transform: rotate(0.046799999999999994turn);","minute_css":"-webkit-animation: none;animation: none;-webkit-transform: rotate(0.10078000000000001turn);transform: rotate(0.10078000000000001turn);","hour_css":"-webkit-animation: none;animation: none;-webkit-transform: rotate(0.008398333333333334turn);transform: rotate(0.008398333333333334turn);","date":"10/18","interval":5});
+	ractive.addTimer({"id":"20141018071614515","start_time":"2014-10-20T20:23:50.276Z","elapsed_time":362808,"total_time":362806,"display_hours":"00.10","display_time":"00:06:02.806","display_text":"Start","task":"","bg_color":"#FFFFFF","fg_color":"#444444","dial_css":"","second_css":"-webkit-animation: none;animation: none;-webkit-transform: rotate(0.046799999999999994turn);transform: rotate(0.046799999999999994turn);","minute_css":"-webkit-animation: none;animation: none;-webkit-transform: rotate(0.10078000000000001turn);transform: rotate(0.10078000000000001turn);","hour_css":"-webkit-animation: none;animation: none;-webkit-transform: rotate(0.008398333333333334turn);transform: rotate(0.008398333333333334turn);","date":"10/18","interval":5});
 	ractive.addTimer();
 }
 

@@ -94,6 +94,7 @@
 		dragenterHandler,
 		removeTargetClass,
 		preventDefault,
+		dropHandler,
 		errorMessage;
 
 	sortable = function ( node ) {
@@ -102,7 +103,7 @@
 		node.addEventListener( 'dragstart', dragstartHandler, false );
 		node.addEventListener( 'dragenter', dragenterHandler, false );
 		node.addEventListener( 'dragleave', removeTargetClass, false );
-		node.addEventListener( 'drop', removeTargetClass, false );
+		node.addEventListener( 'drop', dropHandler, false );
 
 		// necessary to prevent animation where ghost element returns
 		// to its (old) home
@@ -113,7 +114,7 @@
 				node.removeEventListener( 'dragstart', dragstartHandler, false );
 				node.removeEventListener( 'dragenter', dragenterHandler, false );
 				node.removeEventListener( 'dragleave', removeTargetClass, false );
-				node.removeEventListener( 'drop', removeTargetClass, false );
+				node.removeEventListener( 'drop', dropHandler, false );
 				node.removeEventListener( 'dragover', preventDefault, false );
 			}
 		};
@@ -189,6 +190,11 @@
 
 		// add source back to array in new location
 		array.splice( sourceIndex, 0, source );
+	};
+
+	dropHandler = function(){
+		this.classList.remove( sortable.targetClass );
+		ractive.updateAllColorPicks();
 	};
 
 	removeTargetClass = function () {
