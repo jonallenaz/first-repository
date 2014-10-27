@@ -10,7 +10,7 @@ var Timer = function(obj) {
 		display_hours: obj.display_hours || ractive.formatHours(0),
 		display_time: obj.display_time || ractive.formatTime(0),
 		display_text: obj.display_text || 'Start',
-		project: obj.project || '',
+		running: obj.running || false,
 		task: obj.task || '',
 		bg_color: obj.bg_color || '#FFFFFF',
 		fg_color: obj.fg_color || '#444444',
@@ -142,7 +142,8 @@ var TimerList = Ractive.extend({
 				var num = (typeof idx != 'undefined') ? idx : event.index.num;
 				var id = this.data.timers[num].id;
 				var css_obj;
-				if (this.data.timers[num].display_text == 'Start') {
+				if (this.data.timers[num].running === false) {
+					this.set('timers.' + num + '.running', true);
 					this.data.timers[num].start_time = new Date();
 					this.data.timers[num].interval = setInterval(function() {
 						ractive.runTimer(num, id);
@@ -150,6 +151,7 @@ var TimerList = Ractive.extend({
 					this.set('timers.' + num + '.display_text', 'Stop');
 					css_obj = getDialCSS(this.data.timers[num].elapsed_time, num, true);
 				} else {
+					this.set('timers.' + num + '.running', false);
 					this.data.timers[num].elapsed_time = new Date() - this.data.timers[num].start_time + this.data.timers[num].elapsed_time;
 					clearInterval(this.data.timers[num].interval);
 					this.set('timers.' + num + '.display_text', 'Start');
@@ -224,9 +226,17 @@ if (!Object.keys(ractive.data.timers).length) {
 	ractive.addTimer();
 }
 
+// close functionality
 $('body').on('click', '.close', function(){
-	$(this).addClass('confirm');
-	setTimeout(function(){$(this).removeClass('confirm');}, 2000);
+	$(this).addClass('confirm').html('click to close');
+	setTimeout(confirm, 2000, this);
 });
+$('body').on('click', '.confirm', function(){
+	var num = $(this).closest('li').data('num');
+	ractive.removeTimer(num);
+});
+function confirm(el){
+	$(el).removeClass('confirm').html('x');
+}
 
 

@@ -29,9 +29,11 @@
 		</ul>
 
 		<!-- {{>timer}} -->
-			<li decorator='sortable' class='timer' data-num='{{num}}' data-id='{{id}}'>
+			<li decorator='sortable' class='timer {{running}}' data-num='{{num}}' data-id='{{id}}'>
 				<div class='dial'>
 					<div class='close'>x</div>
+					<input type='checkbox' id='tracked{{num}}'/>
+					<label for='tracked{{num}}' style='color: {{fg_color}};'>tracked</label>
 					<div class='hour-hand' style='{{hour_css}}'></div>
 					<div class='minute-hand' style='{{minute_css}}'></div>
 					<div class='second-hand' style='{{second_css}}'></div>
