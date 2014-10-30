@@ -1,4 +1,5 @@
 var Timer = function(obj) {
+	obj = obj || {};
 	var today = new Date();
 	var date = (today.getMonth() - 1 < 10) ? '0' + today.getMonth() - 1 : today.getMont() - 1;
 	date += (today.getDate() < 10) ? '0' + today.getDate() : today.getDate();
@@ -11,6 +12,7 @@ var Timer = function(obj) {
 		display_time: obj.display_time || ractive.formatTime(0),
 		display_text: obj.display_text || 'Start',
 		running: obj.running || false,
+		tracked: obj.tracked || false,
 		task: obj.task || '',
 		bg_color: obj.bg_color || '#FFFFFF',
 		fg_color: obj.fg_color || '#444444',
@@ -114,7 +116,7 @@ var TimerList = Ractive.extend({
 		time = time % (60 * 1000);
 		s = Math.floor(time / 1000);
 		ms = time % 1000;
-		formatted_time = this.pad(h, 2) + ':' + this.pad(m, 2) + ':' + this.pad(s, 2) + '.' + this.pad(ms, 3);
+		formatted_time = this.pad(h, 2) + ':' + this.pad(m, 2) + ':' + this.pad(s, 2) + '.' + this.pad(ms, 2).substring(0,2);
 		return formatted_time;
 	},
 
@@ -226,7 +228,7 @@ ractive.observe('sortColumn sortDirection', function(new_value, old_value, keypa
 });
 
 if (!Object.keys(ractive.data.timers).length) {
-	ractive.addTimer({"id":"20141018071614515","start_time":"2014-10-20T20:23:50.276Z","elapsed_time":362808,"total_time":362806,"display_hours":"00.10","display_time":"00:06:02.806","display_text":"Start","task":"","bg_color":"#FFFFFF","fg_color":"#444444","dial_css":"","second_css":"-webkit-animation: none;animation: none;-webkit-transform: rotate(0.046799999999999994turn);transform: rotate(0.046799999999999994turn);","minute_css":"-webkit-animation: none;animation: none;-webkit-transform: rotate(0.10078000000000001turn);transform: rotate(0.10078000000000001turn);","hour_css":"-webkit-animation: none;animation: none;-webkit-transform: rotate(0.008398333333333334turn);transform: rotate(0.008398333333333334turn);","date":"10/18","interval":5});
+	ractive.addTimer({"id":"20141018071614515","start_time":"2014-10-20T20:23:50.276Z","elapsed_time":362808,"total_time":362806,"display_hours":"00.10","display_time":"00:06:02.80","display_text":"Start","task":"","bg_color":"#FFFFFF","fg_color":"#444444","dial_css":"","second_css":"-webkit-animation: none;animation: none;-webkit-transform: rotate(0.046799999999999994turn);transform: rotate(0.046799999999999994turn);","minute_css":"-webkit-animation: none;animation: none;-webkit-transform: rotate(0.10078000000000001turn);transform: rotate(0.10078000000000001turn);","hour_css":"-webkit-animation: none;animation: none;-webkit-transform: rotate(0.008398333333333334turn);transform: rotate(0.008398333333333334turn);","date":"10/18","interval":5});
 	ractive.addTimer();
 }
 
