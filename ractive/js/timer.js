@@ -178,6 +178,8 @@ var ractive = new TimerList({
 	el: container,
 	data: {
 		timers: [],
+		untracked_time: 0,
+		tracked_time: 0,
 		total_time: 0,
 		sort: function(array, column, direction) {
 			array = array.slice(); // clone, so we don't modify the underlying data
@@ -211,6 +213,8 @@ var ractive = new TimerList({
 	}
 });
 
+ractive.set('untracked_time', ractive.formatTime(ractive.get('untracked_time')));
+ractive.set('tracked_time', ractive.formatTime(ractive.get('tracked_time')));
 ractive.set('total_time', ractive.formatTime(ractive.get('total_time')));
 
 ractive.observe('sortColumn sortDirection', function(new_value, old_value, keypath) {
