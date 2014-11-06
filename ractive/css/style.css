@@ -7,9 +7,95 @@ body{
 	background-repeat: repeat;
 	color: #aaa;
 }
+
+/* header section */
+header{
+	position: fixed;
+	z-index: 1000;
+	top: 0;
+	background: #222;
+	border-bottom: 1px solid black;
+	width: 100%;
+	height: 4em;
+	box-shadow: 0 -0.3em 2em #000;
+}
+.tab {
+	position: absolute;
+	left: 0.5em;
+	top: -.1em;
+	z-index: 1;
+	display: inline-block;
+	padding: 0.1em 0.9em 0.3em 0.6em;
+	margin: 0 0.5em;
+	font-size: 1.5em;
+	border-radius: 0 0 0.3em 0.3em;
+	transition: left 400ms, opacity 600ms, transform 600ms;
+	transform: skew(35deg);
+	background: #333;
+	border: 1px solid #000;
+	box-shadow: inset 0 0 1em #000;
+	opacity: 0;
+}
+.tab.three{
+	opacity: 1;
+	padding: 0.1em 0.3em 0.3em 0.9em;
+}
+.tracked .one{
+	transform: skew(-35deg);
+	opacity: 1;
+}
+.tracked .one span {
+	transform: skew(35deg);
+}
+.tracked .two, .tracked .three {
+	left: 9.3em;
+	opacity: .6;
+	padding: 0.1em 0.3em 0.3em 0.9em;
+}
+.tracked .tab.three {
+	left: 16.8em;
+	/*opacity: 1;*/
+}
+.tab span {
+	display: inline-block;
+	line-height: 0.7em;
+	transform: skew(-35deg);
+	transition: transform 600ms;
+}
+.tab span small{
+	font-size: .5em;
+}
+
+.options{
+	position: absolute;
+	left: 14em;
+	transition: left 400ms;
+	padding: 0.5em;
+}
+.tracked .options{
+	left: 38em;
+}
+
+select {
+   background: #333;
+   color: #aaa;
+   padding: 0.5em;
+   line-height: 1em;
+   border: 1px solid black;
+   border-radius: 0.5em;
+}
+input:focus, select:focus {
+	outline:none;
+}
+
+/* main section */
+section{
+	margin-top: 4.5em;
+}
+.clear{ clear: both; }
 .timer{
 	float: left;
-	margin: 1em;
+	margin: 1em .8em 1em 1em;
 	padding: .8em;
 	background: rgb(20,20,20);
 	background: rgba(0,0,0,.4);
@@ -19,7 +105,7 @@ body{
 	border-radius: 50%;
 }
 .timer.true{
-	box-shadow:0 0 2em rgba(245,5,5,0.5);
+	box-shadow:0 0 2em rgba(245,245,245,0.5);
 }
 .timer.tracked {
 	opacity: 0.6;
@@ -71,12 +157,12 @@ input.digital{
 .close {
 	position: absolute;
 	z-index: 2;
-	left: 9.1em;
-	top: 5.2em;
-	width: 1.1em;
+	left: 8em;
+	top: 0;
+	width: 2em;
 	height: 1em;
 	background: #222;
-	border: 1px solid black;
+	border: 1px solid #222;
 	border-radius: 0.5em;
 	text-align: center;
 	text-transform: uppercase;
@@ -85,14 +171,49 @@ input.digital{
 	padding: 0.2em;
 	cursor: pointer;
 }
+.close:before {
+	content: '';
+	line-height: 0;
+	font-size: 1em;
+	width: 0.2em;
+	height: 1em;
+	border-top: 2.4em solid #222;
+	border-left: 1em solid transparent;
+	position: absolute;
+	bottom: -1em;
+	left: -0.9em;
+}
+.close:after {
+	content: '';
+	line-height: 0;
+	font-size: 1em;
+	width: 0.2em;
+	height: 1em;
+	border-top: 2.4em solid #222;
+	border-right: 1em solid transparent;
+	position: absolute;
+	bottom: -1em;
+	right: -0.9em;
+}
 .close:hover {
-	z-index: 10;
+	z-index: 100;
 }
 .close.confirm {
 	width: 5em;
-	left: 7.2em;
+	left: 6.6em;
 	height: 1.8em;
-	top: 4.9em;
+	padding-top: 0.4em;
+	padding-bottom: 0.4em;
+	top: 0;
+}
+.close-label{
+	position: absolute;
+	z-index: 2;
+	left: 6.85em;
+	top: 1.5em;
+	font-size: 0.8em;
+	font-weight: bold;
+	z-index: 1;
 }
 .top-input {
 	width: 112px;
@@ -181,12 +302,16 @@ small{
 	font-size: 1.8em;
 	width: 0.9em;
 	height: 1em;
-	border: 1px solid #555;
+	border: 2px solid #555;
+	color: #999;
 	border-radius: 50%;
 	background: #000;
 	text-align: center;
 	margin: 0 0.5em;
 	padding: 0 0.1em 0.1em 0.1em;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
 }
 
 /* checkbox */
