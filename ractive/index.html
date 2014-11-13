@@ -11,7 +11,23 @@
 </head>
 
 <body>
+	<div class="overlay"></div>
+	<div class="login">
+		<div class="timer">
+			<div class="dial">
+				<div class="dial-bg">
+					<form action="" id="login-form">
+						<input type="text" id="username" name="username" placeholder="username">
+						<input type="password" id="password" name="password" placeholder="password">
+						<input type="submit" value="submit">
+						<span class="message"></span>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div id='container'></div>
+	<input type="text" style="position:absolute; left:-100em;" width="1">
 
 	<!-- Ractive Template -->
 	<script id='template' type='text/ractive'>
@@ -20,11 +36,11 @@
 			<div class='tab two'><span><small>Tracked Time:</small><br>{{tracked_time}}</span></div>
 			<div class='tab three'><span><small>Total Time:</small><br>{{total_time}}</span></div>
 			<div class='options'>
-				Sort by: <select value='{{selectedSortable}}'>
+				Sort by: <select value='{{options.selectedSortable}}'>
 					{{#sortable:num}}
 						<option value='{{num}}'>{{name}}</option>
 					{{/sortable}}
-				</select> <select value='{{sortDirection}}'>
+				</select> <select value='{{options.sortDirection}}'>
 						<option value='up'>up</option>
 						<option selected value='down'>down</option>
 				</select>

@@ -1,4 +1,4 @@
-var DELAY = 76;
+var WEB_ROOT = 'http://www.ellatek.com/ractive';
 var Timer = function(obj) {
 	obj = obj || {};
 	var today = new Date();
@@ -13,7 +13,7 @@ var Timer = function(obj) {
 		display_time: obj.display_time || ractive.formatTime(obj.total_time || 0),
 		display_text: obj.display_text || 'Start',
 		running: obj.running || false,
-		tracked: obj.tracked || false,
+		tracked: (obj.tracked == 'true') || false,
 		task: obj.task || '',
 		bg_color: obj.bg_color || '#FFFFFF',
 		fg_color: obj.fg_color || '#444444',
@@ -43,24 +43,176 @@ var TimerList = Ractive.extend({
 		this.sortTimers();
 	},
 
-	updateColorPick: function(idx) {
-		$('li[data-id="' + this.get('timers.' + idx + '.id') + '"] .colorpick').colpick({
-			layout: 'hex',
-			submit: false,
-			onChange: function(hsb, hex, rgb, el) {
-				var num = $(el).closest('li').data('num')
-				ractive.set('timers.' + num + '.bg_color', '#' + hex);
-				var fg = (hsb.b > 50) ? '#444444' : '#AAAAAA';
-				ractive.set('timers.' + num + '.fg_color', fg);
+	checkStatus: function(message){
+		$.ajax({
+			async: false,
+			dataType: 'jsonp',
+			url: WEB_ROOT + "/php/status.php",
+			data: {'fn': 'check'},
+			success: function(data){
+				if(typeof data != 'object'){
+					data = JSON.parse(data);
+				}
+				if(data.loggedin){
+					$('.login, .overlay').hide();
+				} else{
+					$('.login, .overlay').show();
+					$('.login #password').html('');
+					$('.login .message').hide().html(message || '').fadeIn();
+				}
 			},
-			color: this.get('timers.' + idx + '.bg_color')
+			error: function(a,b){
+				console.log('error',a,b);
+			}
 		});
 	},
 
-	updateAllColorPicks: function() {
-		for (var idx = ractive.data.timers.length - 1; idx >= 0; idx--) {
-			this.updateColorPick(idx);
+	editTime: function(num, show_alert){
+		var running = ractive.get('timers.'+num+'.running');
+		if(running){
+			return false;
 		}
+		var time_string = ractive.get('timers.'+num+'.display_time');
+		var regex = /^(\d{2,3}):([0-5]\d):([0-5]\d).(\d\d)?$/;
+		var regex_test = regex.test(time_string);
+		if(!regex_test){
+			if(show_alert)
+				alert('Please format the time correctly (HH:MM:SS.SS).');
+			return false;
+		}
+		time_string = time_string.split(':');
+		var hours = time_string[0];
+		var minutes = time_string[1];
+		var seconds = time_string[2];
+		var new_time = (hours * 60 * 60 * 1000) + (minutes * 60 * 1000) + (seconds * 1000);
+		ractive.set('timers.'+num+'.total_time', new_time);
+		ractive.set('timers.'+num+'.elapsed_time', new_time);
+		ractive.set('timers.'+num+'.display_hours', this.formatHours(new_time));
+		this.updateDisplay();
+	},
+
+	formatHours: function(time) {
+		var formatted_time = (Math.floor(100 * time / (60 * 60 * 1000)) / 100).toFixed(2);
+		if (formatted_time < 10) {
+			formatted_time = '0' + formatted_time;
+		}
+		return formatted_time;
+	},
+
+	formatId: function() {
+		var today = new Date();
+		var id = today.getFullYear().toString() + this.pad(today.getMonth() + 1, 2) + this.pad(today.getDate(), 2) + this.pad(today.getHours(), 2) + this.pad(today.getMinutes(), 2) + this.pad(today.getSeconds(), 2) + this.pad(today.getMilliseconds(), 3);
+		// check if id already exists
+		return id;
+	},
+
+	formatTime: function(time) {
+		var h = 0,
+			m = 0,
+			s = 0,
+			ms = 0;
+		var formatted_time = '';
+		h = Math.floor(time / (60 * 60 * 1000));
+		time = time % (60 * 60 * 1000);
+		m = Math.floor(time / (60 * 1000));
+		time = time % (60 * 1000);
+		s = Math.floor(time / 1000);
+		ms = time % 1000;
+		formatted_time = this.pad(h, 2) + ':' + this.pad(m, 2) + ':' + this.pad(s, 2) + '.' + this.pad(ms, 2).substring(0, 2);
+		return formatted_time;
+	},
+
+	loadTimers: function(){
+		ractive.set('timers', []);
+		$.ajax({
+			async: false,
+			dataType: 'jsonp',
+			url: WEB_ROOT + "/php/status.php",
+			data: {'fn': 'load'},
+			success: function(data){
+				if(typeof data != 'object'){
+					data = JSON.parse(data);
+				}
+				var timers = JSON.parse(data.timers || '{}');
+				if(timers.length){
+					var json, time, bg, fg;
+					for(var t_idx = timers.length - 1; t_idx >= 0; t_idx--){
+						if(timers[t_idx].hasOwnProperty('timer_key')){
+							// load old timers
+							if(timers[t_idx].timer_key == 'TimerOptions')
+								continue;
+							json = JSON.parse(timers[t_idx].timer_json);
+							ractive.addTimer({
+								'elapsed_time': json.total,
+								'total_time': json.total,
+								'bg_color': '#'+json.color,
+								'fg_color': '#444444',
+								'task': json.cust + ' ' + json.task,
+								'id': json.timer_key,
+								'date': json.date
+							});
+						} else if(timers[t_idx].hasOwnProperty('json')){
+							// load new timers
+							json = JSON.parse(unescape(timers[t_idx].json));
+							console.log(json);
+							ractive.addTimer(json);
+						}
+					}
+				} else{
+					ractive.addTimer();
+				}
+				ractive.updateDisplay();
+				ractive.sortTimers();
+				ractive.updateAllColorPicks();
+			},
+			error: function(a,b){
+				console.log('error',a,b);
+			}
+		});
+	},
+
+	login: function(un, pw){
+		$.ajax({
+			async: false,
+			dataType: 'jsonp',
+			url: WEB_ROOT + "/php/status.php",
+			data: {'fn': 'login', 'un': un, 'pw': pw},
+			success: function(data){
+				if(typeof data != 'object'){
+					data = JSON.parse(data);
+				}
+				ractive.checkStatus(data.message);
+				if(data.loggedin){
+					$('#username, #password').val('');
+					ractive.loadTimers();
+				}
+			},
+			error: function(a,b){
+				console.log('error',a,b);
+			}
+		});
+	},
+
+	logout: function(){
+		$.ajax({
+			async: false,
+			dataType: 'jsonp',
+			url: WEB_ROOT + "/php/status.php",
+			data: {'fn': 'logout'},
+			success: function(data){
+				if(typeof data != 'object'){
+					data = JSON.parse(data);
+				}
+				ractive.checkStatus();
+			},
+			error: function(a,b){
+				console.log('error',a,b);
+			}
+		});
+	},
+
+	pad: function(num, len, pad_str) {
+		return (len - String(num).length + 1 >= 0) ? Array(len - String(num).length + 1).join(pad_str || '0') + num : num.toString().substring(String(num).length - len + 1);
 	},
 
 	removeTimer: function(index) {
@@ -98,6 +250,40 @@ var TimerList = Ractive.extend({
 		// }
 	},
 
+	saveTimers: function(){
+		var r_timers = ractive.get('timers');
+		$.ajax({
+			async: false,
+			dataType: 'jsonp',
+			url: WEB_ROOT + "/php/status.php",
+			data: {'fn': 'save', 'r_timers': r_timers},
+			success: function(data){
+				if(typeof data != 'object'){
+					data = JSON.parse(data);
+				}
+				console.log(data);
+				// ractive.checkStatus(data.message);
+			},
+			error: function(a,b){
+				console.log('error',a,b);
+			}
+		});
+	},
+
+	sortTimers: function() {
+		var num = ractive.data.options.selectedSortable;
+		var column = ractive.data.sortable[num].id;
+		var direction = ractive.data.options.sortDirection;
+		if(column){
+			ractive.data.timers.sort(function(a, b) {
+				if (a[column] == b[column]) {
+					return a.id < b.id ? (direction == 'up' ? -1 : 1) : (direction == 'up' ? 1 : -1);
+				}
+				return a[column] < b[column] ? (direction == 'up' ? -1 : 1) : (direction == 'up' ? 1 : -1);
+			});
+		}
+	},
+
 	sumTotal: function(timers) {
 		var untracked = 0;
 		var tracked = 0;
@@ -118,39 +304,24 @@ var TimerList = Ractive.extend({
 		this.set('total_time', this.formatTime(current_total));
 	},
 
-	formatHours: function(time) {
-		var formatted_time = (Math.floor(100 * time / (60 * 60 * 1000)) / 100).toFixed(2);
-		if (formatted_time < 10) {
-			formatted_time = '0' + formatted_time;
+	updateAllColorPicks: function() {
+		for (var idx = ractive.data.timers.length - 1; idx >= 0; idx--) {
+			this.updateColorPick(idx);
 		}
-		return formatted_time;
 	},
 
-	formatTime: function(time) {
-		var h = 0,
-			m = 0,
-			s = 0,
-			ms = 0;
-		var formatted_time = '';
-		h = Math.floor(time / (60 * 60 * 1000));
-		time = time % (60 * 60 * 1000);
-		m = Math.floor(time / (60 * 1000));
-		time = time % (60 * 1000);
-		s = Math.floor(time / 1000);
-		ms = time % 1000;
-		formatted_time = this.pad(h, 2) + ':' + this.pad(m, 2) + ':' + this.pad(s, 2) + '.' + this.pad(ms, 2).substring(0, 2);
-		return formatted_time;
-	},
-
-	formatId: function() {
-		var today = new Date();
-		var id = today.getFullYear().toString() + this.pad(today.getMonth() + 1, 2) + this.pad(today.getDate(), 2) + this.pad(today.getHours(), 2) + this.pad(today.getMinutes(), 2) + this.pad(today.getSeconds(), 2) + this.pad(today.getMilliseconds(), 3);
-		// check if id already exists
-		return id;
-	},
-
-	pad: function(num, len, pad_str) {
-		return (len - String(num).length + 1 >= 0) ? Array(len - String(num).length + 1).join(pad_str || '0') + num : num.toString().substring(String(num).length - len + 1);
+	updateColorPick: function(idx) {
+		$('li[data-id="' + this.get('timers.' + idx + '.id') + '"] .colorpick').colpick({
+			layout: 'hex',
+			submit: false,
+			onChange: function(hsb, hex, rgb, el) {
+				var num = $(el).closest('li').data('num')
+				ractive.set('timers.' + num + '.bg_color', '#' + hex);
+				var fg = (hsb.b > 50) ? '#444444' : '#AAAAAA';
+				ractive.set('timers.' + num + '.fg_color', fg);
+			},
+			color: this.get('timers.' + idx + '.bg_color')
+		});
 	},
 
 	updateDisplay: function() {
@@ -164,43 +335,6 @@ var TimerList = Ractive.extend({
 			ractive.set('timers.' + num + '.hour_css', css_obj.hour_hand);
 			ractive.set('timers.' + num + '.minute_css', css_obj.minute_hand);
 			ractive.set('timers.' + num + '.second_css', css_obj.second_hand);
-		}
-	},
-
-	editTime: function(num){
-		var running = ractive.get('timers.'+num+'.running');
-		if(running){
-			return false;
-		}
-		var time_string = ractive.get('timers.'+num+'.display_time');
-		var regex = /^(\d{2,3}):([0-5]\d):([0-5]\d).(\d\d)?$/;
-		var regex_test = regex.test(time_string);
-		if(!regex_test){
-			alert('Please format the time correctly (HH:MM:SS.SS).');
-			return false;
-		}
-		time_string = time_string.split(':');
-		var hours = time_string[0];
-		var minutes = time_string[1];
-		var seconds = time_string[2];
-		var new_time = (hours * 60 * 60 * 1000) + (minutes * 60 * 1000) + (seconds * 1000);
-		ractive.set('timers.'+num+'.total_time', new_time);
-		ractive.set('timers.'+num+'.elapsed_time', new_time);
-		ractive.set('timers.'+num+'.display_hours', this.formatHours(new_time));
-		this.updateDisplay();
-	},
-
-	sortTimers: function() {
-		var num = ractive.data.selectedSortable;
-		var column = ractive.data.sortable[num].id;
-		var direction = ractive.data.sortDirection;
-		if(column){
-			ractive.data.timers.sort(function(a, b) {
-				if (a[column] == b[column]) {
-					return a.id < b.id ? (direction == 'up' ? -1 : 1) : (direction == 'up' ? 1 : -1);
-				}
-				return a[column] < b[column] ? (direction == 'up' ? -1 : 1) : (direction == 'up' ? 1 : -1);
-			});
 		}
 	},
 
@@ -232,7 +366,7 @@ var TimerList = Ractive.extend({
 					this.data.timers[num].start_time = new Date();
 					this.data.timers[num].interval = setInterval(function() {
 						ractive.runTimer(num, id);
-					}, DELAY);
+					}, 76);
 					this.set('timers.' + num + '.display_text', 'Stop');
 					// css_obj = getDialCSS(this.data.timers[num].elapsed_time, num, true);
 				} else {
@@ -284,42 +418,35 @@ var ractive = new TimerList({
 			'id': 'total_time',
 			'name': 'Total Time'
 		}, ],
-		sortDirection: 'down',
-		selectedSortable: '1'
+		options: {
+			sortDirection: 'down',
+			selectedSortable: '1'
+		}
 	}
 });
+ractive.checkStatus();
+ractive.loadTimers();
 
 ractive.set('untracked_time', ractive.formatTime(ractive.get('untracked_time')));
 ractive.set('tracked_time', ractive.formatTime(ractive.get('tracked_time')));
 ractive.set('total_time', ractive.formatTime(ractive.get('total_time')));
 
-ractive.observe('sortColumn sortDirection', function(new_value, old_value, keypath) {
+ractive.observe('sortColumn options.sortDirection', function(new_value, old_value, keypath) {
 	var column = ractive.get('sortColumn');
-	var direction = ractive.get('sortDirection');
+	var direction = ractive.get('options.sortDirection');
 	ractive.data.timers.sort(function(a, b) {
 		return a[column] < b[column] ? (direction == 'up' ? -1 : 1) : (direction == 'up' ? 1 : -1);
 	});
 });
 
-ractive.observe('selectedSortable sortDirection', function(new_value, old_value, keypath) {
-	var column = ractive.get('selectedSortable');
+ractive.observe('options.selectedSortable options.sortDirection', function(new_value, old_value, keypath) {
+	var column = ractive.get('options.selectedSortable');
 	ractive.sortTimers(column);
 });
 
 ractive.observe('timers.*.tracked', function(new_value, old_value, keypath) {
 	ractive.updateDisplay();
 });
-
-if (!Object.keys(ractive.data.timers).length) {
-/*	ractive.addTimer({
-		"elapsed_time": 362806,
-		"total_time": 362806,
-		"bg_color": "#FFFFFF",
-		"fg_color": "#444444"
-	});
-*/	ractive.addTimer();
-	ractive.updateDisplay();
-}
 
 // close functionality
 $('body').on('click', '.close, .close-label', function() {
@@ -331,12 +458,27 @@ $('body').on('click', '.confirm', function() {
 	ractive.removeTimer(num);
 	ractive.updateDisplay();
 });
-
-$('body').on('blur', '.digital', function(el) {
-	var num = $(this).closest('li').data('num');
-	ractive.editTime(num);
-});
-
 function confirm(el) {
 	$(el).removeClass('confirm').html('x');
 }
+
+$('body').on('blur', '.digital', function(e) {
+	var num = $(this).closest('li').data('num');
+	ractive.editTime(num, true);
+	var val = $(this).val();
+	if(val.indexOf('	') >= 0){
+		$(this).val(val.replace('	',''));
+		e.preventDefault();
+		return false;
+	}
+});
+$('body').on('keyup', '.digital', function(e) {
+	var num = $(this).closest('li').data('num');
+	ractive.editTime(num, false);
+});
+
+$('#login-form').submit(function(e){
+	e.preventDefault();
+	ractive.login($('#username').val(), $('#password').val());
+	return false;
+});
