@@ -214,6 +214,7 @@ input.digital{
 	font-weight: bold;
 	text-align: right;
 	width: 4em;
+	text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 .hours {
 	position: absolute;
@@ -221,6 +222,10 @@ input.digital{
 	top: 9.2em;
 	font-weight: bold;
 	text-align: right;
+	text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+label{
+	text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 .close {
 	position: absolute;
@@ -282,6 +287,7 @@ input.digital{
 	font-size: 0.8em;
 	font-weight: bold;
 	z-index: 1;
+	text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 .top-input {
 	width: 112px;
@@ -313,6 +319,7 @@ input.digital{
 	font-size: 0.7em;
 	font-weight: bold;
 	color: #222;
+	text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 .arrow {
 	width: 0;

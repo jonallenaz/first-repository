@@ -16,7 +16,7 @@ var Timer = function(obj) {
 		tracked: (obj.tracked == 'true') || false,
 		task: obj.task || '',
 		bg_color: obj.bg_color || '#FFFFFF',
-		fg_color: obj.fg_color || '#444444',
+		fg_color: obj.fg_color || '#aaaaaa',
 		dial_css: obj.dial_css || '',
 		second_css: obj.second_css || 'text-decoration:none;',
 		minute_css: obj.minute_css || 'text-decoration:none;',
@@ -28,7 +28,7 @@ var Timer = function(obj) {
 var TimerList = Ractive.extend({
 	template: '#template',
 	bg_colors: ['#FFFFFF', '#FCD112', '#F50505', '#000000', '#595854'],
-	fg_colors: ['#444444', '#333333', '#aaaaaa', '#AAAAAA', '#CCCCCC'],
+	fg_colors: ['#aaaaaa', '#aaaaaa', '#aaaaaa', '#aaaaaa', '#aaaaaa'],
 	color_idx: 0,
 
 	addTimer: function(obj) {
@@ -146,7 +146,7 @@ var TimerList = Ractive.extend({
 								'elapsed_time': json.total,
 								'total_time': json.total,
 								'bg_color': '#'+json.color,
-								'fg_color': '#444444',
+								'fg_color': '#aaaaaa',
 								'task': json.cust + ' ' + json.task,
 								'id': json.timer_key,
 								'date': json.date
@@ -317,7 +317,7 @@ var TimerList = Ractive.extend({
 			onChange: function(hsb, hex, rgb, el) {
 				var num = $(el).closest('li').data('num')
 				ractive.set('timers.' + num + '.bg_color', '#' + hex);
-				var fg = (hsb.b > 50) ? '#444444' : '#AAAAAA';
+				var fg = (hsb.b > 50) ? '#aaa' : '#aaa';
 				ractive.set('timers.' + num + '.fg_color', fg);
 			},
 			color: this.get('timers.' + idx + '.bg_color')
@@ -482,3 +482,14 @@ $('#login-form').submit(function(e){
 	ractive.login($('#username').val(), $('#password').val());
 	return false;
 });
+
+
+/*
+ * jQuery throttle / debounce - v1.1 - 3/7/2010
+ * http://benalman.com/projects/jquery-throttle-debounce-plugin/
+ *
+ * Copyright (c) 2010 "Cowboy" Ben Alman
+ * Dual licensed under the MIT and GPL licenses.
+ * http://benalman.com/about/license/
+ */
+(function(b,c){var $=b.jQuery||b.Cowboy||(b.Cowboy={}),a;$.throttle=a=function(e,f,j,i){var h,d=0;if(typeof f!=="boolean"){i=j;j=f;f=c}function g(){var o=this,m=+new Date()-d,n=arguments;function l(){d=+new Date();j.apply(o,n)}function k(){h=c}if(i&&!h){l()}h&&clearTimeout(h);if(i===c&&m>e){l()}else{if(f!==true){h=setTimeout(i?k:l,i===c?e-m:e)}}}if($.guid){g.guid=j.guid=j.guid||$.guid++}return g};$.debounce=function(d,e,f){return f===c?a(d,e,false):a(d,f,e!==false)}})(this);
