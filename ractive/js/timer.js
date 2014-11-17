@@ -1,4 +1,5 @@
 var WEB_ROOT = 'http://www.ellatek.com/ractive';
+
 var Timer = function(obj) {
 	obj = obj || {};
 	var today = new Date();
@@ -6,13 +7,13 @@ var Timer = function(obj) {
 	date += (today.getDate() < 10) ? '0' + today.getDate() : today.getDate();
 	return {
 		id: obj.id || ractive.formatId(),
-		start_time: obj.start_time || '',
-		elapsed_time: obj.elapsed_time || 0,
-		total_time: obj.total_time || 0,
+		start_time: new Date(obj.start_time) || '',
+		elapsed_time: parseInt(obj.elapsed_time, 10) || 0,
+		total_time: parseInt(obj.total_time, 10) || 0,
 		display_hours: obj.display_hours || ractive.formatHours(obj.total_time || 0),
 		display_time: obj.display_time || ractive.formatTime(obj.total_time || 0),
 		display_text: obj.display_text || 'Start',
-		running: obj.running || false,
+		running: (obj.running == 'true') || false,
 		tracked: (obj.tracked == 'true') || false,
 		task: obj.task || '',
 		bg_color: obj.bg_color || '#FFFFFF',
@@ -41,6 +42,7 @@ var TimerList = Ractive.extend({
 		}));
 		this.updateColorPick(0);
 		this.sortTimers();
+		ractive.saveTimers();
 	},
 
 	checkStatus: function(message){
@@ -154,7 +156,6 @@ var TimerList = Ractive.extend({
 						} else if(timers[t_idx].hasOwnProperty('json')){
 							// load new timers
 							json = JSON.parse(unescape(timers[t_idx].json));
-							console.log(json);
 							ractive.addTimer(json);
 						}
 					}
@@ -217,6 +218,7 @@ var TimerList = Ractive.extend({
 
 	removeTimer: function(index) {
 		this.splice('timers', index, 1);
+		ractive.saveTimers();
 	},
 
 	runTimer: function(index, id) {
@@ -225,7 +227,6 @@ var TimerList = Ractive.extend({
 			for (var idx = this.data.timers.length - 1; idx >= 0; idx--) {
 				if (this.data.timers[idx].id == id) {
 					new_num = idx;
-					this.fire('runTimer', idx, idx);
 					this.fire('runTimer', idx, idx);
 					break;
 				}
@@ -239,18 +240,24 @@ var TimerList = Ractive.extend({
 		this.set('timers.' + index + '.total_time', elapsed_time);
 		this.sumTotal(this.data.timers);
 
-		// if(Math.floor(prev_elapsed_time / 1000) != Math.floor(elapsed_time / 1000)){
+		if(Math.floor(prev_elapsed_time / (1000)) != Math.floor(elapsed_time / (1000))) {
+			ractive.saveTimers();
+		}
 		/* update css */
 		var css_obj = getDialCSS(elapsed_time, index, false);
-		// console.log(Math.floor(elapsed_time / 1000));
 		this.set('timers.' + index + '.dial_css', css_obj.dial_css);
 		this.set('timers.' + index + '.hour_css', css_obj.hour_hand);
 		this.set('timers.' + index + '.minute_css', css_obj.minute_hand);
 		this.set('timers.' + index + '.second_css', css_obj.second_hand);
-		// }
 	},
 
-	saveTimers: function(){
+	saveTimers: $.throttle(5000, false, function(){
+		ractive.saveThrottled();
+		return true;
+	}),
+
+	saveThrottled: function(){
+		console.log('RUN SAVE');
 		var r_timers = ractive.get('timers');
 		$.ajax({
 			async: false,
@@ -336,6 +343,7 @@ var TimerList = Ractive.extend({
 			ractive.set('timers.' + num + '.minute_css', css_obj.minute_hand);
 			ractive.set('timers.' + num + '.second_css', css_obj.second_hand);
 		}
+		ractive.saveTimers();
 	},
 
 	init: function(options) {
@@ -380,6 +388,7 @@ var TimerList = Ractive.extend({
 					ractive.set('timers.' + num + '.hour_css', css_obj.hour_hand);
 					ractive.set('timers.' + num + '.minute_css', css_obj.minute_hand);
 					ractive.set('timers.' + num + '.second_css', css_obj.second_hand);
+					ractive.saveTimers();
 				}
 			},
 			sortTimers: function(event, column) {
@@ -442,6 +451,7 @@ ractive.observe('sortColumn options.sortDirection', function(new_value, old_valu
 ractive.observe('options.selectedSortable options.sortDirection', function(new_value, old_value, keypath) {
 	var column = ractive.get('options.selectedSortable');
 	ractive.sortTimers(column);
+	ractive.saveTimers();
 });
 
 ractive.observe('timers.*.tracked', function(new_value, old_value, keypath) {
@@ -482,14 +492,3 @@ $('#login-form').submit(function(e){
 	ractive.login($('#username').val(), $('#password').val());
 	return false;
 });
-
-
-/*
- * jQuery throttle / debounce - v1.1 - 3/7/2010
- * http://benalman.com/projects/jquery-throttle-debounce-plugin/
- *
- * Copyright (c) 2010 "Cowboy" Ben Alman
- * Dual licensed under the MIT and GPL licenses.
- * http://benalman.com/about/license/
- */
-(function(b,c){var $=b.jQuery||b.Cowboy||(b.Cowboy={}),a;$.throttle=a=function(e,f,j,i){var h,d=0;if(typeof f!=="boolean"){i=j;j=f;f=c}function g(){var o=this,m=+new Date()-d,n=arguments;function l(){d=+new Date();j.apply(o,n)}function k(){h=c}if(i&&!h){l()}h&&clearTimeout(h);if(i===c&&m>e){l()}else{if(f!==true){h=setTimeout(i?k:l,i===c?e-m:e)}}}if($.guid){g.guid=j.guid=j.guid||$.guid++}return g};$.debounce=function(d,e,f){return f===c?a(d,e,false):a(d,f,e!==false)}})(this);

@@ -10,8 +10,7 @@ function getDialCSS(time, box_num, running) {
 	var minutes_per_turn = ((minutes + ((seconds + (milliseconds / 1000)) / 60)) / 60);
 	var hours_per_turn = ((hours + ((minutes + ((seconds + (milliseconds / 1000)) / 60)) / 60)) / 12);
 
-	var dial_css = '',
-		second_hand, minute_hand, hour_hand;
+	var dial_css = '', second_hand = '', minute_hand = '', hour_hand = '';
 	if (running) {
 		dial_css = [];
 		dial_css.push('@-webkit-keyframes moveSeconds' + box_num + ' {0% {-webkit-transform: rotate(' + seconds_per_turn + 'turn);}100% {-webkit-transform: rotate(' + (seconds_per_turn + 1) + 'turn);}}');
@@ -28,16 +27,16 @@ function getDialCSS(time, box_num, running) {
 		hour_hand = '-webkit-animation: moveHours' + box_num + ' 43200s linear infinite;';
 		hour_hand += 'animation: moveHours' + box_num + ' 43200s linear infinite;';
 	} else {
-		second_hand = '-webkit-animation: none;';
-		second_hand += 'animation: none;';
+		// second_hand = '-webkit-animation: none;';
+		// second_hand += 'animation: none;';
 		second_hand += '-webkit-transform: rotate(' + seconds_per_turn + 'turn);';
 		second_hand += 'transform: rotate(' + seconds_per_turn + 'turn);';
-		minute_hand = '-webkit-animation: none;';
-		minute_hand += 'animation: none;';
+		// minute_hand = '-webkit-animation: none;';
+		// minute_hand += 'animation: none;';
 		minute_hand += '-webkit-transform: rotate(' + minutes_per_turn + 'turn);';
 		minute_hand += 'transform: rotate(' + minutes_per_turn + 'turn);';
-		hour_hand = '-webkit-animation: none;';
-		hour_hand += 'animation: none;';
+		// hour_hand = '-webkit-animation: none;';
+		// hour_hand += 'animation: none;';
 		hour_hand += '-webkit-transform: rotate(' + hours_per_turn + 'turn);';
 		hour_hand += 'transform: rotate(' + hours_per_turn + 'turn);';
 	}
