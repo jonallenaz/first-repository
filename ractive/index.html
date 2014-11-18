@@ -44,11 +44,16 @@
 						<option value='up'>up</option>
 						<option selected value='down'>down</option>
 				</select>
+				<span class='fn' on-click='fn:stop_all'>stop all</span>
+				<span class='fn' on-click='fn:rm_tracked'>remove tracked</span>
+				<span class='fn' on-click='fn:rm_zero'>remove 0:00</span>
+				<span class='fn' on-click='fn:rm_old'>remove old</span>
+				<span class='fn' on-click='fn:rm_all'>remove all</span>
 			</div>
 			<div class='clear'></div>
 		</header>
 		<section>
-			<span class='add' on-click='newTimer'>+</span>
+			<span class='add' on-click='fn:add'>+</span>
 			<ul proxy-sortable='sort-items'>
 			{{#each timers : num}}
 				{{>timer}}

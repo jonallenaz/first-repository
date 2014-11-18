@@ -1,4 +1,6 @@
 var WEB_ROOT = 'http://www.ellatek.com/ractive';
+var SAVE_DELAY = 30; // number of seconds of inactivity between saves
+var SAVE_THROTTLE = 5; // minimun number of seconds between saves
 
 var Timer = function(obj) {
 	obj = obj || {};
@@ -45,40 +47,42 @@ var TimerList = Ractive.extend({
 		ractive.saveTimers();
 	},
 
-	checkStatus: function(message){
+	checkStatus: function(message) {
 		$.ajax({
 			async: false,
 			dataType: 'jsonp',
 			url: WEB_ROOT + "/php/status.php",
-			data: {'fn': 'check'},
-			success: function(data){
-				if(typeof data != 'object'){
+			data: {
+				'fn': 'check'
+			},
+			success: function(data) {
+				if (typeof data != 'object') {
 					data = JSON.parse(data);
 				}
-				if(data.loggedin){
+				if (data.loggedin) {
 					$('.login, .overlay').hide();
-				} else{
+				} else {
 					$('.login, .overlay').show();
 					$('.login #password').html('');
 					$('.login .message').hide().html(message || '').fadeIn();
 				}
 			},
-			error: function(a,b){
-				console.log('error',a,b);
+			error: function(a, b) {
+				console.log('error', a, b);
 			}
 		});
 	},
 
-	editTime: function(num, show_alert){
-		var running = ractive.get('timers.'+num+'.running');
-		if(running){
+	editTime: function(num, show_alert) {
+		var running = ractive.get('timers.' + num + '.running');
+		if (running) {
 			return false;
 		}
-		var time_string = ractive.get('timers.'+num+'.display_time');
+		var time_string = ractive.get('timers.' + num + '.display_time');
 		var regex = /^(\d{2,3}):([0-5]\d):([0-5]\d).(\d\d)?$/;
 		var regex_test = regex.test(time_string);
-		if(!regex_test){
-			if(show_alert)
+		if (!regex_test) {
+			if (show_alert)
 				alert('Please format the time correctly (HH:MM:SS.SS).');
 			return false;
 		}
@@ -87,9 +91,9 @@ var TimerList = Ractive.extend({
 		var minutes = time_string[1];
 		var seconds = time_string[2];
 		var new_time = (hours * 60 * 60 * 1000) + (minutes * 60 * 1000) + (seconds * 1000);
-		ractive.set('timers.'+num+'.total_time', new_time);
-		ractive.set('timers.'+num+'.elapsed_time', new_time);
-		ractive.set('timers.'+num+'.display_hours', this.formatHours(new_time));
+		ractive.set('timers.' + num + '.total_time', new_time);
+		ractive.set('timers.' + num + '.elapsed_time', new_time);
+		ractive.set('timers.' + num + '.display_hours', this.formatHours(new_time));
 		this.updateDisplay();
 	},
 
@@ -124,90 +128,98 @@ var TimerList = Ractive.extend({
 		return formatted_time;
 	},
 
-	loadTimers: function(){
+	loadTimers: function() {
 		ractive.set('timers', []);
 		$.ajax({
 			async: false,
 			dataType: 'jsonp',
 			url: WEB_ROOT + "/php/status.php",
-			data: {'fn': 'load'},
-			success: function(data){
-				if(typeof data != 'object'){
+			data: {
+				'fn': 'load'
+			},
+			success: function(data) {
+				if (typeof data != 'object') {
 					data = JSON.parse(data);
 				}
 				var timers = JSON.parse(data.timers || '{}');
-				if(timers.length){
+				if (timers.length) {
 					var json, time, bg, fg;
-					for(var t_idx = timers.length - 1; t_idx >= 0; t_idx--){
-						if(timers[t_idx].hasOwnProperty('timer_key')){
+					for (var t_idx = timers.length - 1; t_idx >= 0; t_idx--) {
+						if (timers[t_idx].hasOwnProperty('timer_key')) {
 							// load old timers
-							if(timers[t_idx].timer_key == 'TimerOptions')
+							if (timers[t_idx].timer_key == 'TimerOptions')
 								continue;
 							json = JSON.parse(timers[t_idx].timer_json);
 							ractive.addTimer({
 								'elapsed_time': json.total,
 								'total_time': json.total,
-								'bg_color': '#'+json.color,
+								'bg_color': '#' + json.color,
 								'fg_color': '#aaaaaa',
 								'task': json.cust + ' ' + json.task,
 								'id': json.timer_key,
 								'date': json.date
 							});
-						} else if(timers[t_idx].hasOwnProperty('json')){
+						} else if (timers[t_idx].hasOwnProperty('json')) {
 							// load new timers
 							json = JSON.parse(unescape(timers[t_idx].json));
 							ractive.addTimer(json);
 						}
 					}
-				} else{
+				} else {
 					ractive.addTimer();
 				}
 				ractive.updateDisplay();
 				ractive.sortTimers();
 				ractive.updateAllColorPicks();
 			},
-			error: function(a,b){
-				console.log('error',a,b);
+			error: function(a, b) {
+				console.log('error', a, b);
 			}
 		});
 	},
 
-	login: function(un, pw){
+	login: function(un, pw) {
 		$.ajax({
 			async: false,
 			dataType: 'jsonp',
 			url: WEB_ROOT + "/php/status.php",
-			data: {'fn': 'login', 'un': un, 'pw': pw},
-			success: function(data){
-				if(typeof data != 'object'){
+			data: {
+				'fn': 'login',
+				'un': un,
+				'pw': pw
+			},
+			success: function(data) {
+				if (typeof data != 'object') {
 					data = JSON.parse(data);
 				}
 				ractive.checkStatus(data.message);
-				if(data.loggedin){
+				if (data.loggedin) {
 					$('#username, #password').val('');
 					ractive.loadTimers();
 				}
 			},
-			error: function(a,b){
-				console.log('error',a,b);
+			error: function(a, b) {
+				console.log('error', a, b);
 			}
 		});
 	},
 
-	logout: function(){
+	logout: function() {
 		$.ajax({
 			async: false,
 			dataType: 'jsonp',
 			url: WEB_ROOT + "/php/status.php",
-			data: {'fn': 'logout'},
-			success: function(data){
-				if(typeof data != 'object'){
+			data: {
+				'fn': 'logout'
+			},
+			success: function(data) {
+				if (typeof data != 'object') {
 					data = JSON.parse(data);
 				}
 				ractive.checkStatus();
 			},
-			error: function(a,b){
-				console.log('error',a,b);
+			error: function(a, b) {
+				console.log('error', a, b);
 			}
 		});
 	},
@@ -228,6 +240,7 @@ var TimerList = Ractive.extend({
 				if (this.data.timers[idx].id == id) {
 					new_num = idx;
 					this.fire('runTimer', idx, idx);
+					this.fire('runTimer', idx, idx);
 					break;
 				}
 			}
@@ -240,7 +253,7 @@ var TimerList = Ractive.extend({
 		this.set('timers.' + index + '.total_time', elapsed_time);
 		this.sumTotal(this.data.timers);
 
-		if(Math.floor(prev_elapsed_time / (1000)) != Math.floor(elapsed_time / (1000))) {
+		if (Math.floor(prev_elapsed_time / (SAVE_DELAY * 1000)) != Math.floor(elapsed_time / (SAVE_DELAY * 1000))) {
 			ractive.saveTimers();
 		}
 		/* update css */
@@ -251,28 +264,30 @@ var TimerList = Ractive.extend({
 		this.set('timers.' + index + '.second_css', css_obj.second_hand);
 	},
 
-	saveTimers: $.throttle(5000, false, function(){
+	saveTimers: $.throttle((SAVE_THROTTLE * 1000), false, function() {
 		ractive.saveThrottled();
 		return true;
 	}),
 
-	saveThrottled: function(){
-		console.log('RUN SAVE');
+	saveThrottled: function() {
 		var r_timers = ractive.get('timers');
 		$.ajax({
 			async: false,
 			dataType: 'jsonp',
 			url: WEB_ROOT + "/php/status.php",
-			data: {'fn': 'save', 'r_timers': r_timers},
-			success: function(data){
-				if(typeof data != 'object'){
+			data: {
+				'fn': 'save',
+				'r_timers': r_timers
+			},
+			success: function(data) {
+				if (typeof data != 'object') {
 					data = JSON.parse(data);
 				}
-				console.log(data);
-				// ractive.checkStatus(data.message);
+				// console.log(data);
+				ractive.checkStatus(data.message);
 			},
-			error: function(a,b){
-				console.log('error',a,b);
+			error: function(a, b) {
+				console.log('error', a, b);
 			}
 		});
 	},
@@ -281,7 +296,7 @@ var TimerList = Ractive.extend({
 		var num = ractive.data.options.selectedSortable;
 		var column = ractive.data.sortable[num].id;
 		var direction = ractive.data.options.sortDirection;
-		if(column){
+		if (column) {
 			ractive.data.timers.sort(function(a, b) {
 				if (a[column] == b[column]) {
 					return a.id < b.id ? (direction == 'up' ? -1 : 1) : (direction == 'up' ? 1 : -1);
@@ -349,11 +364,53 @@ var TimerList = Ractive.extend({
 	init: function(options) {
 		var self = this;
 		this.on({
-			remove: function(event) {
-				this.removeTimer(event.index.i);
-			},
-			newTimer: function(event) {
-				this.addTimer();
+			fn: function(event, fn) {
+				switch (fn) {
+					case 'add':
+						this.addTimer();
+						break;
+					case 'stop_all':
+						for (var num = this.data.timers.length - 1; num >= 0; num--) {
+							if (this.data.timers[num].running) {
+								this.fire('runTimer', num, num);
+							}
+						}
+						break;
+					case 'rm_tracked':
+						for (var num = this.data.timers.length - 1; num >= 0; num--) {
+							if (this.data.timers[num].tracked) {
+								ractive.removeTimer(num);
+							}
+						}
+						ractive.updateDisplay();
+						break;
+					case 'rm_zero':
+						for (var num = this.data.timers.length - 1; num >= 0; num--) {
+							if (!this.data.timers[num].total_time && !this.data.timers[num].elapsed_time) {
+								ractive.removeTimer(num);
+							}
+						}
+						ractive.updateDisplay();
+						break;
+					case 'rm_old':
+						var today = new Date();
+						var today_date = (today.getMonth() + 1) + '/' + today.getDate()
+						for (var num = this.data.timers.length - 1; num >= 0; num--) {
+							if (this.data.timers[num].date != today_date) {
+								ractive.removeTimer(num);
+							}
+						}
+						ractive.updateDisplay();
+						break;
+					case 'rm_all':
+						for (var num = this.data.timers.length - 1; num >= 0; num--) {
+							ractive.removeTimer(num);
+						}
+						ractive.updateDisplay();
+						break;
+					default:
+						console.log(fn);
+				}
 			},
 			runTimer: function(event, idx) {
 				var num = (typeof idx != 'undefined') ? idx : event.index.num;
@@ -366,7 +423,7 @@ var TimerList = Ractive.extend({
 							count_running++;
 						}
 					}
-					if(count_running >= 3){
+					if (count_running >= 3) {
 						alert("Let's try not to do too much multitasking!");
 						return false;
 					}
@@ -468,6 +525,7 @@ $('body').on('click', '.confirm', function() {
 	ractive.removeTimer(num);
 	ractive.updateDisplay();
 });
+
 function confirm(el) {
 	$(el).removeClass('confirm').html('x');
 }
@@ -476,8 +534,8 @@ $('body').on('blur', '.digital', function(e) {
 	var num = $(this).closest('li').data('num');
 	ractive.editTime(num, true);
 	var val = $(this).val();
-	if(val.indexOf('	') >= 0){
-		$(this).val(val.replace('	',''));
+	if (val.indexOf('	') >= 0) {
+		$(this).val(val.replace('	', ''));
 		e.preventDefault();
 		return false;
 	}
@@ -487,7 +545,7 @@ $('body').on('keyup', '.digital', function(e) {
 	ractive.editTime(num, false);
 });
 
-$('#login-form').submit(function(e){
+$('#login-form').submit(function(e) {
 	e.preventDefault();
 	ractive.login($('#username').val(), $('#password').val());
 	return false;
