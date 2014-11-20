@@ -36,19 +36,19 @@
 			<div class='tab two'><span><small>Tracked Time:</small><br>{{tracked_time}}</span></div>
 			<div class='tab three'><span><small>Total Time:</small><br>{{total_time}}</span></div>
 			<div class='options'>
-				Sort by: <select value='{{options.selectedSortable}}'>
+				<!--Sort by: <select value='{{options.selectedSortable}}'>
 					{{#sortable:num}}
 						<option value='{{num}}'>{{name}}</option>
 					{{/sortable}}
 				</select> <select value='{{options.sortDirection}}'>
 						<option value='up'>up</option>
 						<option selected value='down'>down</option>
-				</select>
-				<span class='fn' on-click='fn:stop_all'>stop all</span>
-				<span class='fn' on-click='fn:rm_tracked'>remove tracked</span>
-				<span class='fn' on-click='fn:rm_zero'>remove 0:00</span>
-				<span class='fn' on-click='fn:rm_old'>remove old</span>
-				<span class='fn' on-click='fn:rm_all'>remove all</span>
+				</select>-->
+				<div class='btn' on-click='fn:stop_all'>stop all</div>
+				<div class='btn' on-click='fn:rm_tracked'>remove tracked</div>
+				<div class='btn' on-click='fn:rm_zero'>remove 0:00</div>
+				<div class='btn' on-click='fn:rm_old'>remove old</div>
+				<div class='btn' on-click='fn:rm_all'>remove all</div>
 			</div>
 			<div class='clear'></div>
 		</header>
