@@ -1,6 +1,6 @@
 .dial{
 	box-sizing: border-box;
-	border: 1px solid #eee;
+	border: 2px solid #E0F0FF;
 	width: 14em;
 	height: 14em;
 	padding: .5em;
@@ -34,7 +34,7 @@
 	height: 4.5em;
 	margin-left: -0.2em;
 	margin-bottom: -0.3em;
-	background: rgb(240, 240, 255);
+	background: rgb(220, 230, 255);
 	/*background: rgba(240, 240, 255, .7);*/
 	/*box-shadow: .1em .1em .5em #444;*/
 	border: .1em solid #990000;
@@ -60,7 +60,7 @@
 	height: 6em;
 	margin-left: -0.2em;
 	margin-bottom: -0.3em;
-	background: rgb(240, 240, 255);
+	background: rgb(220, 230, 255);
 	/*background: rgba(240, 240, 255, .7);*/
 	-moz-border-radius: 3em / 30em;
 	border-radius: 3em 3em 0 0 / 80em 80em 0 0;
@@ -132,7 +132,7 @@
 	display: block;
 	padding: 0;
 	border: none;
-	text-shadow: -1px 0 rgb(220, 220, 220), 0 1px rgb(220, 220, 220), 1px 0 rgb(220, 220, 220), 0 -1px rgb(220, 220, 220), 0px 0px 4px rgba(0,0,0,0.4), 0 -5px 35px rgba(255,255,255,0.3);
+	text-shadow: -1px 0 rgb(224, 240, 255), 0 1px rgb(224, 240, 255), 1px 0 rgb(224, 240, 255), 0 -1px rgb(224, 240, 255), 0px 0px 4px rgba(0,0,0,0.4), 0 -5px 35px rgba(255,255,255,0.3);
 }
 .hour-numbers li:nth-child(1) {
 	-webkit-transform: rotate(30deg);
@@ -317,7 +317,7 @@
 	font-size: .5em;
 	color: rgb(180, 180, 200);
 	color: rgba(180, 180, 200, .9);
-	color: #eee;
+	color: #E0F0FF;
 }
 .minute-lines li {
 	position: absolute;

@@ -32,23 +32,28 @@
 	<!-- Ractive Template -->
 	<script id='template' type='text/ractive'>
 		<header class='{{tracked_time != "00:00:00.00" ? "tracked" : ""}}'>
-			<div class='tab one'><span><small>&nbsp;Untracked Time:</small><br>{{untracked_time}}</span></div>
-			<div class='tab two'><span><small>Tracked Time:</small><br>{{tracked_time}}</span></div>
-			<div class='tab three'><span><small>Total Time:</small><br>{{total_time}}</span></div>
+			<div class='tab one'><small>Total Time:</small><br>{{total_time}}</div>
+			<div class='tab two'><small>&nbsp;Untracked Time:</small><br>{{untracked_time}}</div>
+			<div class='tab three'>
+				<small>Tracked:</small> {{tracked_time}}<br>
+				<small>Total:</small> {{total_time}}
+			</div>
 			<div class='options'>
-				<!--Sort by: <select value='{{options.selectedSortable}}'>
-					{{#sortable:num}}
-						<option value='{{num}}'>{{name}}</option>
-					{{/sortable}}
-				</select> <select value='{{options.sortDirection}}'>
-						<option value='up'>up</option>
-						<option selected value='down'>down</option>
-				</select>-->
 				<div class='btn' on-click='fn:stop_all'>stop all</div>
-				<div class='btn' on-click='fn:rm_tracked'>remove tracked</div>
-				<div class='btn' on-click='fn:rm_zero'>remove 0:00</div>
-				<div class='btn' on-click='fn:rm_old'>remove old</div>
-				<div class='btn' on-click='fn:rm_all'>remove all</div>
+				<div class='btn mult'>remove</div>
+				<div class='drop' style='left:7.6em; max-height:7.6em'>
+					<div on-click='fn:rm_tracked'>remove tracked</div>
+					<div on-click='fn:rm_zero'>remove 0:00</div>
+					<div on-click='fn:rm_old'>remove old</div>
+					<div on-click='fn:rm_all'>remove all</div>
+				</div>
+				<div class='btn mult'>sort</div>
+				<div class='drop' style='left:14em; max-height:{{sortable.length * 1.9}}em'>
+					{{#sortable:num}}
+						<div class='{{num == options.selectedSortable ? "sel" : ""}}' on-click='fn:sort:{{num}}'>{{name}} {{{dir ? dir == 'up' ? '&#x2193;' : '&#x2191;' : ''}}}</div>
+					{{/sortable}}
+				</div>
+				<div class='btn' on-click='fn:logout'>logout</div>
 			</div>
 			<div class='clear'></div>
 		</header>
@@ -72,7 +77,7 @@
 						<div class='close'>x</div>
 						<div class='close-label' style='color: {{fg_color}};'>close</div>
 						<div class='top-input'>
-							<span class='colorpick' style='background-color: {{bg_color}};'>
+							<span class='colorpick col-{{num}}' data-num="{{num}}" style='background-color: {{bg_color}};'>
 								<span class='arrow'></span>
 							</span>
 							<span class='color-label' style='color: {{fg_color}}'>color</span>

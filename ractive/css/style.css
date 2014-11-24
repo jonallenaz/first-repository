@@ -5,7 +5,7 @@ body{
 	background: #222;
 	background-image: url('../images/cf_trans_bg.png');
 	background-repeat: repeat;
-	color: #aaa;
+	color: #AAB2B8;
 }
 
 /* header section */
@@ -16,69 +16,77 @@ header{
 	background: #222;
 	border-bottom: 1px solid black;
 	width: 100%;
-	height: 4em;
+	height: 3.5em;
 	box-shadow: 0 -0.3em 2em #000;
 }
-.tab {
-	position: absolute;
-	left: 0.5em;
-	top: -.1em;
-	z-index: 1;
+.tab{
 	display: inline-block;
-	padding: 0.1em 0.9em 0.3em 0.6em;
-	margin: 0 0.5em;
+	position: absolute;
+	width: 7.6em;
+	height: 2.1em;
 	font-size: 1.5em;
-	border-radius: 0 0 0.3em 0.3em;
-	transition: left 400ms, opacity 600ms, transform 600ms;
-	transform: skew(35deg);
-	background: #333;
-	border: 1px solid #000;
-	box-shadow: inset 0 0 1em #000;
+	overflow: hidden;
+	margin: 0;
 	opacity: 0;
+	padding: 0 1.8em 0.2em 1.8em;
 }
-.tab.three{
+.tab::before{
+	content: '';
+	width: 7.2em;
+	height: 7.2em;
+	position: absolute;
+	top: -2.7em;
+	left: 0.8em;
+	border-radius: 10em;
+	border: 0.2em solid #E0F0FF;
+	background: #333;
+	z-index: -1;
+	box-shadow: inset 0.7em 0 0.5em #000,
+		inset -0.7em 0 0.5em #000,
+		0.5em 0 0.5em #000,
+		-0.5em 0 0.5em #000;
+}
+
+.tab.one, .tracked .two{
 	opacity: 1;
-	padding: 0.1em 0.3em 0.3em 0.9em;
 }
 .tracked .one{
-	transform: skew(-35deg);
-	opacity: 1;
+	opacity: 0;
 }
-.tracked .one span {
-	transform: skew(35deg);
-}
-.tracked .two, .tracked .three {
-	left: 9.3em;
+.tracked .three {
+	left: 9em;
 	opacity: .6;
-	padding: 0.1em 0.3em 0.3em 0.9em;
+	text-align: right;
+	vertical-align: middle;
+	line-height: 1em;
+	padding-top: .2em;
+	padding-bottom: 0em;
 }
-.tracked .tab.three {
-	left: 16.8em;
-	/*opacity: 1;*/
+.tab.three::before{
+	width: 9.3em;
+	height: 9.3em;
+	top: -3.7em;
 }
-.tab span {
-	display: inline-block;
-	line-height: 0.7em;
-	transform: skew(-35deg);
-	transition: transform 600ms;
-}
-.tab span small{
+.tab small{
 	font-size: .5em;
+	vertical-align: middle;
+	line-height: 0.5em;
 }
 
 .options{
 	position: absolute;
-	left: 14em;
-	transition: left 400ms;
+	left: 13em;
+	/*transition: left 0.6s;*/
 	padding: 0.5em;
+	min-width: 22em;
 }
 .tracked .options{
-	left: 38em;
+	left: 29.8em;
 }
 
 select {
    background: #333;
-   color: #aaa;
+   color: #AAB7C0;
    padding: 0.5em;
    line-height: 1em;
    border: 1px solid black;
@@ -89,63 +97,86 @@ input:focus, select:focus {
 }
 
 .btn{
-	float: left;
+	display: inline-block;
 	position: relative;
-	width: 3em;
+	width: 7.6em;
 	height: 3em;
-	background: #25292C;
+	/* background: #777; */
 	text-align: center;
-	border-radius: 10em;
+	border-radius: 0;
 	font-size: 0.8em;
-	box-shadow: inset 1px 1px 2px rgba(255,255,255,0.3),
-		inset 3px 15px 45px rgba(255,255,255,0.1),
-		inset -1px -1px 2px rgba(0,0,0,0.5),
-		inset -3px -15px 45px rgba(0,0,0,0.2),
-		1px 5px 30px -4px rgba(0,0,0,1);
+	line-height: 2.8em;
+	overflow: hidden;
+	margin: 0em 0em;
+	cursor: pointer;
 }
 .btn::before{
 	content: '';
-	background: #1A1A1A;
-	width: 4em;
-	height: 4em;
+	width: 6em;
+	height: 6em;
 	position: absolute;
-	top: -0.5em;
-	left: -0.5em;
+	top: -1.6em;
+	left: 0.7em;
 	border-radius: 10em;
-	box-shadow: inset -1px -1px 2px rgba(255,255,255,0.3),
-		inset -5px -15px 40px rgba(255,255,255,0.1),
-		inset 1px 1px 2px rgba(0,0,0,0.5),
-		inset 5px 15px 40px rgba(0,0,0,0.2),
-		-2px -40px 50px -20px rgba(255,255,255,0.1),
-		2px 35px 50px -10px rgba(0,0,0,0.4),
-		0px 0px 25px 8px rgba(60,60,60,1);
-}
-
-
-/*.btn{
-	display: block;
-	float: left;
-	width: 3.4em;
-	height: 2.8em;
-	border: 0.2em solid #111;
-	border-radius: 20em 20em 12em 12em / 20em 20em 20em 20em;
-	text-align: center;
-	position: relative;
-	padding: 0.8em;
-	margin: -0.3em 0.9em 0 0;
-	cursor: pointer;
+	border: 0.2em solid #E0F0FF;
 	background: #333;
-	box-shadow: inset 0 0 2em #000;
-	font-size: 0.7em;
+	z-index: -1;
+	box-shadow: inset 0.7em 0 0.5em #000,
+		inset -0.7em 0 0.5em #000,
+		0.5em 0 0.5em #000,
+		-0.5em 0 0.5em #000;
+}
+.btn:hover::before{
+	box-shadow: inset 0.7em 0 0.5em #000,
+		inset -0.7em 0 0.5em #000,
+		0 0 1em #CCEEFF;
 }
 .btn:hover{
-	box-shadow: inset 0 0 2em #000, 0 0 1em #ccc;
+	color: #E0F0FF;
 }
-.btn div{
-	position: relative;
-	top: 50%;
-	transform: translateY(-50%);
-}*/
+.btn::after{
+	content: '';
+	width: 5.1em;
+	height: 2.8em;
+	position: absolute;
+	top: 0;
+	left: 1.1em;
+	border: 1px solid #000;
+	border-width: 1px 0;
+}
+.drop{
+	display: block;
+	position: absolute;
+	top: 2.8em;
+	background: #222;
+	height: 0;
+	border-radius: 0 0.5em 0.5em 0.5em;
+	overflow: hidden;
+	-o-transition: height .6s ease, padding .6s ease;
+	-moz-transition: height .6s ease, padding .6s ease;
+	-webkit-transition: height .6s ease, padding .6s ease;
+	transition: height .6s ease, padding .6s ease;
+	box-shadow: inset 0 0 .2em #000,
+		0 0.1em 0.1em rgba(224,240,255,0.3),
+		-0.2em 0.2em 0.3em rgba(224,240,255,0.3),
+		0.2em 0.2em 0.3em rgba(224,240,255,0.4)
+}
+.drop.on{
+	height: 20em;
+	padding: .2em;
+}
+.drop div{
+	padding: .2em .5em;
+	line-height: 1.5em;
+	cursor: pointer;
+}
+.drop div:hover{
+	background: #333;
+	color: #E0F0FF;
+}
+.drop .sel{
+	text-decoration: underline;
+}
 
 /* login section */
 .overlay{
@@ -232,7 +263,7 @@ section{
 	border-radius: 50%;
 }
 .timer.true{
-	box-shadow:0 0 2em rgba(245,245,245,0.5);
+	box-shadow:0 0 2em rgba(224,240,255,0.5);
 }
 .timer.tracked {
 	opacity: 0.6;
@@ -250,7 +281,7 @@ section{
 	border: none;
 	border: 1px solid black;
 	border-radius: 0.2em;
-	color: #eee;
+	color: #E0F0FF;
 	width: 7em;
 	left: 2.6em;
 }
@@ -385,7 +416,7 @@ label{
 	height: 0;
 	border-left: 0.15em solid transparent;
 	border-right: .15em solid transparent;
-	border-top: 0.35em solid #aaaaaa;
+	border-top: 0.35em solid #AAB7C0;
 	position: absolute;
 	bottom: 0;
 	right: -0.5em;
@@ -410,10 +441,15 @@ small{
 	border-radius: .5em;
 	background: #222;
 }
+.start:hover{
+	color: #E0F0FF;
+	box-shadow: 0 0 1em #E0F0FF;
+	/*border-color: #E0F0FF;*/
+}
 .dial-bg{
 	position: absolute;
-	top: 0.45em;
-	left: 0.45em;
+	top: 0.35em;
+	left: 0.35em;
 	z-index: 1;
 	width: 13em;
 	height: 13em;
@@ -436,8 +472,7 @@ small{
 	font-size: 1.8em;
 	width: 0.9em;
 	height: 1em;
-	border: 2px solid #555;
-	color: #999;
+	border: 2px solid #AAB2B8;
 	border-radius: 50%;
 	background: #000;
 	text-align: center;
@@ -446,6 +481,10 @@ small{
 	-moz-user-select: none;
 	-webkit-user-select: none;
 	-ms-user-select: none;
+}
+.add:hover{
+	box-shadow: 0 0 0.5em #CCEEFF;
+	color: #CCEEFF;
 }
 
 /* checkbox */

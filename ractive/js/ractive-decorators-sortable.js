@@ -194,8 +194,8 @@
 
 	dropHandler = function(){
 		this.classList.remove( sortable.targetClass );
+		ractive.set('options.selectedSortable', ractive.get('sortable').length);
 		ractive.updateAllColorPicks();
-		ractive.set('selectedSortable', 0);
 	};
 
 	removeTargetClass = function () {
