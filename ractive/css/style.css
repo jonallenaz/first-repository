@@ -32,10 +32,10 @@ header{
 }
 .tab::before{
 	content: '';
-	width: 7.2em;
-	height: 7.2em;
 	position: absolute;
-	top: -2.7em;
+	width: 7.2em;
+	height: 5em;
+	top: -1.5em;
 	left: 0.8em;
 	border-radius: 10em;
 	border: 0.2em solid #E0F0FF;
@@ -64,8 +64,8 @@ header{
 }
 .tab.three::before{
 	width: 9.3em;
-	height: 9.3em;
-	top: -3.7em;
+	height: 6em;
+	top: -2em;
 }
 .tab small{
 	font-size: .5em;
@@ -379,6 +379,9 @@ label{
 	z-index: 1;
 	text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
+.tracked, .close-label, .color-label, .date, .hours{
+	color: #AAB7C0;
+}
 .top-input {
 	width: 112px;
 	height: 20px;
@@ -408,7 +411,6 @@ label{
 	left: 0.6em;
 	font-size: 0.7em;
 	font-weight: bold;
-	color: #222;
 	text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 .arrow {
@@ -501,7 +503,6 @@ input[type="checkbox"] + label {
 	transition: all ease-out 200ms;
 	text-indent: -0.8em;
 	line-height: 4em;
-	color: #222222;
 	font-size: 0.7em;
 	font-weight: bold;
 }

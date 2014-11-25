@@ -19,7 +19,6 @@ var Timer = function(obj) {
 		tracked: (obj.tracked == 'true') || false,
 		task: obj.task || '',
 		bg_color: obj.bg_color || '#FFFFFF',
-		fg_color: obj.fg_color || '#AAB7C0',
 		dial_css: obj.dial_css || '',
 		second_css: obj.second_css || 'text-decoration:none;',
 		minute_css: obj.minute_css || 'text-decoration:none;',
@@ -30,24 +29,19 @@ var Timer = function(obj) {
 
 var TimerList = Ractive.extend({
 	template: '#template',
-	bg_colors: ['#FFFFFF', '#FCD112', '#F50505', '#000000', '#595854'],
-	fg_colors: ['#AAB7C0', '#AAB7C0', '#AAB7C0', '#AAB7C0', '#AAB7C0'],
+	bg_colors: ['#FFFFFF', '#FCD112', '#F50505', '#000000', '#0055FF',  '#595854','#00EE00'],
 	color_idx: 0,
 
 	addTimer: function(obj) {
 		if (obj) this.color_idx++;
-		var bg = (obj && obj.bg_color) ? obj.bg_color : this.bg_colors[(this.color_idx % this.bg_colors.length)];
-		var fg = (obj && obj.fg_color) ? obj.fg_color : this.fg_colors[(this.color_idx++ % this.fg_colors.length)];
+		var bg = (obj && obj.bg_color) ? obj.bg_color : this.bg_colors[(this.color_idx++ % this.bg_colors.length)];
 		this.unshift('timers', new Timer(obj || {
-			'bg_color': bg,
-			'fg_color': fg
+			'bg_color': bg
 		}));
 		if(obj && obj.running == 'true'){
 			this.fire('runTimer', 0, 0);
 			this.fire('runTimer', 0, 0);
 		}
-		// this.updateColorPick(0);
-		// this.sortTimers();
 		ractive.saveTimers();
 		ractive.updateAllColorPicks();
 		$('li[data-num="0"] .task').focus();
@@ -160,7 +154,6 @@ var TimerList = Ractive.extend({
 								'elapsed_time': json.total,
 								'total_time': json.total,
 								'bg_color': '#' + json.color,
-								'fg_color': '#AAB7C0',
 								'task': json.cust + ' ' + json.task,
 								'id': json.timer_key,
 								'date': json.date
@@ -295,7 +288,6 @@ var TimerList = Ractive.extend({
 				if (typeof data != 'object') {
 					data = JSON.parse(data);
 				}
-				// console.log(data);
 				ractive.checkStatus(data.message);
 			},
 			error: function(a, b) {
@@ -368,7 +360,7 @@ var TimerList = Ractive.extend({
 			var id = this.data.timers[num].id;
 			var elapsed_time = this.get('timers.' + num + '.total_time');
 			/* update css */
-			var css_obj = getDialCSS(elapsed_time, num, false /*Boolean(this.data.timers[num].running === true)*/ );
+			var css_obj = getDialCSS(elapsed_time, num, false);
 			ractive.set('timers.' + num + '.dial_css', css_obj.dial_css);
 			ractive.set('timers.' + num + '.hour_css', css_obj.hour_hand);
 			ractive.set('timers.' + num + '.minute_css', css_obj.minute_hand);
@@ -382,8 +374,9 @@ var TimerList = Ractive.extend({
 		this.on({
 			fn: function(event, arg) {
 				var split = arg.split(':');
-				var num = (split.length > 1) ? split[1] : 0;
+				var num = (split.length > 1) ? split[1] : -1;
 				fn = split[0];
+				var idx = 0;
 				switch (fn) {
 					case 'add':
 						this.addTimer();
@@ -394,43 +387,40 @@ var TimerList = Ractive.extend({
 						this.addTimer();
 						break;
 					case 'stop_all':
-						for (var num = this.data.timers.length - 1; num >= 0; num--) {
-							if (this.data.timers[num].running) {
-								this.fire('runTimer', num, num);
+						for (idx = this.data.timers.length - 1; idx >= 0; idx--) {
+							console.log(this.data.timers[idx].running , idx , num);
+							if (this.data.timers[idx].running && idx != num) {
+								this.fire('runTimer', idx, idx);
 							}
 						}
 						break;
 					case 'rm_tracked':
-						for (var num = this.data.timers.length - 1; num >= 0; num--) {
-							if (this.data.timers[num].tracked) {
-								ractive.removeTimer(num);
+						for (idx = this.data.timers.length - 1; idx >= 0; idx--) {
+							if (this.data.timers[idx].tracked) {
+								ractive.removeTimer(idx);
 							}
 						}
-						ractive.updateDisplay();
 						break;
 					case 'rm_zero':
-						for (var num = this.data.timers.length - 1; num >= 0; num--) {
-							if (!this.data.timers[num].total_time && !this.data.timers[num].elapsed_time) {
-								ractive.removeTimer(num);
+						for (idx = this.data.timers.length - 1; idx >= 0; idx--) {
+							if (!this.data.timers[idx].total_time && !this.data.timers[idx].elapsed_time) {
+								ractive.removeTimer(idx);
 							}
 						}
-						ractive.updateDisplay();
 						break;
 					case 'rm_old':
 						var today = new Date();
-						var today_date = (today.getMonth() + 1) + '/' + today.getDate()
-						for (var num = this.data.timers.length - 1; num >= 0; num--) {
-							if (this.data.timers[num].date != today_date) {
-								ractive.removeTimer(num);
+						var today_date = (today.getMonth() + 1) + '/' + today.getDate();
+						for (idx = this.data.timers.length - 1; idx >= 0; idx--) {
+							if (this.data.timers[idx].date != today_date) {
+								ractive.removeTimer(idx);
 							}
 						}
-						ractive.updateDisplay();
 						break;
 					case 'rm_all':
-						for (var num = this.data.timers.length - 1; num >= 0; num--) {
-							ractive.removeTimer(num);
+						for (idx = this.data.timers.length - 1; idx >= 0; idx--) {
+							ractive.removeTimer(idx);
 						}
-						ractive.updateDisplay();
 						break;
 					case 'sort':
 						var sort = ractive.get('sortable.'+num);
@@ -441,6 +431,8 @@ var TimerList = Ractive.extend({
 					default:
 						console.log(fn, num);
 				}
+				ractive.saveTimers();
+				ractive.updateDisplay();
 			},
 			runTimer: function(event, idx) {
 				var num = (typeof idx != 'undefined') ? idx : event.index.num;
@@ -448,8 +440,8 @@ var TimerList = Ractive.extend({
 				var css_obj;
 				var count_running = 0;
 				if (this.data.timers[num].running === false) {
-					for (var idx = this.data.timers.length - 1; idx >= 0; idx--) {
-						if (this.data.timers[idx].running) {
+					for (var t_idx = this.data.timers.length - 1; t_idx >= 0; t_idx--) {
+						if (this.data.timers[t_idx].running) {
 							count_running++;
 						}
 					}
@@ -463,7 +455,6 @@ var TimerList = Ractive.extend({
 						ractive.runTimer(num, id);
 					}, 76);
 					this.set('timers.' + num + '.display_text', 'Stop');
-					// css_obj = getDialCSS(this.data.timers[num].elapsed_time, num, true);
 				} else {
 					this.set('timers.' + num + '.running', false);
 					this.data.timers[num].elapsed_time = new Date() - this.data.timers[num].start_time + this.data.timers[num].elapsed_time;
@@ -476,7 +467,7 @@ var TimerList = Ractive.extend({
 					ractive.set('timers.' + num + '.minute_css', css_obj.minute_hand);
 					ractive.set('timers.' + num + '.second_css', css_obj.second_hand);
 				}
-				ractive.saveThrottled();
+				ractive.saveTimers();
 			}
 		});
 	}
@@ -525,16 +516,6 @@ ractive.set('untracked_time', ractive.formatTime(ractive.get('untracked_time')))
 ractive.set('tracked_time', ractive.formatTime(ractive.get('tracked_time')));
 ractive.set('total_time', ractive.formatTime(ractive.get('total_time')));
 
-/*
-ractive.observe('sortColumn options.sortDirection', function(new_value, old_value, keypath) {
-	var column = ractive.get('sortColumn');
-	var direction = ractive.get('options.sortDirection');
-	ractive.data.timers.sort(function(a, b) {
-		return a[column] < b[column] ? (direction == 'up' ? -1 : 1) : (direction == 'up' ? 1 : -1);
-	});
-});
-*/
-
 ractive.observe('options.selectedSortable options.sortDirection', function(new_value, old_value, keypath) {
 	var column = ractive.get('options.selectedSortable');
 	if(column >= ractive.get('sortable').length){ return; }
@@ -542,8 +523,9 @@ ractive.observe('options.selectedSortable options.sortDirection', function(new_v
 	ractive.saveTimers();
 });
 
-ractive.observe('timers.*.tracked', function(new_value, old_value, keypath) {
+ractive.observe('timers.*.tracked timers.*.task timers.*.bg_color', function(new_value, old_value, keypath) {
 	ractive.updateDisplay();
+	ractive.saveTimers();
 });
 
 // close functionality
@@ -570,6 +552,7 @@ $('body').on('blur', '.digital', function(e) {
 		e.preventDefault();
 		return false;
 	}
+	ractive.saveTimers();
 });
 $('body').on('keyup', '.digital', function(e) {
 	var num = $(this).closest('li').data('num');
@@ -590,6 +573,8 @@ $('body').on('mouseout', '.drop', function(e) {
 $('body').on('keypress', '.task', function(e){
 	if(e.which === 13){
 		e.preventDefault();
+		var num = $(this).closest('li').data('num');
+		ractive.fire('fn', null, 'stop_all:'+num);
 		$(this).nextAll('.start').click();
 	}
 });

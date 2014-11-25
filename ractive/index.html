@@ -68,22 +68,22 @@
 			<li decorator='sortable' class='timer {{running}} {{tracked ? "tracked" : ""}}' data-num='{{num}}' data-id='{{id}}'>
 				<div class='dial'>
 					<input type='checkbox' id='tracked{{num}}' checked='{{tracked}}'/>
-					<label for='tracked{{num}}' style='color: {{fg_color}};'>tracked</label>
+					<label for='tracked{{num}}'>tracked</label>
 					<div class='hour-hand' style='{{hour_css}}'></div>
 					<div class='minute-hand' style='{{minute_css}}'></div>
 					<div class='second-hand' style='{{second_css}}'></div>
 					<div class='pin'></div>
 					<div class='dial-bg' style='background-color: {{bg_color}};'>
 						<div class='close'>x</div>
-						<div class='close-label' style='color: {{fg_color}};'>close</div>
+						<div class='close-label'>close</div>
 						<div class='top-input'>
 							<span class='colorpick col-{{num}}' data-num="{{num}}" style='background-color: {{bg_color}};'>
 								<span class='arrow'></span>
 							</span>
-							<span class='color-label' style='color: {{fg_color}}'>color</span>
+							<span class='color-label'>color</span>
 						</div>
-						<span class='date' style='color: {{fg_color}}'>{{date}}</span>
-						<span class='hours' style='color: {{fg_color}}'>{{display_hours}}<small> hrs</small></span>
+						<span class='date'>{{date}}</span>
+						<span class='hours'>{{display_hours}}<small> hrs</small></span>
 						<input class='task' placeholder='project /  task' value='{{task}}'>
 						<input class='digital' value='{{display_time}}'>
 						<span class='start' on-click='runTimer:{{num}}'>{{display_text}}</span>
