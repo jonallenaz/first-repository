@@ -5,7 +5,7 @@ var SAVE_THROTTLE = 5; // minimun number of seconds between saves
 var Timer = function(obj) {
 	obj = obj || {};
 	var today = new Date();
-	var date = (today.getMonth() - 1 < 10) ? '0' + today.getMonth() - 1 : today.getMont() - 1;
+	var date = (today.getMonth() - 1 < 10) ? '0' + today.getMonth() - 1 : today.getMonth() - 1;
 	date += (today.getDate() < 10) ? '0' + today.getDate() : today.getDate();
 	return {
 		id: obj.id || ractive.formatId(),
@@ -329,7 +329,7 @@ var TimerList = Ractive.extend({
 		this.set('untracked_time', this.formatTime(untracked));
 		this.set('tracked_time', this.formatTime(tracked));
 		this.set('total_time', this.formatTime(current_total));
-		current_total = this.get('total_time').toString().slice(0,-3);
+		current_total = this.get('untracked_time').toString().slice(0,-3);
 		if(prev_total != current_total){
 			document.title = current_total;
 		}

@@ -1,0 +1,129 @@
+<html>
+<head>
+<title>My Videos</title>
+<style>
+body {
+  padding: 0;
+  margin: 0;
+}
+#playerContainer {
+  text-align: center;
+  background-color: #222;
+}
+ul.videos li {
+  font-size: small;
+  float: left;
+  width: 190px;
+  margin: 0 0 10px 10px;
+  cursor: pointer;
+  height: 155px;
+  overflow: hidden;
+}
+ul.videos {
+  margin-bottom: 1em;
+  padding-left : 0;
+  margin-left: 0;
+  list-style: none;
+}
+</style>
+<script type="text/javascript" src="http://swfobject.googlecode.com/svn/trunk/swfobject/swfobject.js"></script>
+<script src='ractive/js/jquery-2.1.1.min.js'></script>
+<script type="text/javascript">
+function oldloadVideo(){return true;}
+
+function loadVideo(playerUrl, autoplay) {
+  swfobject.embedSWF(
+      playerUrl + '&rel=1&border=0&fs=1&autoplay=' +
+      (autoplay?1:0), 'player', '854', '510', '9.0.0', false,
+      false, {allowfullscreen: 'true'});
+}
+
+var ajaxMaxResults = 50;
+var watchedUntilDate = new Date('4/10/2014');
+var newStartIndex = 813;
+var videoLoaded = false;
+var firstVideo = 0;
+
+function getVideos(startIndex){
+  if(!startIndex){ startIndex = 1; } //if this wasn't passed in, get the first result.
+  $.ajax({
+    url: 'http://gdata.youtube.com/feeds/users/latenight/uploads?alt=json-in-script&max-results='+ajaxMaxResults+'&callback=showMyVideos2&start-index=' + startIndex,
+    dataType:'jsonp',
+    jsonpCallback: 'showMyVideos2'
+  });
+}
+var entry;
+
+function showMyVideos2(data) {
+  var totalInCategory = data.feed.openSearch$totalResults.$t;
+  var searchStartIndex = data.feed.openSearch$startIndex.$t;
+
+  // console.log(totalInCategory, searchStartIndex);
+
+  var feed = data.feed;
+  var entries = feed.entry || [];
+  var html = [];
+  for (var i = 0; i < entries.length; i++) {
+    entry = entries[i];
+
+    var published = new Date(entry.published.$t);
+    if(published > watchedUntilDate)
+      continue;
+
+    firstVideo = firstVideo || searchStartIndex + i;
+    var title = entry.title.$t;//.substr(0, 20);
+    var thumbnailUrl = entries[i].media$group.media$thumbnail[0].url.replace('0.jpg','mqdefault.jpg');
+    var playerUrl = entries[i].media$group.media$content[0].url;
+    var pub_date = (published.getMonth()+1)+'/'+published.getDate()+'/'+published.getFullYear();
+    html.push('<li data-num="', (searchStartIndex+i), '" data-url="', playerUrl, '" onclick="oldloadVideo(\'', playerUrl, '\', true)">',
+              '<span>', pub_date, '</span><br /><img src="',
+              thumbnailUrl, '" width="196" height="110"/>', '<span>', title, '</span></li>');
+  }
+  $('#videos2').append(html.join(''));
+  if (!videoLoaded && firstVideo) {
+    loadVideo(entries[firstVideo - searchStartIndex].media$group.media$content[0].url, false);
+    videoLoaded = true;
+    $('.firstVideo').html(firstVideo);
+  }
+
+  //if there are more results, get them.
+  if((searchStartIndex + ajaxMaxResults - 1) < totalInCategory){
+    getVideos((searchStartIndex + ajaxMaxResults));
+  }
+
+}
+
+getVideos(newStartIndex);
+$(function(){
+  $('body').on('click', 'li', function(e){
+    $('.firstVideo').html($(this).data('num'));
+    $(this).prevAll('li').fadeOut();
+    $('body,html').animate({
+      scrollTop: 0 // Scroll to top of body
+    }, 500);
+    loadVideo($(this).data('url'),true);
+  });
+
+  $('body').on('click', '.showPrev', function(e){
+    $vis = $('li[data-num="'+$('.firstVideo').html()+'"]');
+    $prev = $vis.prevAll().slice(0, 7);
+    $prev.fadeIn();
+    console.log($prev);
+    $('.firstVideo').html($($prev[$prev.length-1]).data('num'));
+  });
+});
+</script>
+</head>
+<body>
+<div id="playerContainer" style="">
+    <object id="player"></object>
+</div>
+<span class="firstVideo"></span><br>
+<span class="showPrev"><< show prev 7 videos</span>
+<ul id="videos2" class='videos'></ul>
+<scripto
+    type="text/javascript"
+    src="http://gdata.youtube.com/feeds/users/latenight/uploads?alt=json-in-script&callback=showMyVideos2&max-results=50">
+</scripto>
+</body>
+</html>
