@@ -579,6 +579,10 @@ $('body').on('keypress', '.task', function(e){
 	}
 });
 
+$('body').on('click', '.toggle input[type="checkbox"]', function(e) {
+  $(this).parent().toggleClass('checked', $(this).prop('checked'));
+});
+
 $('#login-form').submit(function(e) {
 	e.preventDefault();
 	ractive.login($('#username').val(), $('#password').val());
