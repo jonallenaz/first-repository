@@ -1,0 +1,40 @@
+order emails
+ar forms
+submit a recipe email
+
+
+new merchant id:
+303459
+
+diet haters guide
+468492 	863295
+
+weekly tips
+468492
+
+audio seminar
+474695 	863296
+
+free wts chapters
+474654
+
+
+
+
+<!-- Opt-in form created with 1ShoppingCart(c) 2010
+http://www.1shoppingcart.com/app/?id=172223-->
+<form name="joinform" method="post" action="https://www.mcssl.com/app/join.asp?">
+<table align="center" id="joinformtable"><tr>
+  <td>Enter Your Name:</td>
+  <td><input type="text" size="25" name="name1"></td>
+</tr><tr>
+  <td>Enter your Email:</td>
+  <td><input type="text" size="25" name="email1"></td>
+</tr><tr>
+  <td colspan="2" align="center"><input type="submit" name="submit" value="JOIN NEWSLETTER"></td>
+</tr></table>
+<input type="hidden" name="Home" value="www.goldcoastwebwiz.com">
+<input type="hidden" name="DefaultMailingAR" value="524692">
+<input type="hidden" name="MailingThankyouURL" value="www.mepstar.com">
+<input type="hidden" name="MerchantID" value="172223">
+</form>

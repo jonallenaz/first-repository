@@ -1,0 +1,8 @@
+WordPress Database
+	Name: rocksoli_wordpress
+	User: rocksoli_wp
+	Password: r0cks0l1d
+
+
+thebustillos.com
+cHs8fPSxK3210hW5
