@@ -3,14 +3,22 @@ session_start();
 header('Content-Type: application/json; charset=utf-8');
 require_once('/home3/jonandan/etc/ellatek.com/_includes_db.php');
 
-$fn = $_GET['fn'];
+$datain = array();
+foreach ($_POST as $key => $value) {
+	$datain[$key] = $value;
+}
+foreach ($_GET as $key => $value) {
+	$datain[$key] = $value;
+}
+
+$fn = $datain['fn'];
 $output = array('fn' => $fn, 'loggedin' => false);
 
 switch($fn){
 	case 'load':
-		if( isset($_SESSION['r_un']) && isset($_GET['callback']) ){
+		if( isset($_SESSION['r_un']) && isset($datain['callback']) ){
 			$r_un = $_SESSION['r_un'];
-			$callback = $_GET['callback'];
+			$callback = $datain['callback'];
 			$rows = array();
 
 			$sql = "SELECT * FROM $db_table WHERE username='$r_un'";
@@ -41,8 +49,8 @@ switch($fn){
 		break;
 
 	case 'login':
-		$r_un = $_GET['un'];
-		$r_pw = $_GET['pw'];
+		$r_un = $datain['un'];
+		$r_pw = $datain['pw'];
 		$output['message'] = '';
 
 		if($r_un && $r_pw){
@@ -78,9 +86,9 @@ switch($fn){
 		break;
 
 	case 'save':
-		if( isset($_SESSION['r_un']) && isset($_GET['r_timers']) ){
+		if( isset($_SESSION['r_un']) && isset($datain['r_timers']) ){
 			$r_un = $_SESSION['r_un'];
-			$r_timers = $_GET['r_timers'];
+			$r_timers = $datain['r_timers'];
 
 			$sql = "SELECT * FROM $db_table WHERE username='$r_un'";
 			$result = mysql_query($sql);
@@ -139,8 +147,8 @@ switch($fn){
 		$output['salt'] = $salt;
 }
 
-if(isset($_GET['callback'])){
-	print($_GET['callback'].'('.json_encode($output).')');
+if(isset($datain['callback'])){
+	print($datain['callback'].'('.json_encode($output).')');
 } else{
 	print(json_encode($output));
 }

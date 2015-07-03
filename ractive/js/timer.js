@@ -61,14 +61,18 @@ var TimerList = Ractive.extend({
 				}
 				if (data.loggedin) {
 					$('.login, .overlay').hide();
+					if(data.username == 'guest' || datain.username == 'jonallenaz'){
+						$('.hidden').removeClass('hidden');
+					}
 				} else {
 					$('.login, .overlay').show();
 					$('.login #password').html('');
+					$('#username').focus();
 					$('.login .message').hide().html(message || '').fadeIn();
 				}
 			},
 			error: function(a, b) {
-				console.log('error', a, b);
+				console.log('checkStatus error', a, b);
 			}
 		});
 	},
@@ -128,6 +132,35 @@ var TimerList = Ractive.extend({
 		return formatted_time;
 	},
 
+	loadSummary: function(){
+		$.ajax({
+			async: false,
+			dataType: 'jsonp',
+			url: WEB_ROOT + "/php/status.php",
+			data: {
+				'fn': 'load'
+			},
+			success: function(data) {
+				if (typeof data != 'object') {
+					data = JSON.parse(data);
+				}
+				var timers = JSON.parse(data.timers || '{}');
+				var summary = [];
+				if (timers.length) {
+					var json;
+					for (var t_idx = timers.length - 1; t_idx >= 0; t_idx--) {
+						json = JSON.parse(unescape(timers[t_idx].json));
+						summary.push(json);
+					}
+				}
+				ractive.set('summary', summary);
+			},
+			error: function(a, b) {
+				console.log('loadSummary error', a, b);
+			}
+		});
+	},
+
 	loadTimers: function() {
 		ractive.set('timers', []);
 		$.ajax({
@@ -172,7 +205,7 @@ var TimerList = Ractive.extend({
 				ractive.updateAllColorPicks();
 			},
 			error: function(a, b) {
-				console.log('error', a, b);
+				console.log('loadTimers error', a, b);
 			}
 		});
 	},
@@ -198,7 +231,7 @@ var TimerList = Ractive.extend({
 				}
 			},
 			error: function(a, b) {
-				console.log('error', a, b);
+				console.log('login error', a, b);
 			}
 		});
 	},
@@ -218,7 +251,7 @@ var TimerList = Ractive.extend({
 				ractive.checkStatus();
 			},
 			error: function(a, b) {
-				console.log('error', a, b);
+				console.log('logout error', a, b);
 			}
 		});
 	},
@@ -254,9 +287,10 @@ var TimerList = Ractive.extend({
 		this.set('timers.' + index + '.total_time', elapsed_time);
 		this.sumTotal(this.data.timers);
 
-		if (Math.floor(prev_elapsed_time / (SAVE_DELAY * 1000)) != Math.floor(elapsed_time / (SAVE_DELAY * 1000))) {
-			ractive.saveTimers();
-		}
+		// if (Math.floor(prev_elapsed_time / (SAVE_DELAY * 1000)) != Math.floor(elapsed_time / (SAVE_DELAY * 1000))) {
+		// 	ractive.saveTimers();
+		// }
+
 		/* update css */
 		var css_obj = getDialCSS(elapsed_time, index, false);
 		this.set('timers.' + index + '.dial_css', css_obj.dial_css);
@@ -269,12 +303,17 @@ var TimerList = Ractive.extend({
 		this.set('timers.' + index + '.second_css', css_obj.second_hand);
 	},
 
+	saveRunningTimers: $.throttle((SAVE_DELAY*1000), false, function(){
+		ractive.saveThrottled();
+		return true;
+	}),
+
 	saveTimers: $.throttle((SAVE_THROTTLE * 1000), false, function() {
 		ractive.saveThrottled();
 		return true;
 	}),
 
-	saveThrottled: function() {
+	saveThrottledTest: function() {
 		var r_timers = ractive.get('timers');
 		$.ajax({
 			async: false,
@@ -289,9 +328,37 @@ var TimerList = Ractive.extend({
 					data = JSON.parse(data);
 				}
 				ractive.checkStatus(data.message);
+				ractive.loadSummary();
 			},
 			error: function(a, b) {
-				console.log('error', a, b);
+				console.log('saveThrottled error', a, b);
+			}
+		});
+	},
+
+	saveThrottled: function() {
+		if(WEB_ROOT.substring(0,10) != window.location.href.substring(0,10)){
+			return ractive.saveThrottledTest;
+		}
+		var r_timers = ractive.get('timers');
+		$.ajax({
+			type: 'POST',
+			url: WEB_ROOT + "/php/status.php",
+			dataType: 'json',
+			data: {
+				'fn': 'save',
+				'r_timers': r_timers
+			},
+			success: function(data) {
+				if (typeof data != 'object') {
+					data = JSON.parse(data);
+				}
+				ractive.checkStatus(data.message);
+				ractive.loadSummary();
+				// console.log('saveThrottledTest success!', data);
+			},
+			error: function(a, b) {
+				console.log('saveThrottledTest error', a, b);
 			}
 		});
 	},
@@ -334,6 +401,10 @@ var TimerList = Ractive.extend({
 			document.title = current_total;
 		}
 	},
+
+	switch: $.debounce(500, true, function(num) {
+		$('#'+num).prop('checked', !$('#'+num).prop('checked'));
+	}),
 
 	updateAllColorPicks: $.throttle((300), false, function() {
 		for (var idx = 0; idx < ractive.data.timers.length; idx++) {
@@ -428,6 +499,18 @@ var TimerList = Ractive.extend({
 						ractive.set('options.sortDirection', (sort.dir == 'up' ? 'down' : 'up'));
 						ractive.set('options.selectedSortable', num);
 						break;
+					case 'summary':
+						$('.summary').toggleClass('on');
+						if($('.summary').hasClass('on')){
+							ractive.loadSummary();
+						} else{
+							ractive.set('summary', []);
+						}
+						$('.summary > span').html($('.summary').hasClass('on') ? 'v' : '^');
+						break;
+					case 'switch':
+						ractive.switch(num);
+						break;
 					default:
 						console.log(fn, num);
 				}
@@ -453,6 +536,7 @@ var TimerList = Ractive.extend({
 					this.data.timers[num].start_time = new Date();
 					this.data.timers[num].interval = setInterval(function() {
 						ractive.runTimer(num, id);
+						ractive.saveRunningTimers();
 					}, 76);
 					this.set('timers.' + num + '.display_text', 'Stop');
 				} else {
@@ -506,7 +590,8 @@ var ractive = new TimerList({
 		options: {
 			sortDirection: 'down',
 			selectedSortable: '0'
-		}
+		},
+		summary: []
 	}
 });
 ractive.checkStatus();
@@ -577,6 +662,10 @@ $('body').on('keypress', '.task', function(e){
 		ractive.fire('fn', null, 'stop_all:'+num);
 		$(this).nextAll('.start').click();
 	}
+});
+$('body').on('click', '.switch label', function(e) {
+	e.preventDefault();
+	return false;
 });
 
 $('body').on('click', '.toggle input[type="checkbox"]', function(e) {

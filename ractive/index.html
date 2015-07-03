@@ -53,9 +53,29 @@
 						<div class='{{num == options.selectedSortable ? "sel" : ""}}' on-click='fn:sort:{{num}}'>{{name}} {{{dir ? dir == 'up' ? '&#x2193;' : '&#x2191;' : ''}}}</div>
 					{{/sortable}}
 				</div>
-				<div class='btn mult'>options</div>
+				<div class='btn mult hidden'>options</div>
 				<div class='drop' style='left:20.6em; max-height:7.6em'>
-					<div><label class="toggle">multiple timers<input type="checkbox"/><b class="switch"><b class="brushed-metal"></b></b></label></div>
+					<div on-click='fn:switch:mult_timers'>
+						multiple timers
+						<span class='switch'>
+							<input id='mult_timers' class='cmn-toggle cmn-toggle-round-flat' type='checkbox'>
+							<label for='mult_timers'></label>
+						</span>
+					</div>
+					<div on-click='fn:switch:second_option'>
+						second option
+						<span class='switch'>
+							<input id='second_option' class='cmn-toggle cmn-toggle-round-flat' type='checkbox'>
+							<label for='second_option'></label>
+						</span>
+					</div>
+					<div on-click='fn:switch:third_option'>
+						third option
+						<span class='switch'>
+							<input id='third_option' class='cmn-toggle cmn-toggle-round-flat' type='checkbox'>
+							<label for='third_option'></label>
+						</span>
+					</div>
 				</div>
 				<div class='btn' on-click='fn:logout'>logout</div>
 			</div>
@@ -114,6 +134,12 @@
 			</li>
 		<!-- {{/timer}} -->
 		</section>
+		<div class='summary hidden' on-click='fn:summary'>
+			<span>^</span>
+			{{#each summary}}
+				<div style='background-color: {{bg_color}};'>{{task}} - {{display_time}}</div>
+			{{/each}}
+		</div>
 	</script>
 
 <script src='js/ractive.min.js'></script>

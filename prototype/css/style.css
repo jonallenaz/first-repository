@@ -1,0 +1,92 @@
+body{
+	padding: 0;
+	margin: 0;
+}
+.grid{
+	background: #eee;
+	padding: 1%;
+	min-height: 97%;
+}
+.grid-sizer,.grid-item {
+	width: 18%;
+	border: 1px solid #ccc;
+	border-radius: 2px;
+	background: #fff;
+	margin: 0 0 10px 0;
+	padding: 10px 10px 0px 10px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	overflow: hidden;
+	position: relative;
+	cursor: pointer;
+}
+.gutter-sizer{ width: 2%; }
+.grid-item--width2 { width: 38%; }
+.grid-item img{
+	width: 100%;
+	height: auto !important;
+	margin-bottom: 10px;
+}
+.grid-item h4{
+	margin: 0px auto 10px;
+	display: block;
+	-webkit-transition: color 0.7s ease-in-out;
+	-moz-transition: color 0.7s ease-in-out;
+	-o-transition: color 0.7s ease-in-out;
+	-ms-transition: color 0.7s ease-in-out;
+	transition: color 0.7s ease-in-out;
+}
+.grid-item .details{
+	position: absolute;
+	bottom: -100%;
+	background: rgba(255,255,255,.6);
+	padding: 10px;
+	width: 100%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	left: 0;
+	display: inline-block;
+	-webkit-transition: all 0.7s ease-in-out;
+	-moz-transition: all 0.7s ease-in-out;
+	-o-transition: all 0.7s ease-in-out;
+	-ms-transition: all 0.7s ease-in-out;
+	transition: all 0.7s ease-in-out;
+}
+.grid-item:hover > .details,
+.grid-item:focus > .details{
+	/*top: 0;*/
+	bottom: 0px;
+}
+.grid-item:hover > h4,
+.grid-item:focus > h4{
+	color: #fff;
+}
+
+
+
+@media only screen and (max-width : 1439px) {
+	.grid-sizer,.grid-item { width: 23%; }
+	.grid-item--width2 { width: 48%; }
+}
+@media only screen and (max-width : 1023px) {
+	.grid-sizer,.grid-item { width: 31%; }
+	.grid-item--width2 { width: 63%; }
+}
+@media only screen and (max-width : 767px) {
+	.grid-sizer,.grid-item { width: 47%; }
+	.grid-item--width2 { width: 98%; }
+}
+@media only screen and (orientation: landscape) {
+	.grid-sizer,.grid-item { width: 47%; }
+	.grid-item--width2 { width: 98%; }
+}
+@media only screen and (max-width : 479px) {
+	.grid-sizer,.grid-item { width: 98%; }
+	.grid-item--width2 { width: 98%; }
+}
+@media only screen and (orientation: portrait) {
+	.grid-sizer,.grid-item { width: 98%; }
+	.grid-item--width2 { width: 98%; }
+}
