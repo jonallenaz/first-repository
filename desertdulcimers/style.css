@@ -1,0 +1,114 @@
+/* CSS Document */
+body {
+	padding:10px 0 10px 0;
+	background-color: #D6A967;
+	background-image:url(images/bg.jpg);
+	background-repeat:repeat;
+	font-family: Tahoma, Verdana, "Arial Black", sans-serif; font-size: 12pt;
+	color:#000000;
+}
+
+#container{
+	width: 750px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 0px;
+	margin-bottom:0px;
+	padding:0px;
+	background-color: #FFFFFF;
+	border:1px solid #330000;
+}
+#subcontainer{
+	padding: 10px 35px 10px 35px;
+	margin: 0px 0px 0px 0px;
+}
+#navbar{
+	color: #EEEEEE;
+	margin:-3px 0px 0px 0px;
+	padding:0px;
+	height:30px;
+	border-top:0px #000000 solid;
+}
+#navbar ul{
+	width:100%;
+	list-style: none;
+	margin:0px;
+	padding:0px;
+	float:left;
+	background-image:url(images/navbar.jpg);
+	background-position: bottom;
+	background-repeat: repeat-x;
+}
+#navbar li{
+	float:left;
+	list-style:none;
+	margin:0px;
+	padding:0px;
+	font-size: 13px;
+	font-weight: bold;
+}
+#navbar li a:link,
+#navbar li a:visited {
+	color: #EEEEEE;
+	border-bottom:0px;
+	line-height:30px;
+	padding: 7px 15px 7px 15px;
+	background-image:url(images/navbar.jpg);
+	background-position: bottom;
+	background-repeat: repeat-x;
+}
+#navbar li a:hover,
+#navbar li a:active {
+	color: #FFFF99;
+	border-bottom:0px;
+	padding: 7px 15px 7px 15px;
+	background-image:url(images/navbar_over.jpg);
+	background-position: bottom;
+	background-repeat: repeat-x;
+}
+
+#footer {
+	color: #777777;
+	font-size:11px;
+	text-align:center;
+	margin:5px;
+}
+#footer a:link,
+#footer a:visited,
+#footer a:hover,
+#footer a:active { color: #777777; border-bottom:none; }
+
+h1 {
+	font-size: 26pt;
+	color: #006600;
+	text-align: center;
+	font-weight:normal;
+	font-family: Georgia, "Times New Roman", Times, serif;
+}
+h2 {
+	font-size: 18pt;
+	color: #777777;
+}
+h3 {
+	font-size: 12pt;
+	color: #006600;
+}
+
+a:link, a:visited, a:active {color: #006600; text-decoration: none; border-bottom:1px solid;}
+a:hover {color: #006600; border-bottom:1px dashed;}
+
+li { list-style: disc; }
+
+table p { margin:0; }
+
+.highlight {
+	background-color: #FFFF00;
+	font-weight: bold;
+}
+
+.strikout {
+	text-decoration:line-through;
+	font-weight:bold;
+	color:#cc0000;
+}
+

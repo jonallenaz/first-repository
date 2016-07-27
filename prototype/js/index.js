@@ -1,9 +1,9 @@
 // $(function(){
 
 	var $grid = $('.grid').masonry({
-		// columnWidth: '.grid-sizer',
+		columnWidth: '.grid-sizer',
 		itemSelector: '.grid-item',
-		gutter: '.gutter-sizer'
+		gutter: '.grid-gutter'
 	});
 	$grid.imagesLoaded().progress( function() {
 		$grid.masonry('layout');
