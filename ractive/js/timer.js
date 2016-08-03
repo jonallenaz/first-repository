@@ -61,7 +61,7 @@ var TimerList = Ractive.extend({
 				}
 				if (data.loggedin) {
 					$('.login, .overlay').hide();
-					if(data.username == 'guest' || datain.username == 'jonallenaz'){
+					if(data.username == 'jonallenaz'){
 						$('.hidden').removeClass('hidden');
 					}
 				} else {
@@ -232,6 +232,58 @@ var TimerList = Ractive.extend({
 			},
 			error: function(a, b) {
 				console.log('login error', a, b);
+			}
+		});
+	},
+
+	validateEmail: function(email) {
+		var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		return re.test(email);
+	},
+
+	register: function(un, pw, email) {
+		if(!un || !pw || !email || !this.validateEmail(email)){
+			alert('Please enter a username, password and valid email to register.');
+			return false;
+		}
+		$.ajax({
+			async: false,
+			dataType: 'jsonp',
+			url: WEB_ROOT + "/php/status.php",
+			data: {
+				'fn': 'reg_check',
+				'un': un
+			},
+			success: function(data) {
+				if (typeof data != 'object') {
+					data = JSON.parse(data);
+				}
+				if (!data.available){
+					alert('Username ' + un + ' is already taken.');
+					return false;
+				}
+				$.ajax({
+					async: false,
+					dataType: 'jsonp',
+					url: WEB_ROOT + "/php/status.php",
+					data: {
+						'fn': 'register',
+						'un': un,
+						'pw': pw,
+						'email': email
+					},
+					success: function(data) {
+						$('#register-form .link').click();
+						$('#register-form input[type="text"], #register-form input[type="password"]').val('');
+						ractive.login(un, pw);
+					},
+					error: function(a, b) {
+						console.log('register error', a, b);
+					}
+				});
+			},
+			error: function(a, b) {
+				console.log('reg_check error', a, b);
 			}
 		});
 	},
@@ -672,8 +724,24 @@ $('body').on('click', '.toggle input[type="checkbox"]', function(e) {
   $(this).parent().toggleClass('checked', $(this).prop('checked'));
 });
 
+$('body').on('click', '#login-form .link', function(e) {
+	$('#login-form').fadeOut();
+	$('#register-form').fadeOut().delay(400).fadeIn();
+});
+
+$('body').on('click', '#register-form .link', function(e) {
+	$('#register-form').fadeOut();
+	$('#login-form').fadeOut().delay(400).fadeIn();
+});
+
 $('#login-form').submit(function(e) {
 	e.preventDefault();
 	ractive.login($('#username').val(), $('#password').val());
+	return false;
+});
+
+$('#register-form').submit(function(e) {
+	e.preventDefault();
+	ractive.register($('#reg_username').val(), $('#reg_password').val(), $('#reg_email').val());
 	return false;
 });

@@ -200,7 +200,7 @@ input:focus, select:focus {
 	overflow: hidden;
 	/* center vertically */
 	position: fixed;
-	height: 6em;
+	height: 7em;
 	left: 0;
 	right: 0;
 	top: 0;
@@ -208,9 +208,12 @@ input:focus, select:focus {
 	margin: auto;
 	z-index: 400;
 }
-#login-form{
+#register-form{
+	display: none;
+}
+#login-form, #register-form{
 	position: fixed;
-	height: 6.2em;
+	height: 7.2em;
 	width: 12em;
 	left: 0;
 	right: 0;
@@ -218,13 +221,23 @@ input:focus, select:focus {
 	bottom: 0;
 	margin: auto;
 	z-index: 400;
-
+}
+#register-form{
+	top: -1.5em;
 }
 .login .timer{
 	float: none;
 	position: relative;
-	top: -4.8em;
+	top: -5.3em;
 	margin: auto;
+}
+.login .timer, .login .dial, .login .dial-bg {
+	width: 16em;
+	height: 16em;
+}
+.login .dial-bg {
+	width: 15.1em;
+	height: 15.1em;
 }
 .login .timer input{
 	position: static;
@@ -244,6 +257,16 @@ input:focus, select:focus {
 	text-align: center;
 	font-size: .8em;
 	color: #f00;
+}
+.login .link{
+	cursor: pointer;
+	font-size: .7em;
+	text-decoration: underline;
+	color: #999;
+	text-align: right;
+	display: block;
+	width: 11.3em;
+	margin: 0 auto;
 }
 
 /* main section */

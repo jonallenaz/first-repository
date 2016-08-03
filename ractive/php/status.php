@@ -132,6 +132,32 @@ switch($fn){
 		}
 		break;
 
+	case 'reg_check':
+		$r_un = $datain['un'];
+		$result = mysql_query("SELECT * FROM $db_table WHERE username='$r_un'");
+		$count = mysql_num_rows($result);
+		$output['un'] = $r_un;
+		$output['available'] = true;
+		if($count > 0) {
+			$output['available'] = false;
+		}
+		break;
+
+	case 'register':
+		$r_un = $datain['un'];
+		$r_pw = $datain['pw'];
+		$r_email = $datain['email'];
+		$t_username = stripslashes($r_un);
+		$t_password = stripslashes($r_pw);
+		$t_email = stripslashes($r_email);
+		$t_username = mysql_real_escape_string($t_username);
+		$t_password = mysql_real_escape_string($t_password);
+		$t_email = mysql_real_escape_string($t_email);
+		$t_password = md5($t_password);
+		$sql = "INSERT INTO $db_table (username, password, email) VALUES ('$t_username', '$t_password', '$t_email')";
+		$result = mysql_query($sql);
+		break;
+
 	case 'check':
 	default:
 		$loggedin = false;
