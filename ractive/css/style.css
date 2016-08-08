@@ -188,6 +188,18 @@ input:focus, select:focus {
 	height: 100%;
 	background-color: rgba(20,20,20,.7);
 }
+.loading{
+	display: none;
+	position: fixed;
+	z-index: 500;
+	width: 100px;
+	height: 100px;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	margin: auto;
+}
 .login{
 	display: block;
 	background: #222;
@@ -775,7 +787,7 @@ input.cmn-toggle-round-flat:checked + label {
 	display: none;
 }
 
-.summary{
+.summary, .users{
 	position: fixed;
 	bottom: 0;
 	right: 0;
@@ -800,11 +812,11 @@ input.cmn-toggle-round-flat:checked + label {
 	-o-transition: width 0.4s, height 0.4s;
 	transition: width 0.4s, height 0.4s;
 }
-.summary:hover{
+.summary:hover, .users:hover{
 	box-shadow: 0 0 0.5em #CCEEFF;
 	color: #CCEEFF;
 }
-.summary.on{
+.summary.on, .users.on{
 	width: 12em;
 	height: 10em;
 	/*font-size: 0.9em;*/
@@ -815,4 +827,18 @@ input.cmn-toggle-round-flat:checked + label {
 }
 .summary div{
 	text-align: right;
+}
+.users{
+	left: 0;
+	right: inherit;
+}
+.users.on{
+	width: 35em;
+	height: 20em;
+	font-size: 0.8em;
+	line-height: 1.2em;
+}
+.users td{
+	text-align: left;
+	padding: 0 0.5em;
 }
