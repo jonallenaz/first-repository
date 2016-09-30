@@ -1,0 +1,173 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset='utf-8'>
+	<title>Ractive Timer</title>
+	<link rel='stylesheet' href='css/reset.css'>
+	<link rel='stylesheet' href='css/style.css'>
+	<link rel='stylesheet' href='css/dial.css'>
+	<link rel='stylesheet' href='css/colpick.css'>
+	<link href='http://fonts.googleapis.com/css?family=Play:400,700' rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+	<div class="overlay"></div>
+	<div class="loading"><img src="images/clock.gif" alt="loading..."></div>
+	<div class="login">
+		<div class="timer">
+			<div class="dial">
+				<div class="dial-bg">
+					<form action="" id="login-form">
+						<span class="link">register (it's free)</span>
+						<input type="text" id="username" name="username" placeholder="username">
+						<input type="password" id="password" name="password" placeholder="password">
+						<input type="submit" value="submit">
+						<span class="message"></span>
+					</form>
+					<form action="" id="register-form">
+						<span class="link">login</span>
+						<input type="text" id="reg_email" name="reg_email" placeholder="email">
+						<input type="text" id="reg_username" name="reg_username" placeholder="username">
+						<input type="password" id="reg_password" name="reg_password" placeholder="password">
+						<input type="submit" value="submit">
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id='container'></div>
+	<input type="text" style="position:absolute; left:-100em;" width="1">
+
+	<!-- Ractive Template -->
+	<script id='template' type='text/ractive'>
+		<header class='{{tracked_time != "00:00:00.00" ? "tracked" : ""}}'>
+			<div class='tab one'><small>Total Time:</small><br>{{total_time}}</div>
+			<div class='tab two'><small>&nbsp;Untracked Time:</small><br>{{untracked_time}}</div>
+			<div class='tab three'>
+				<small>Tracked:</small> {{tracked_time}}<br>
+				<small>Total:</small> {{total_time}}
+			</div>
+			<div class='options'>
+				<div class='btn' on-click='fn:stop_all'>stop all</div>
+				<div class='btn mult'>remove</div>
+				<div class='drop' style='left:7.6em; max-height:7.6em'>
+					<div on-click='fn:rm_tracked'>remove tracked</div>
+					<div on-click='fn:rm_zero'>remove 0:00</div>
+					<div on-click='fn:rm_old'>remove old</div>
+					<div on-click='fn:rm_all'>remove all</div>
+				</div>
+				<div class='btn mult'>sort</div>
+				<div class='drop' style='left:14em; max-height:{{sortable.length * 1.9}}em'>
+					{{#sortable:num}}
+						<div class='{{num == options.selectedSortable ? "sel" : ""}}' on-click='fn:sort:{{num}}'>{{name}} {{{dir ? dir == 'up' ? '&#x2193;' : '&#x2191;' : ''}}}</div>
+					{{/sortable}}
+				</div>
+				<div class='btn mult hidden'>options</div>
+				<div class='drop' style='left:20.6em; max-height:7.6em'>
+					<div on-click='fn:switch:mult_timers'>
+						multiple timers
+						<span class='switch'>
+							<input id='mult_timers' class='cmn-toggle cmn-toggle-round-flat' type='checkbox'>
+							<label for='mult_timers'></label>
+						</span>
+					</div>
+					<div on-click='fn:switch:second_option'>
+						second option
+						<span class='switch'>
+							<input id='second_option' class='cmn-toggle cmn-toggle-round-flat' type='checkbox'>
+							<label for='second_option'></label>
+						</span>
+					</div>
+					<div on-click='fn:switch:third_option'>
+						third option
+						<span class='switch'>
+							<input id='third_option' class='cmn-toggle cmn-toggle-round-flat' type='checkbox'>
+							<label for='third_option'></label>
+						</span>
+					</div>
+				</div>
+				<div class='btn' on-click='fn:logout'>logout</div>
+			</div>
+			<div class='clear'></div>
+		</header>
+		<section>
+			<span class='add' on-click='fn:add'>+</span>
+			<ul proxy-sortable='sort-items'>
+			{{#each timers : num}}
+				{{>timer}}
+			{{/each}}
+			</ul>
+		<!-- {{>timer}} -->
+			<li decorator='sortable' class='timer {{running}} {{tracked ? "tracked" : ""}}' data-num='{{num}}' data-id='{{id}}'>
+				<div class='dial' style='background-color: {{bg_color}};'>
+					<div class='hour-hand' style='{{hour_css}}'></div>
+					<div class='minute-hand' style='{{minute_css}}'></div>
+					<div class='second-hand' style='{{second_css}}'></div>
+					<div class='pin'></div>
+					<div class='dial-bg'>
+						<ul class='hour-numbers'>
+							<li><span>1</span></li>
+							<li><span>2</span></li>
+							<li><span>3</span></li>
+							<li><span>4</span></li>
+							<li><span>5</span></li>
+							<li><span>6</span></li>
+							<li><span>7</span></li>
+							<li><span>8</span></li>
+							<li><span>9</span></li>
+							<li><span>10</span></li>
+							<li><span>11</span></li>
+							<li><span>12</span></li>
+						</ul>
+					</div>
+					<ul class='minute-lines'>
+						<li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li>
+					</ul>
+				</dial>
+				<div class='info'>
+					<input class='digital' value='{{display_time}}'>
+					<input type='checkbox' id='tracked{{num}}' checked='{{tracked}}'/>
+					<label for='tracked{{num}}'>tracked</label>
+					<div class='close'>x</div>
+					<div class='close-label'>close</div>
+					<div class='top-input'>
+						<span class='colorpick col-{{num}}' data-num="{{num}}" style='background-color: {{bg_color}};'>
+							<span class='arrow'></span>
+						</span>
+						<span class='color-label'>color</span>
+					</div>
+					<span class='date'>{{date}}</span>
+					<span class='hours'>{{display_hours}}<small> hrs</small></span>
+					<input class='task' placeholder='project /  task' value='{{task}}'>
+					<span class='start' on-click='runTimer:{{num}}'>{{display_text}}</span>
+					<div class='details'>
+					</div>
+				</div>
+				<style>{{dial_css}}</style>
+			</li>
+		<!-- {{/timer}} -->
+		</section>
+		<div class='summary hidden' on-click='fn:summary'>
+			<span>^</span>
+			{{#each summary}}
+				<div style='background-color: {{bg_color}};'>{{task}} - {{display_time}}</div>
+			{{/each}}
+		</div>
+		<div class='users hidden'>
+			<span on-click='fn:users'>^</span>
+			<table>
+			{{#each users}}
+				<tr><td>{{ID}}</td><td class="admin" data-admin="{{password}}">{{username}}</td><td>{{email}}</td><td>{{login_date}}</td></tr>
+			{{/each}}
+			</table>
+		</div>
+	</script>
+
+<script src='js/ractive.min.js'></script>
+<script src='js/ractive-decorators-sortable.js'></script>
+<script src='js/jquery-2.1.1.min.js'></script>
+<script src='js/jquery.throttle.min.js'></script>
+<script src='js/colpick.js'></script>
+<script src='js/dial.js'></script>
+<script src='js/timer.js'></script>
+</body>
