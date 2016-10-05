@@ -6,9 +6,9 @@
 	height: 5em;
 	padding: .5em;
 	border-radius: 50%;
-	float: left;
 	position: relative;
 	margin: 1em;
+	overflow: hidden;
 }
 
 .pin{
@@ -322,6 +322,7 @@
 	color: rgb(180, 180, 200);
 	color: rgba(180, 180, 200, .9);
 	color: #E0F0FF;
+	text-shadow: 0 0 0.1em #333333;
 }
 .minute-lines li {
 	position: absolute;
@@ -330,7 +331,7 @@
 	bottom: 50%;
 	width: 0px;
 	margin-left: -1px;
-	height: 54%;
+	height: 60%;
 	text-indent: 0;
 	-webkit-transform-origin: center bottom;
 	-moz-transform-origin: center bottom;

@@ -99,49 +99,33 @@
 			</ul>
 		<!-- {{>timer}} -->
 			<li decorator='sortable' class='timer {{running}} {{tracked ? "tracked" : ""}}' data-num='{{num}}' data-id='{{id}}'>
-				<div class='dial' style='background-color: {{bg_color}};'>
+
+				<div class='close'>x</div>
+
+				<!-- float right -->
+				<input class='fr digital' value='{{display_time}}'>
+				<span class='fr hours'>{{display_hours}}<small> hrs</small></span>
+				<span class='fr date'>{{date}}</span>
+
+				<!-- float left -->
+				<div class='fl dial col-{{num}}' style='background-color: {{bg_color}};' data-num="{{num}}">
 					<div class='hour-hand' style='{{hour_css}}'></div>
 					<div class='minute-hand' style='{{minute_css}}'></div>
 					<div class='second-hand' style='{{second_css}}'></div>
 					<div class='pin'></div>
 					<div class='dial-bg'>
-						<ul class='hour-numbers'>
-							<li><span>1</span></li>
-							<li><span>2</span></li>
-							<li><span>3</span></li>
-							<li><span>4</span></li>
-							<li><span>5</span></li>
-							<li><span>6</span></li>
-							<li><span>7</span></li>
-							<li><span>8</span></li>
-							<li><span>9</span></li>
-							<li><span>10</span></li>
-							<li><span>11</span></li>
-							<li><span>12</span></li>
+						<ul class='minute-lines'>
+							<li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li>
 						</ul>
 					</div>
-					<ul class='minute-lines'>
-						<li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li>
-					</ul>
 				</dial>
-				<div class='info'>
-					<input class='digital' value='{{display_time}}'>
-					<input type='checkbox' id='tracked{{num}}' checked='{{tracked}}'/>
-					<label for='tracked{{num}}'>tracked</label>
-					<div class='close'>x</div>
-					<div class='close-label'>close</div>
-					<div class='top-input'>
-						<span class='colorpick col-{{num}}' data-num="{{num}}" style='background-color: {{bg_color}};'>
-							<span class='arrow'></span>
-						</span>
-						<span class='color-label'>color</span>
-					</div>
-					<span class='date'>{{date}}</span>
-					<span class='hours'>{{display_hours}}<small> hrs</small></span>
-					<input class='task' placeholder='project /  task' value='{{task}}'>
-					<span class='start' on-click='runTimer:{{num}}'>{{display_text}}</span>
-					<div class='details'>
-					</div>
+				<span class='fl start' on-click='runTimer:{{num}}'></span>
+				<input class='fl task' placeholder='project /  task' value='{{task}}'>
+				<input class='fl' type='checkbox' id='tracked{{num}}' checked='{{tracked}}'/>
+				<label for='tracked{{num}}'>tracked</label>
+
+				<!-- details -->
+				<div class='details'>
 				</div>
 				<style>{{dial_css}}</style>
 			</li>
