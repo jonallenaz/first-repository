@@ -876,3 +876,18 @@ $('#register-form').submit(function(e) {
 	ractive.register($('#reg_username').val(), $('#reg_password').val(), $('#reg_email').val());
 	return false;
 });
+
+function onBlur() {
+	ractive.checkStatus();
+}
+function onFocus(){
+	ractive.checkStatus();
+}
+
+if (/*@cc_on!@*/false) { // check for Internet Explorer
+	document.onfocusin = onFocus;
+	document.onfocusout = onBlur;
+} else {
+	window.onfocus = onFocus;
+	window.onblur = onBlur;
+}
