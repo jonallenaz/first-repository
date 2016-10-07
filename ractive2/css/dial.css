@@ -85,17 +85,17 @@
 	margin-bottom: -1px;
 	background: #990000;
 	-moz-border-radius: 1px;
-	border-radius: 1em;
-	font-size: 1em;
+	border-radius: 1px;
+	font-size: 1px;
 	line-height: 0;
 	color: #990000;
 	text-indent: -65px;
-	-webkit-transform-origin: center 2.6em;
-	-moz-transform-origin: center 2.6em;
-	-o-transform-origin: center 2.6em;
-	-ms-transform-origin: center 2.6em;
-	transform-origin: center 2.6em;
-	-webkit-box-shadow: 0 0 1.5em #ccc;
+	-webkit-transform-origin: center 25px;
+	-moz-transform-origin: center 25px;
+	-o-transform-origin: center 25px;
+	-ms-transform-origin: center 25px;
+	transform-origin: center 25px;
+	-webkit-box-shadow: 0 0 10px #ccc;
 	/*box-shadow: 0 0 .5em #ccc;*/
 }
 

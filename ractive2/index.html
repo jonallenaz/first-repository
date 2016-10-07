@@ -100,6 +100,7 @@
 			</ul>
 		<!-- {{>timer}} -->
 			<li decorator='sortable' class='flex timer {{running}} {{tracked ? "tracked" : ""}}' data-num='{{num}}' data-id='{{id}}'>
+				<div class='close'>x</div>
 				<div class='dial col-{{num}}' style='background-color: {{bg_color}};' data-num="{{num}}">
 					<div class='hour-hand' style='{{hour_css}}'></div>
 					<div class='minute-hand' style='{{minute_css}}'></div>
@@ -111,7 +112,7 @@
 						</ul>
 					</div>
 				</dial>
-				<span class='start' on-click='runTimer:{{num}}'></span>
+				<div class='start' on-click='runTimer:{{num}}'><span></span></div>
 				<input class='task' placeholder='project /  task' value='{{task}}'>
 				<div class='tracked'>
 					<input class='' type='checkbox' id='tracked{{num}}' checked='{{tracked}}'/>
@@ -120,7 +121,6 @@
 				<span class='date'>{{date}}</span>
 				<span class='hours'>{{display_hours}}<small> hrs</small></span>
 				<input class='digital' value='{{display_time}}'>
-				<div class='close'>x</div>
 
 				<!-- details -->
 				<div class='details'>
