@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset='utf-8'>
-	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 	<title>Ractive Timer</title>
 	<link rel='stylesheet' href='css/reset.css'>
 	<link rel='stylesheet' href='css/style.css'>
@@ -12,30 +12,26 @@
 </head>
 
 <body>
-	<div class="overlay"></div>
-	<div class="loading"><img src="images/clock.gif" alt="loading..."></div>
-	<div class="login">
-		<div class="timer">
-			<div class="dial">
-				<div class="dial-bg">
-					<form action="" id="login-form">
-						<span class="link">register (it's free)</span>
-						<input type="text" id="username" name="username" placeholder="username">
-						<input type="password" id="password" name="password" placeholder="password">
-						<input type="submit" value="submit">
-						<span class="message"></span>
-					</form>
-					<form action="" id="register-form">
-						<span class="link">login</span>
-						<input type="text" id="reg_email" name="reg_email" placeholder="email">
-						<input type="text" id="reg_username" name="reg_username" placeholder="username">
-						<input type="password" id="reg_password" name="reg_password" placeholder="password">
-						<input type="submit" value="submit">
-					</form>
-				</div>
-			</div>
+	<div class="overlay">
+		<div class="login">
+			<div class="login-circle"><span></span></div>
+			<form action="" id="login-form">
+				<span class="link">register (it's free)</span>
+				<input type="text" id="username" name="username" placeholder="username">
+				<input type="password" id="password" name="password" placeholder="password">
+				<input type="submit" value="submit">
+				<span class="message"></span>
+			</form>
+			<form action="" id="register-form">
+				<span class="link">login</span>
+				<input type="text" id="reg_email" name="reg_email" placeholder="email">
+				<input type="text" id="reg_username" name="reg_username" placeholder="username">
+				<input type="password" id="reg_password" name="reg_password" placeholder="password">
+				<input type="submit" value="submit">
+			</form>
 		</div>
 	</div>
+	<div class="loading"><img src="images/clock.gif" alt="loading..."></div>
 	<div id='container'></div>
 	<input type="text" style="position:absolute; left:-100em;" width="1">
 
@@ -92,11 +88,11 @@
 			<div class='clear'></div>
 		</header>
 		<section>
-			<span class='add' on-click='fn:add'>+</span>
 			<ul proxy-sortable='sort-items'>
-			{{#each timers : num}}
-				{{>timer}}
-			{{/each}}
+				<li class='add'><span on-click='fn:add'>+</span></li>
+				{{#each timers : num}}
+					{{>timer}}
+				{{/each}}
 			</ul>
 		<!-- {{>timer}} -->
 			<li decorator='sortable' class='flex timer {{running}} {{tracked ? "tracked" : ""}}' data-num='{{num}}' data-id='{{id}}'>
@@ -108,7 +104,18 @@
 					<div class='pin'></div>
 					<div class='dial-bg'>
 						<ul class='minute-lines'>
-							<li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li> <li>|</li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
 						</ul>
 					</div>
 				</dial>

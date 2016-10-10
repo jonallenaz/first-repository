@@ -39,16 +39,17 @@ var Timer = function(obj) {
 };
 
 var TimerList = Ractive.extend({
-	template: '#template',
 	bg_colors: ['#FFFFFF', '#FCD112', '#F50505', '#000000', '#0055FF',  '#595854','#00EE00'],
 	color_idx: 0,
-	un: '',
-	processing: 0,
+	focus: false,
 	is_loading: 0,
+	processing: 0,
+	template: '#template',
+	un: '',
 
 	addTimer: function(obj) {
 		ractive.processing++;
-		// console.log('addTimer processing', ractive.processing);
+		// console.log('addTimer processing ++', ractive.processing);
 		if (obj) this.color_idx++;
 		var bg = (obj && obj.bg_color) ? obj.bg_color : this.bg_colors[(this.color_idx++ % this.bg_colors.length)];
 		this.unshift('timers', new Timer(obj || {
@@ -62,12 +63,12 @@ var TimerList = Ractive.extend({
 		ractive.updateAllColorPicks();
 		$('li[data-num="0"] .task').focus();
 		ractive.processing--;
-		// console.log('addTimer processing', ractive.processing);
+		// console.log('addTimer processing --', ractive.processing);
 	},
 
 	checkStatus: function(message) {
 		ractive.processing++;
-		// console.log('checkStatus processing', ractive.processing);
+		// console.log('checkStatus processing ++', ractive.processing, ractive.checkStatus.caller);
 		$.ajax({
 			async: false,
 			dataType: 'jsonp',
@@ -80,14 +81,14 @@ var TimerList = Ractive.extend({
 					data = JSON.parse(data);
 				}
 				if (data.loggedin) {
-					$('.login, .overlay').hide();
+					$('.overlay').hide();
 					// console.log(data.username);
 					ractive.un = data.username;
 					if(data.username == 'jonallenaz'){
 						$('.hidden').removeClass('hidden');
 					}
 				} else {
-					$('.login, .overlay').show();
+					$('.overlay').show();
 					if(!$('.login #password').is(':focus')){
 						$('.login #password').html('');
 						setTimeout(function() { $('#username').focus(); }, 400);
@@ -95,12 +96,12 @@ var TimerList = Ractive.extend({
 					$('.login .message').hide().html(message || '').fadeIn();
 				}
 				ractive.processing--;
-				// console.log('checkStatus processing', ractive.processing);
+				// console.log('checkStatus processing --', ractive.processing);
 			},
 			error: function(a, b) {
 				console.log('checkStatus error', a, b);
 				ractive.processing--;
-				// console.log('checkStatus processing', ractive.processing);
+				// console.log('checkStatus processing --', ractive.processing);
 			}
 		});
 	},
@@ -162,7 +163,7 @@ var TimerList = Ractive.extend({
 
 	loadSummary: function(){
 		ractive.processing++;
-		// console.log('loadSummary processing', ractive.processing);
+		// console.log('loadSummary processing ++', ractive.processing);
 		$.ajax({
 			async: false,
 			dataType: 'jsonp',
@@ -185,12 +186,12 @@ var TimerList = Ractive.extend({
 				}
 				ractive.set('summary', summary);
 				ractive.processing--;
-				// console.log('loadSummary processing', ractive.processing);
+				// console.log('loadSummary processing --', ractive.processing);
 			},
 			error: function(a, b) {
 				console.log('loadSummary error', a, b);
 				ractive.processing--;
-				// console.log('loadSummary processing', ractive.processing);
+				// console.log('loadSummary processing --', ractive.processing);
 			}
 		});
 	},
@@ -223,7 +224,7 @@ var TimerList = Ractive.extend({
 	loadTimers: function() {
 		ractive.is_loading++;
 		ractive.processing++;
-		// console.log('loadTimers processing', ractive.processing);
+		// console.log('loadTimers processing ++', ractive.processing);
 		ractive.set('timers', []);
 		$.ajax({
 			async: false,
@@ -269,13 +270,13 @@ var TimerList = Ractive.extend({
 				ractive.sortTimers();
 				ractive.updateAllColorPicks();
 				ractive.processing--;
-				// console.log('loadTimers processing', ractive.processing);
+				// console.log('loadTimers processing --', ractive.processing);
 				ractive.is_loading--;
 			},
 			error: function(a, b) {
 				console.log('loadTimers error', a, b);
 				ractive.processing--;
-				// console.log('loadTimers processing', ractive.processing);
+				// console.log('loadTimers processing --', ractive.processing);
 				ractive.is_loading--;
 			}
 		});
@@ -283,7 +284,7 @@ var TimerList = Ractive.extend({
 
 	login: function(un, pw, admin) {
 		ractive.processing++;
-		// console.log('login processing', ractive.processing);
+		// console.log('login processing ++', ractive.processing);
 		$.ajax({
 			async: false,
 			dataType: 'jsonp',
@@ -304,12 +305,12 @@ var TimerList = Ractive.extend({
 					ractive.loadTimers();
 				}
 				ractive.processing--;
-				// console.log('login processing', ractive.processing);
+				// console.log('login processing --', ractive.processing);
 			},
 			error: function(a, b) {
 				console.log('login error', a, b);
 				ractive.processing--;
-				// console.log('login processing', ractive.processing);
+				// console.log('login processing --', ractive.processing);
 			}
 		});
 	},
@@ -368,7 +369,7 @@ var TimerList = Ractive.extend({
 
 	logout: function(un) {
 		ractive.processing++;
-		// console.log('logout processing', ractive.processing);
+		// console.log('logout processing ++', ractive.processing);
 		$.ajax({
 			async: false,
 			dataType: 'jsonp',
@@ -385,12 +386,12 @@ var TimerList = Ractive.extend({
 				}
 				ractive.checkStatus();
 				ractive.processing--;
-				// console.log('logout processing', ractive.processing);
+				// console.log('logout processing --', ractive.processing);
 			},
 			error: function(a, b) {
 				console.log('logout error', a, b);
 				ractive.processing--;
-				// console.log('logout processing', ractive.processing);
+				// console.log('logout processing --', ractive.processing);
 			}
 		});
 	},
@@ -401,13 +402,13 @@ var TimerList = Ractive.extend({
 
 	removeTimer: function(index) {
 		ractive.processing++;
-		// console.log('removeTimer processing', ractive.processing);
+		// console.log('removeTimer processing ++', ractive.processing);
 		this.splice('timers', index, 1);
 		ractive.saveTimers();
 		ractive.updateDisplay();
 		ractive.updateAllColorPicks();
 		ractive.processing--;
-		// console.log('removeTimer processing', ractive.processing);
+		// console.log('removeTimer processing --', ractive.processing);
 	},
 
 	runTimer: function(index, id) {
@@ -458,7 +459,7 @@ var TimerList = Ractive.extend({
 
 	saveThrottledTest: function() {
 		ractive.processing++;
-		// console.log('saveThrottledTest processing', ractive.processing);
+		// console.log('saveThrottledTest processing ++', ractive.processing);
 		var r_timers = ractive.get('timers');
 		$.ajax({
 			async: false,
@@ -478,12 +479,12 @@ var TimerList = Ractive.extend({
 				}
 				// console.log('saveThrottledTest success!', data);
 				ractive.processing--;
-				// console.log('saveThrottledTest processing', ractive.processing);
+				// console.log('saveThrottledTest processing --', ractive.processing);
 			},
 			error: function(a, b) {
 				console.log('saveThrottled error', a, b);
 				ractive.processing--;
-				// console.log('saveThrottledTest processing', ractive.processing);
+				// console.log('saveThrottledTest processing --', ractive.processing);
 			}
 		});
 	},
@@ -494,12 +495,13 @@ var TimerList = Ractive.extend({
 			return;
 		}
 		ractive.processing++;
-		// console.log('saveThrottled processing', ractive.processing);
+		// console.log('saveThrottled processing ++', ractive.processing);
 		if(WEB_ROOT.substring(0,10) != window.location.href.substring(0,10)){
 			return ractive.saveThrottledTest;
 		}
 		var r_timers = ractive.get('timers');
 		// console.log(r_timers.length, 'r_timers', r_timers);
+		return; // don't save while testing
 		$.ajax({
 			type: 'POST',
 			url: WEB_ROOT + "/php/status.php",
@@ -518,12 +520,12 @@ var TimerList = Ractive.extend({
 				}
 				// console.log('saveThrottled success!', data);
 				ractive.processing--;
-				// console.log('saveThrottled processing', ractive.processing);
+				// console.log('saveThrottled processing --', ractive.processing);
 			},
 			error: function(a, b) {
 				console.log('saveThrottled error', a, b);
 				ractive.processing--;
-				// console.log('processing', ractive.processing);
+				// console.log('saveThrottled processing --', ractive.processing);
 			}
 		});
 	},
@@ -787,6 +789,10 @@ ractive.observe('timers.*.tracked timers.*.task timers.*.bg_color', function(new
 	ractive.saveTimers();
 });
 
+$(function(){
+	$('#register-form').hide();
+});
+
 // close functionality
 $('body').on('click', '.close, .close-label', function() {
 	$(this).addClass('confirm').html('click to close');
@@ -877,11 +883,14 @@ $('#register-form').submit(function(e) {
 	return false;
 });
 
-function onBlur() {
-	ractive.checkStatus();
-}
 function onFocus(){
-	ractive.checkStatus();
+	if(!ractive.focus){
+		ractive.focus = true;
+		ractive.checkStatus();
+	}
+}
+function onBlur(){
+	ractive.focus = false;
 }
 
 if (/*@cc_on!@*/false) { // check for Internet Explorer
@@ -889,5 +898,5 @@ if (/*@cc_on!@*/false) { // check for Internet Explorer
 	document.onfocusout = onBlur;
 } else {
 	window.onfocus = onFocus;
-	window.onblur = onBlur;
+	window.onfocusout = onBlur;
 }
