@@ -37,13 +37,7 @@
 
 	<!-- Ractive Template -->
 	<script id='template' type='text/ractive'>
-		<header class='{{tracked_time != "00:00:00.00" ? "tracked" : ""}}'>
-			<div class='tab one'><small>Total Time:</small><br>{{total_time}}</div>
-			<div class='tab two'><small>&nbsp;Untracked Time:</small><br>{{untracked_time}}</div>
-			<div class='tab three'>
-				<small>Tracked:</small> {{tracked_time}}<br>
-				<small>Total:</small> {{total_time}}
-			</div>
+		<header class='open {{tracked_time != "00:00:00.00" ? " show-tracked" : ""}}'>
 			<div class='options'>
 				<div class='btn' on-click='fn:stop_all'>stop all</div>
 				<div class='btn mult'>remove</div>
@@ -85,7 +79,17 @@
 				</div>
 				<div class='btn' on-click='fn:logout'>logout</div>
 			</div>
-			<div class='clear'></div>
+			<div class='menu'>
+				<div class='bar1'></div>
+				<div class='bar2'></div>
+				<div class='bar3'></div>
+			</div>
+			<div class='total'><small>Total Time:</small><br>{{total_time}}</div>
+			<div class='untracked'><small>Untracked Time:</small><br>{{untracked_time}}</div>
+			<div class='total-tracked'>
+				<small>Tracked:</small> {{tracked_time}}<br>
+				<small>Total:</small> {{total_time}}
+			</div>
 		</header>
 		<section>
 			<ul proxy-sortable='sort-items'>
