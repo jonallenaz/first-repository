@@ -297,13 +297,13 @@ section{
 }
 .clear{ clear: both; }
 section > ul > li{
-	width: 70%;
+	width: 80%;
 	margin: .5em auto;
 	min-width: 320px;
 	max-width: 1200px;
 }
 .timer{
-	min-height: 75px;
+	min-height: 65px;
 	background: rgb(20,20,20);
 	background: rgba(0,0,0,.4);
 	color: #ccc;
@@ -315,6 +315,7 @@ section > ul > li{
 .timer.tracked {
 	opacity: 0.6;
 	background: #333;
+	margin: 8px auto;
 }
 .timer input{
 	padding: 5px 10px;
@@ -330,7 +331,7 @@ section > ul > li{
 /* Timer Flex Layout */
 .flex{
 	display: flex;
-	flex-wrap: wrap;
+	flex-flow: row wrap;
 	justify-content: space-around;
 	align-items: center;
 	align-content: flex-start;
@@ -351,17 +352,18 @@ section > ul > li{
 }
 .start{
 	order: 2;
+	flex: 0 0 25px;
 	width: 25px;
 	margin-left:80px;
 }
 input.digital{
 	order: 3;
+	flex: 1 1 44%;
 	font-size: 20px;
 	width: 110px;
 	text-align: center;
 	margin: 10px;
 	margin-right: 40px;
-	flex: 1 auto;
 }
 .task{
 	order: 30;
@@ -370,17 +372,19 @@ input.digital{
 }
 .tracked{
 	order: 20;
+	/*flex: 1 auto;*/
 	margin-left: 50px;
 }
 .date{
 	order: 21;
+	/*flex: 1 auto;*/
 	font-weight: bold;
 	text-align: center;
-	width: 4em;
 	text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 .hours{
 	order: 22;
+	/*flex: 1 auto;*/
 	font-weight: bold;
 	text-align: center;
 	text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
@@ -405,10 +409,16 @@ input.digital{
 	width: 100px;
 	text-align: right;
 }
-@media screen and (min-width:540px) {
+@media screen and (min-width:600px) {
+	input.digital{
+		flex: 1 1 60%;
+	}
+}
+@media screen and (min-width:700px) {
 	.dial{
+		margin: 5px 10px;
 		position: inherit;
-		top: 4px;
+		top: 0;
 	}
 	.start{
 		margin-left: 10px;
@@ -424,14 +434,14 @@ input.digital{
 		margin-right: 10px;
 	}
 	.task{
-		flex: 4 auto;
+		flex: 4 100%;
 	}
 	.tracked, .date, .hours{
 		flow: 1 auto;
 		margin: 0 10px;
 	}
 }
-@media screen and (min-width:1000px) {
+@media screen and (min-width:900px) {
 	.dial{
 		top: 0;
 	}
@@ -441,7 +451,7 @@ input.digital{
 	}
 	.task{
 		order: 3;
-		flex: 4 auto;
+		flex: 4 1 20%;
 	}
 }
 
