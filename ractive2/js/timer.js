@@ -799,6 +799,11 @@ $(function(){
 	$('#register-form').hide();
 });
 
+// menu
+$('body').on('click', '.menu', function(e){
+	$('header').toggleClass('open');
+});
+
 // close functionality
 $('body').on('click', '.close, .close-label', function() {
 	$(this).addClass('confirm').html('click to close');
