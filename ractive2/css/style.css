@@ -36,6 +36,7 @@ header{
 .show-tracked .total-tracked {
 	display: block;
 	opacity: .6;
+	text-align: right;
 }
 header small{
 	font-size: 10px;
@@ -47,7 +48,7 @@ header small{
 	display: inline-block;
 	cursor: pointer;
 	margin: 10px;
-	transition: margin .3s;
+	transition: margin .3s ease-in-out .1s;
 }
 .open .menu{
 	margin-left: 110px;
@@ -58,8 +59,12 @@ header small{
 	height: 3px;
 	background-color: #999;
 	margin: 4px 0;
-	transition: 0.4s;
+	transition: transform 0.3s, background-color 0s;
 }
+.menu:hover .bar1, .menu:hover .bar2, .menu:hover .bar3 {
+	background-color: #ccc;
+}
+
 /* Rotate first bar */
 .open .bar1 {
 	-webkit-transform: rotate(-45deg) translate(-4px, 4px) ;
@@ -82,7 +87,7 @@ header small{
 	left: -100px;
 	top: 0;
 	background: #222;
-	transition: left .3s;
+	transition: left .3s ease-in-out .1s;
 }
 .open .options{
 	left: 0;

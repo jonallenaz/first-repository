@@ -47,7 +47,7 @@ var TimerList = Ractive.extend({
 	template: '#template',
 	un: '',
 
-	addTimer: function(obj) {
+	addTimer: function(obj, loading) {
 		ractive.processing++;
 		// console.log('addTimer processing ++', ractive.processing);
 		if (obj) this.color_idx++;
@@ -67,7 +67,9 @@ var TimerList = Ractive.extend({
 		}
 		ractive.saveTimers();
 		ractive.updateAllColorPicks();
-		$('li[data-num="0"] .task').focus();
+		if(!loading){
+			$('li[data-num="0"] .task').focus();
+		}
 		ractive.processing--;
 		// console.log('addTimer processing --', ractive.processing);
 	},
@@ -262,11 +264,11 @@ var TimerList = Ractive.extend({
 								'id': json.timer_key,
 								'date': json.date,
 								'tracked': json.tracked.toString()
-							});
+							}, true);
 						} else if (timers[t_idx].hasOwnProperty('json')) {
 							// load new timers
 							json = JSON.parse(unescape(timers[t_idx].json));
-							ractive.addTimer(json);
+							ractive.addTimer(json, true);
 						}
 					}
 				} else {
@@ -801,7 +803,10 @@ $(function(){
 
 // menu
 $('body').on('click', '.menu', function(e){
-	$('header').toggleClass('open');
+	$('body').toggleClass('open');
+});
+$('body').on('click', 'section', function(e){
+	$('body').removeClass('open');
 });
 
 // close functionality
@@ -847,9 +852,8 @@ $('body').on('mouseout', '.drop', function(e) {
 	$(this).removeClass('on');
 });
 $('body').on('focus', '.timer input', function(e){
-	var num = $(this).closest('li').data('num');
+	var num = e.target.parentNode.dataset.num;
 	var color = ractive.get('timers.' + num + '.bg_color');
-	console.log(num,color);
 	$(this).css({"box-shadow":"inset 0 0 8px "+color});
 });
 $('body').on('blur', '.timer input', function(e){
