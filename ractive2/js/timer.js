@@ -52,7 +52,7 @@ var TimerList = Ractive.extend({
 		// console.log('addTimer processing ++', ractive.processing);
 		if (obj) this.color_idx++;
 		var bg = (obj && obj.bg_color) ? obj.bg_color : this.bg_colors[(this.color_idx++ % this.bg_colors.length)];
-		var today = obj ? (new Date(obj.date)) : new Date();
+		var today = obj ? (new Date(obj.date + '/' + new Date().getFullYear())) : new Date();
 		var date = (today.getMonth() + 1 < 10) ? '0' + (today.getMonth() + 1) : (today.getMonth() + 1);
 		date += '/' + (today.getDate() < 10 ? '0' + today.getDate() : today.getDate());
 		if(obj){
