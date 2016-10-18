@@ -616,7 +616,7 @@ var TimerList = Ractive.extend({
 		ractive.saveTimers();
 	},
 
-	init: function(options) {
+	onrender: function(options) {
 		var self = this;
 		this.on({
 			fn: function(event, arg) {

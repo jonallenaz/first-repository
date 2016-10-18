@@ -77,7 +77,7 @@
 					{{>timer}}
 				{{/each}}
 			</ul>
-		<!-- {{>timer}} -->
+		{{#partial timer}}
 			<li decorator='sortable' class='flex timer {{running}} {{tracked ? "tracked" : ""}}' data-num='{{num}}' data-id='{{id}}'>
 				<div class='close'>x</div>
 				<div class='dial col-{{num}}' style='background-color: {{bg_color}};' data-num="{{num}}">
@@ -120,7 +120,7 @@
 				</div>
 				<style>{{dial_css}}</style>
 			</li>
-		<!-- {{/timer}} -->
+		{{/partial}}
 		</section>
 		<div class='summary hidden' on-click='fn:summary'>
 			<span>^</span>
@@ -138,11 +138,11 @@
 		</div>
 	</script>
 
-<script src='js/ractive.min.js'></script>
+<script src='js/ractive.js'></script>
 <script src='js/ractive-decorators-sortable.js'></script>
 <script src='js/jquery-2.1.1.min.js'></script>
 <script src='js/jquery.throttle.min.js'></script>
 <script src='js/colpick.js'></script>
 <script src='js/dial.js'></script>
-<script src='js/timer.js'></script>
+<script src='js/timer-new.js'></script>
 </body>
