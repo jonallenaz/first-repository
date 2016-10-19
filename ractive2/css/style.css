@@ -53,6 +53,9 @@ header small{
 .open .menu{
 	margin-left: 130px;
 }
+.open section{
+	margin-left: 120px;
+}
 
 .menu .bar1, .menu .bar2, .menu .bar3 {
 	width: 20px;
@@ -281,6 +284,7 @@ input:focus, select:focus, div:focus {
 /* main section */
 section{
 	margin-top: 4.5em;
+	transition: margin .3s ease-in-out .1s;
 }
 .clear{ clear: both; }
 section > ul > li{
@@ -297,7 +301,7 @@ section > ul > li{
 	border-radius: 4px;
 }
 .timer.true{
-	box-shadow:0 0 2em rgba(224,240,255,0.5);
+	box-shadow:0 0 15px rgba(224,240,255,0.5);
 }
 .timer.tracked {
 	opacity: 0.6;
@@ -417,6 +421,9 @@ input.digital{
 	width: 100px;
 	text-align: right;
 }
+li.droptarget{
+	min-height: 130px;
+}
 @media screen and (min-width:600px) {
 	input.digital{
 		flex: 1 1 60%;
@@ -424,7 +431,7 @@ input.digital{
 }
 @media screen and (min-width:700px) {
 	.dial{
-		margin: 5px 10px;
+		margin: 9px 10px;
 		position: inherit;
 		top: 0;
 	}
@@ -448,6 +455,9 @@ input.digital{
 		flow: 1 auto;
 		margin: 0 10px;
 	}
+	li.droptarget{
+		min-height: 115px;
+	}
 }
 @media screen and (min-width:900px) {
 	.dial{
@@ -460,6 +470,9 @@ input.digital{
 	.task{
 		order: 3;
 		flex: 4 1 20%;
+	}
+	li.droptarget{
+		min-height: 66px;
 	}
 }
 

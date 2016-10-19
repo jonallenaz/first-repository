@@ -421,10 +421,10 @@ var TimerList = Ractive.extend({
 	},
 
 	runTimer: function(index, id) {
-		if (this.data.timers[index].id != id) {
+		if (this.get('timers.' + index + '.id') != id) {
 			var new_num, old_running;
-			for (var idx = this.data.timers.length - 1; idx >= 0; idx--) {
-				if (this.data.timers[idx].id == id) {
+			for (var idx = this.get('timers').length - 1; idx >= 0; idx--) {
+				if (this.get('timers.' + idx + '.id') == id) {
 					new_num = idx;
 					this.fire('runTimer', idx, idx);
 					this.fire('runTimer', idx, idx);
@@ -434,11 +434,11 @@ var TimerList = Ractive.extend({
 			return;
 		}
 		var prev_elapsed_time = this.get('timers.' + index + '.total_time');
-		var elapsed_time = new Date() - this.data.timers[index].start_time + this.data.timers[index].elapsed_time;
+		var elapsed_time = new Date() - this.get('timers.' + index + '.start_time') + this.get('timers.' + index + '.elapsed_time');
 		this.set('timers.' + index + '.display_time', this.formatTime(elapsed_time));
 		this.set('timers.' + index + '.display_hours', this.formatHours(elapsed_time));
 		this.set('timers.' + index + '.total_time', elapsed_time);
-		this.sumTotal(this.data.timers);
+		this.sumTotal(this.get('timers'));
 
 		// if (Math.floor(prev_elapsed_time / (SAVE_DELAY * 1000)) != Math.floor(elapsed_time / (SAVE_DELAY * 1000))) {
 		// 	ractive.saveTimers();
@@ -510,7 +510,7 @@ var TimerList = Ractive.extend({
 		}
 		var r_timers = ractive.get('timers');
 		// console.log(r_timers.length, 'r_timers', r_timers);
-		// return; // don't save while testing
+		return; // don't save while testing
 		$.ajax({
 			type: 'POST',
 			url: WEB_ROOT + "/php/status.php",
@@ -540,16 +540,18 @@ var TimerList = Ractive.extend({
 	},
 
 	sortTimers: function() {
-		var num = ractive.data.options.selectedSortable;
-		var column = ractive.data.sortable[num].id;
-		var direction = ractive.data.options.sortDirection;
+		var num = ractive.get('options.selectedSortable');
+		var column = ractive.get('sortable.'+num+'.id');
+		var direction = ractive.get('options.sortDirection');
 		if (column) {
-			ractive.data.timers.sort(function(a, b) {
+			var array = ractive.get('timers');
+			array.sort(function(a, b) {
 				if (a[column] == b[column]) {
 					return a.id < b.id ? (direction == 'up' ? -1 : 1) : (direction == 'up' ? 1 : -1);
 				}
 				return a[column] < b[column] ? (direction == 'up' ? -1 : 1) : (direction == 'up' ? 1 : -1);
 			});
+			ractive.set('timers', array);
 		}
 	},
 
@@ -583,7 +585,7 @@ var TimerList = Ractive.extend({
 	}),
 
 	updateAllColorPicks: $.throttle((300), false, function() {
-		for (var idx = 0; idx < ractive.data.timers.length; idx++) {
+		for (var idx = 0; idx < ractive.get('timers').length; idx++) {
 			this.updateColorPick(idx);
 		}
 	}),
@@ -602,9 +604,9 @@ var TimerList = Ractive.extend({
 	},
 
 	updateDisplay: function() {
-		this.sumTotal(this.data.timers);
-		for (var num = this.data.timers.length - 1; num >= 0; num--) {
-			var id = this.data.timers[num].id;
+		this.sumTotal(this.get('timers'));
+		for (var num = this.get('timers').length - 1; num >= 0; num--) {
+			var id = this.get('timers.'+num+'.id');
 			var elapsed_time = this.get('timers.' + num + '.total_time');
 			/* update css */
 			var css_obj = getDialCSS(elapsed_time, num, false);
@@ -616,7 +618,7 @@ var TimerList = Ractive.extend({
 		ractive.saveTimers();
 	},
 
-	init: function(options) {
+	onrender: function(options) {
 		var self = this;
 		this.on({
 			fn: function(event, arg) {
@@ -634,23 +636,22 @@ var TimerList = Ractive.extend({
 						this.addTimer();
 						break;
 					case 'stop_all':
-						for (idx = this.data.timers.length - 1; idx >= 0; idx--) {
-							// console.log(this.data.timers[idx].running , idx , num);
-							if (this.data.timers[idx].running && idx != num) {
+						for (idx = this.get('timers').length - 1; idx >= 0; idx--) {
+							if (this.get('timers.' + idx + '.running') && idx != num) {
 								this.fire('runTimer', idx, idx);
 							}
 						}
 						break;
 					case 'rm_tracked':
-						for (idx = this.data.timers.length - 1; idx >= 0; idx--) {
-							if (this.data.timers[idx].tracked) {
+						for (idx = this.get('timers').length - 1; idx >= 0; idx--) {
+							if (this.get('timers.' + idx + '.tracked')) {
 								ractive.removeTimer(idx);
 							}
 						}
 						break;
 					case 'rm_zero':
-						for (idx = this.data.timers.length - 1; idx >= 0; idx--) {
-							if (!this.data.timers[idx].total_time && !this.data.timers[idx].elapsed_time) {
+						for (idx = this.get('timers').length - 1; idx >= 0; idx--) {
+							if (!this.get('timers.' + idx + '.total_time') && !this.get('timers.' + idx + '.elapsed_time')) {
 								ractive.removeTimer(idx);
 							}
 						}
@@ -658,14 +659,14 @@ var TimerList = Ractive.extend({
 					case 'rm_old':
 						var today = new Date();
 						var today_date = (today.getMonth() + 1) + '/' + today.getDate();
-						for (idx = this.data.timers.length - 1; idx >= 0; idx--) {
-							if (this.data.timers[idx].date != today_date) {
+						for (idx = this.get('timers').length - 1; idx >= 0; idx--) {
+							if (this.get('timers.' + idx + '.date') != today_date) {
 								ractive.removeTimer(idx);
 							}
 						}
 						break;
 					case 'rm_all':
-						for (idx = this.data.timers.length - 1; idx >= 0; idx--) {
+						for (idx = this.get('timers').length - 1; idx >= 0; idx--) {
 							ractive.removeTimer(idx);
 						}
 						break;
@@ -704,12 +705,12 @@ var TimerList = Ractive.extend({
 			},
 			runTimer: function(event, idx) {
 				var num = (typeof idx != 'undefined') ? idx : event.index.num;
-				var id = this.data.timers[num].id;
+				var id = this.get('timers.' + num + '.id');
 				var css_obj;
 				var count_running = 0;
-				if (this.data.timers[num].running === false) {
-					for (var t_idx = this.data.timers.length - 1; t_idx >= 0; t_idx--) {
-						if (this.data.timers[t_idx].running) {
+				if (this.get('timers.' + num + '.running') === false) {
+					for (var t_idx = this.get('timers').length - 1; t_idx >= 0; t_idx--) {
+						if (this.get('timers.' + t_idx + '.running')) {
 							count_running++;
 						}
 					}
@@ -718,19 +719,19 @@ var TimerList = Ractive.extend({
 						return false;
 					}
 					this.set('timers.' + num + '.running', true);
-					this.data.timers[num].start_time = new Date();
-					this.data.timers[num].interval = setInterval(function() {
+					this.set('timers.' + num + '.start_time', new Date());
+					this.set('timers.' + num + '.interval', setInterval(function() {
 						ractive.runTimer(num, id);
 						ractive.saveRunningTimers();
-					}, 76);
+					}, 76));
 					this.set('timers.' + num + '.display_text', 'Stop');
 				} else {
 					this.set('timers.' + num + '.running', false);
-					this.data.timers[num].elapsed_time = new Date() - this.data.timers[num].start_time + this.data.timers[num].elapsed_time;
-					clearInterval(this.data.timers[num].interval);
+					this.set('timers.' + num + '.elapsed_time', new Date() - this.get('timers.' + num + '.start_time') + this.get('timers.' + num + '.elapsed_time'));
+					clearInterval(this.get('timers.' + num + '.interval'));
 					this.set('timers.' + num + '.display_text', 'Start');
 					/* update css */
-					css_obj = getDialCSS(this.data.timers[num].elapsed_time, num, false);
+					css_obj = getDialCSS(this.get('timers.' + num + '.elapsed_time'), num, false);
 					ractive.set('timers.' + num + '.dial_css', css_obj.dial_css);
 					ractive.set('timers.' + num + '.hour_css', css_obj.hour_hand);
 					ractive.set('timers.' + num + '.minute_css', css_obj.minute_hand);
@@ -812,6 +813,9 @@ $('body').on('click', 'section', function(e){
 	$('.options .on').removeClass('on').find('.drop').slideUp(300);
 });
 $('body').on('click', '.mult', function(e){
+	if(!e.originalEvent.target.children.length){
+		return;
+	}
 	if($(this).hasClass('on')){
 		$(this).removeClass('on');
 		$(this).find('.drop').first().slideUp(300);
@@ -875,6 +879,19 @@ $('body').on('click', '.switch label', function(e) {
 	e.preventDefault();
 	return false;
 });
+
+// limit notes to 4000 characters
+$('body').on('keyup', '.notes', function(e){
+	if(e.which != 8 && $(this).text().length > 4000) {
+		e.preventDefault();
+	}
+});
+$('body').on('keydown', '.notes', function(e){
+	if(e.which != 8 && $(this).text().length > 4000) {
+		e.preventDefault();
+	}
+});
+
 
 $('body').on('click', '.toggle input[type="checkbox"]', function(e) {
   $(this).parent().toggleClass('checked', $(this).prop('checked'));

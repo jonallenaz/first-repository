@@ -66,7 +66,6 @@
 
 		// If we strayed into someone else's territory, abort
 		if (Ractive.getNodeInfo(this).root !== ractive) {
-			console.log('dragenterHandler() abort', 'root');
 			return;
 		}
 
@@ -84,15 +83,13 @@
 
 		// if we're dealing with a different array, abort
 		if (targetArray !== sourceArray) {
-			console.log('dragenterHandler() abort', 'array');
 			return;
 		}
 
 		// if it's the same index, add droptarget class then abort
 		sourceIndex = info.ractive.get('sourceIndex');
-		console.log('dragenterHandler() abort', 'index', targetIndex, sourceIndex);
-		if (targetIndex === sourceIndex) {
 			this.classList.add(ractive_decorators_sortable__sortable.targetClass);
+		if (targetIndex === sourceIndex) {
 			return;
 		}
 
