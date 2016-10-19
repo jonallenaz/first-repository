@@ -540,16 +540,17 @@ var TimerList = Ractive.extend({
 	},
 
 	sortTimers: function() {
-		var num = ractive.data.options.selectedSortable;
-		var column = ractive.data.sortable[num].id;
-		var direction = ractive.data.options.sortDirection;
-		if (column) {
-			ractive.data.timers.sort(function(a, b) {
-				if (a[column] == b[column]) {
-					return a.id < b.id ? (direction == 'up' ? -1 : 1) : (direction == 'up' ? 1 : -1);
-				}
-				return a[column] < b[column] ? (direction == 'up' ? -1 : 1) : (direction == 'up' ? 1 : -1);
-			});
+		var num = ractive.get('options.selectedSortable');
+		var column = ractive.get('sortable.'+num+'.id');
+		var direction = ractive.get('options.sortDirection');
+		console.log('sortTimers()',num,column,direction);
+		if (false && column) {
+			// ractive.data.timers.sort(function(a, b) {
+				// if (a[column] == b[column]) {
+					// return a.id < b.id ? (direction == 'up' ? -1 : 1) : (direction == 'up' ? 1 : -1);
+				// }
+				// return a[column] < b[column] ? (direction == 'up' ? -1 : 1) : (direction == 'up' ? 1 : -1);
+			// });
 		}
 	},
 
@@ -583,7 +584,7 @@ var TimerList = Ractive.extend({
 	}),
 
 	updateAllColorPicks: $.throttle((300), false, function() {
-		for (var idx = 0; idx < ractive.data.timers.length; idx++) {
+		for (var idx = 0; idx < ractive.get('timers').length; idx++) {
 			this.updateColorPick(idx);
 		}
 	}),
@@ -602,9 +603,9 @@ var TimerList = Ractive.extend({
 	},
 
 	updateDisplay: function() {
-		this.sumTotal(this.data.timers);
-		for (var num = this.data.timers.length - 1; num >= 0; num--) {
-			var id = this.data.timers[num].id;
+		this.sumTotal(this.get('timers'));
+		for (var num = this.get('timers').length - 1; num >= 0; num--) {
+			var id = this.get('timers.'+num+'.id');
 			var elapsed_time = this.get('timers.' + num + '.total_time');
 			/* update css */
 			var css_obj = getDialCSS(elapsed_time, num, false);
