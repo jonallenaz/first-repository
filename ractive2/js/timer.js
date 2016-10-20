@@ -35,8 +35,7 @@ var Timer = function(obj) {
 		second_css: obj.second_css || 'text-decoration:none;',
 		minute_css: obj.minute_css || 'text-decoration:none;',
 		hour_css: obj.hour_css || 'text-decoration:none;',
-		date: obj.date || date,
-		notes: obj.notes || ''
+		date: obj.date || date
 	};
 };
 
@@ -511,7 +510,7 @@ var TimerList = Ractive.extend({
 			return ractive.saveThrottledTest;
 		}
 		var r_timers = ractive.get('timers');
-		console.log(r_timers.length, 'r_timers', r_timers);
+		// console.log(r_timers.length, 'r_timers', r_timers);
 		// return; // don't save while testing
 		$.ajax({
 			type: 'POST',
@@ -801,10 +800,6 @@ ractive.observe('timers.*.tracked timers.*.task timers.*.bg_color', function(new
 	ractive.saveTimers();
 });
 
-$(function(){
-	$('#register-form').hide();
-});
-
 // menu
 $('body').on('click', '.menu', function(e){
 	$('body').toggleClass('open');
@@ -826,8 +821,10 @@ $('body').on('click', '.mult', function(e){
 		$(this).addClass('on').find('.drop').first().slideDown(300);
 	}
 });
+
+// details
 $('body').on('click', '.task .more', function(e){
-	$(this).closest('.timer').find('.details').slideToggle(300).find('.notes').focus();
+	$(this).closest('.timer').find('.details').slideToggle(300);
 });
 
 // close functionality
@@ -840,11 +837,11 @@ $('body').on('click', '.confirm', function() {
 	ractive.removeTimer(num);
 	ractive.updateDisplay();
 });
-
 function confirm(el) {
 	$(el).removeClass('confirm').html('x');
 }
 
+// edit time
 $('body').on('blur', '.digital', function(e) {
 	var num = $(this).closest('li').data('num');
 	ractive.editTime(num, true);
@@ -860,21 +857,18 @@ $('body').on('keyup', '.digital', function(e) {
 	var num = $(this).closest('li').data('num');
 	ractive.editTime(num, false);
 });
-$('body').on('focus', '.timer input, .notes', function(e){
+
+// input shadow color
+$('body').on('focus', '.timer input', function(e){
 	var num = $(e.target).closest('.timer').data('num');
 	var color = ractive.get('timers.' + num + '.bg_color');
 	$(this).css({"box-shadow":"inset 0 0 8px "+color});
 });
-$('body').on('blur', '.timer input, .notes', function(e){
+$('body').on('blur', '.timer input', function(e){
 	$(this).css({"box-shadow":"inset 0 0 0px black"});
-	if(e.target.className == 'notes'){
-		var num = $(e.target).closest('.timer').data('num');
-		var notes = $(this).html().replace('<div>','\n').replace('</div>','');
-		console.log(num, notes);
-		ractive.set('timers.' + num + '.notes', notes);
-		ractive.saveTimers();
-	}
 });
+
+// start and stop time on enter
 $('body').on('keypress', '.task', function(e){
 	if(e.which === 13){
 		e.preventDefault();
@@ -883,59 +877,38 @@ $('body').on('keypress', '.task', function(e){
 		$(this).nextAll('.start').click();
 	}
 });
-$('body').on('click', '.switch label', function(e) {
-	e.preventDefault();
-	return false;
-});
 
-// limit notes to 4000 characters
-$('body').on('keyup', '.notes', function(e){
-	if(e.which != 8 && $(this).text().length > 4000) {
-		e.preventDefault();
-	}
-});
-$('body').on('keydown', '.notes', function(e){
-	if(e.which != 8 && $(this).text().length > 4000) {
-		e.preventDefault();
-	}
-});
-
-
+// checkbox
 $('body').on('click', '.toggle input[type="checkbox"]', function(e) {
   $(this).parent().toggleClass('checked', $(this).prop('checked'));
 });
 
+// login and register forms
 $('body').on('click', '#login-form .link', function(e) {
 	$('#login-form').fadeOut();
 	$('#register-form').fadeOut().delay(400).fadeIn();
 	setTimeout(function() { $('#reg_email').focus(); }, 700);
 });
-
 $('body').on('click', '#register-form .link', function(e) {
 	$('#register-form').fadeOut();
 	$('#login-form').fadeOut().delay(400).fadeIn();
 	setTimeout(function() { $('#username').focus(); }, 700);
 });
-
-$('body').on('click', '.admin', function(e){
-	console.log('login as: ', $(this).text(), $(this).data('admin'), ractive.un);
-	ractive.logout(ractive.un);
-	ractive.login($(this).text(), $(this).data('admin'), ractive.un);
-	location.reload();
+$(function(){
+	$('#register-form').hide();
 });
-
 $('#login-form').submit(function(e) {
 	e.preventDefault();
 	ractive.login($('#username').val(), $('#password').val());
 	return false;
 });
-
 $('#register-form').submit(function(e) {
 	e.preventDefault();
 	ractive.register($('#reg_username').val(), $('#reg_password').val(), $('#reg_email').val());
 	return false;
 });
 
+// check status on focus of timer app
 function onFocus(){
 	if(!ractive.focus){
 		ractive.focus = true;
@@ -945,7 +918,6 @@ function onFocus(){
 function onBlur(){
 	ractive.focus = false;
 }
-
 if (/*@cc_on!@*/false) { // check for Internet Explorer
 	document.onfocusin = onFocus;
 	document.onfocusout = onBlur;
@@ -953,3 +925,11 @@ if (/*@cc_on!@*/false) { // check for Internet Explorer
 	window.onfocus = onFocus;
 	window.onfocusout = onBlur;
 }
+
+// admin stuff
+// $('body').on('click', '.admin', function(e){
+// 	console.log('login as: ', $(this).text(), $(this).data('admin'), ractive.un);
+// 	ractive.logout(ractive.un);
+// 	ractive.login($(this).text(), $(this).data('admin'), ractive.un);
+// 	location.reload();
+// });

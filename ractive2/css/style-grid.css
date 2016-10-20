@@ -1,0 +1,45 @@
+@media screen and (min-width:900px) {
+	section > ul{
+		position: relative;
+		padding-top: 50px;
+	}
+	.add{
+		position: absolute;
+		top: 0;
+		left: 0;
+	}
+	section > ul{
+		display: flex;
+		flex-flow: row wrap;
+		justify-content: space-around;
+		align-items: flex-start;
+		align-content: flex-start;
+		justify-content: flex-start;
+	}
+	section > ul > li{
+		flex: 1 0 325px;
+		margin: 10px 2%;
+		max-width: 46%;
+	}
+	.task{
+		order: 30;
+		flex: 4 1 80%;
+	}
+	input.digital{
+		order: 3;
+		flex: 4 1 60%;
+	}
+	li.droptarget{
+		min-height: 115px;
+	}
+}
+@media screen and (min-width:1100px) {
+	section > ul > li{
+		flex: 1 0 30%;
+		margin: 10px 1%;
+		max-width: 31%;
+	}
+	input.digital{
+		flex: 4 1 55%;
+	}
+}

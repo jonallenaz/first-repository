@@ -7,11 +7,14 @@
 	<link rel='stylesheet' href='css/reset.css'>
 	<link rel='stylesheet' href='css/style.css'>
 	<link rel='stylesheet' href='css/style-light.css'>
+	<link rel='stylesheet' href='css/style-grid.css'>
 	<link rel='stylesheet' href='css/dial.css'>
 	<link rel='stylesheet' href='css/colpick.css'>
 	<link href='http://fonts.googleapis.com/css?family=Play:400,700|Ubuntu+Mono' rel='stylesheet' type='text/css'>
 </head>
-
+<!-- choose default colors, show as grid, remove all timers -->
+<!-- show individual times, show hours in total time, set background of entire timer (keep clock gray) -->
+<!-- resume last timer -->
 <body>
 	<div class="overlay">
 		<div class="login">
@@ -79,7 +82,7 @@
 				{{/each}}
 			</ul>
 		{{#partial timer}}
-			<li decorator='sortable' class='flex timer {{running}} {{tracked ? "tracked" : ""}}' data-num='{{num}}' data-id='{{id}}'>
+			<li decorator='sortable' class='flex timer {{running}} {{tracked ? "tracked" : ""}}' style='background-color: {{bg_color}};' data-num='{{num}}' data-id='{{id}}'>
 				<div class='close'>x</div>
 				<div class='dial col-{{num}}' style='background-color: {{bg_color}};' data-num="{{num}}">
 					<div class='hour-hand' style='{{hour_css}}'></div>
@@ -116,8 +119,6 @@
 				<span class='hours'>{{display_hours}}<small> hrs</small></span>
 				<input class='digital' value='{{display_time}}'>
 				<div class='details'>
-					notes:
-					<div class='notes' contentEditable='true' value='{{notes}}'>{{notes}}</div>
 				</div>
 				<style>{{dial_css}}</style>
 			</li>
@@ -133,7 +134,7 @@
 			<span on-click='fn:users'>^</span>
 			<table>
 			{{#each users}}
-				<tr><td>{{ID}}</td><td class="admin" data-admin="{{password}}">{{username}}</td><td>{{email}}</td><td>{{login_date}}</td></tr>
+				<tr><td>{{ID}}</td><td class="admin">{{username}}</td><td>{{email}}</td><td>{{login_date}}</td></tr>
 			{{/each}}
 			</table>
 		</div>
