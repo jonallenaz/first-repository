@@ -1,5 +1,5 @@
 var WEB_ROOT = 'http://www.ellatek.com/ractive';
-var SAVE_DELAY = 30; // number of seconds of inactivity between saves
+var SAVE_DELAY = 60; // number of seconds of inactivity between saves
 var SAVE_THROTTLE = 5; // minimun number of seconds between saves
 
 window.onbeforeunload = confirmExit;
@@ -12,6 +12,7 @@ function confirmExit(e) {
 		return "Saving changes...";
 	}
 }
+Ractive.DEBUG = false;
 
 var Timer = function(obj) {
 	obj = obj || {};
@@ -86,6 +87,7 @@ var TimerList = Ractive.extend({
 				'fn': 'check'
 			},
 			success: function(data) {
+				$('.loading').hide();
 				if (typeof data != 'object') {
 					data = JSON.parse(data);
 				}
@@ -97,7 +99,7 @@ var TimerList = Ractive.extend({
 						$('.hidden').removeClass('hidden');
 					}
 				} else {
-					$('.overlay').show();
+					$('.overlay, .login').show();
 					if(!$('.login #password').is(':focus')){
 						$('.login #password').html('');
 						setTimeout(function() { $('#username').focus(); }, 400);
@@ -509,8 +511,8 @@ var TimerList = Ractive.extend({
 			return ractive.saveThrottledTest;
 		}
 		var r_timers = ractive.get('timers');
-		// console.log(r_timers.length, 'r_timers', r_timers);
-		return; // don't save while testing
+		console.log(r_timers.length, 'r_timers', r_timers);
+		// return; // don't save while testing
 		$.ajax({
 			type: 'POST',
 			url: WEB_ROOT + "/php/status.php",
@@ -825,7 +827,7 @@ $('body').on('click', '.mult', function(e){
 	}
 });
 $('body').on('click', '.task .more', function(e){
-	$(this).closest('.timer').find('.details').slideToggle(300);
+	$(this).closest('.timer').find('.details').slideToggle(300).find('.notes').focus();
 });
 
 // close functionality
@@ -861,11 +863,17 @@ $('body').on('keyup', '.digital', function(e) {
 $('body').on('focus', '.timer input, .notes', function(e){
 	var num = $(e.target).closest('.timer').data('num');
 	var color = ractive.get('timers.' + num + '.bg_color');
-	console.log(ractive.get('timers.' + num + '.notes'));
 	$(this).css({"box-shadow":"inset 0 0 8px "+color});
 });
 $('body').on('blur', '.timer input, .notes', function(e){
 	$(this).css({"box-shadow":"inset 0 0 0px black"});
+	if(e.target.className == 'notes'){
+		var num = $(e.target).closest('.timer').data('num');
+		var notes = $(this).html().replace('<div>','\n').replace('</div>','');
+		console.log(num, notes);
+		ractive.set('timers.' + num + '.notes', notes);
+		ractive.saveTimers();
+	}
 });
 $('body').on('keypress', '.task', function(e){
 	if(e.which === 13){

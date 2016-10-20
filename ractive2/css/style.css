@@ -170,7 +170,6 @@ input:focus, select:focus, div:focus {
 
 /* login section */
 .loading{
-	display: none;
 	position: fixed;
 	z-index: 500;
 	width: 100px;
@@ -193,6 +192,7 @@ input:focus, select:focus, div:focus {
 }
 .login{
 	display: flex;
+	display: none;
 	align-items: center;
 	flex: 0 1 100%;
 	height: 160px;
@@ -317,6 +317,7 @@ section > ul > li{
 	border: 1px solid black;
 	border-radius: 4px;
 	color: #E0F0FF;
+	cursor: text;
 }
 
 /* Timer Flex Layout */
