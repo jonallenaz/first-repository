@@ -1,5 +1,5 @@
 body, input, button{
-	font-family: 'Ubuntu Mono', sans-serif;
+	font-family: 'Cutive Mono', sans-serif;
 }
 .btn{
 	font-size: 15px;
@@ -8,14 +8,29 @@ body, input, button{
 	font-size: 12px;
 }
 .add span{
-	line-height: 26px;
+	line-height: 28px;
 }
 body{
 	background: #ccc;
 }
-.tracked, .close-label, .color-label, .date, .hours, .details, label, .more, .close{
+.close{
 	color: #222;
+}
+div.tracked span, .color-label, .date, .hours{
+	color: #222;
+	/*text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;*/
 	text-shadow: none;
+	background-color: #eee;
+	border: 1px solid #999;
+	border-radius: 4px;
+	padding: 5px 10px;
+}
+div.tracked span{
+	padding: 0px 5px;
+	margin-left: -10px;
+}
+.more{
+	color: #222;
 }
 .timer{
 	background: #eee;
@@ -37,4 +52,15 @@ input.digital{
 }
 .dial{
 	background-color: #333 !important;
+}
+li.droptarget{
+	background-color: #aaa !important;
+}
+@media screen and (min-width:900px) {
+	.close{
+		background-color: #ccc;
+		border-radius: 50%;
+		padding: 1px;
+		line-height: 11px;
+	}
 }

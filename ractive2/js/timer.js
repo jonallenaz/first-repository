@@ -1,4 +1,4 @@
-var WEB_ROOT = 'http://www.ellatek.com/ractive';
+var WEB_ROOT = 'http://www.ellatek.com/ractive2';
 var SAVE_DELAY = 60; // number of seconds of inactivity between saves
 var SAVE_THROTTLE = 5; // minimun number of seconds between saves
 
@@ -248,7 +248,7 @@ var TimerList = Ractive.extend({
 					data = JSON.parse(data);
 				}
 				var timers = JSON.parse(data.timers || '{}');
-				// console.log('load timers', timers.length);
+				// console.log('load timers', data);
 				if (timers.length) {
 					var json, time, bg, fg;
 					for (var t_idx = timers.length - 1; t_idx >= 0; t_idx--) {
@@ -257,7 +257,7 @@ var TimerList = Ractive.extend({
 							if (timers[t_idx].timer_key == 'TimerOptions')
 								continue;
 							json = JSON.parse(timers[t_idx].timer_json);
-							console.log('addTimer', json);
+							// console.log('addTimer', json);
 							ractive.addTimer({
 								'elapsed_time': json.total,
 								'total_time': json.total,
@@ -510,7 +510,9 @@ var TimerList = Ractive.extend({
 			return ractive.saveThrottledTest;
 		}
 		var r_timers = ractive.get('timers');
+		var r_options = ractive.get('options');
 		// console.log(r_timers.length, 'r_timers', r_timers);
+		// console.log('r_options', r_options);
 		// return; // don't save while testing
 		$.ajax({
 			type: 'POST',
@@ -518,7 +520,8 @@ var TimerList = Ractive.extend({
 			dataType: 'json',
 			data: {
 				'fn': 'save',
-				'r_timers': r_timers
+				'r_timers': r_timers,
+				'r_options': r_options
 			},
 			success: function(data) {
 				if (typeof data != 'object') {
@@ -630,6 +633,11 @@ var TimerList = Ractive.extend({
 				switch (fn) {
 					case 'add':
 						this.addTimer();
+						break;
+					case 'grid':
+					case 'light':
+						var cur = ractive.get('options.'+fn);
+						ractive.set('options.'+fn, !cur);
 						break;
 					case 'logout':
 						this.logout();
@@ -776,7 +784,9 @@ var ractive = new TimerList({
 		}, ],
 		options: {
 			sortDirection: 'down',
-			selectedSortable: '0'
+			selectedSortable: '0',
+			grid: true,
+			light: true
 		},
 		summary: []
 	}
@@ -793,6 +803,11 @@ ractive.observe('options.selectedSortable options.sortDirection', function(new_v
 	if(column >= ractive.get('sortable').length){ return; }
 	ractive.sortTimers(column);
 	ractive.saveTimers();
+});
+
+ractive.observe('options.grid options.light', function(new_value, old_value, keypath){
+	var fn = keypath.split('.')[1];
+	$('link[id="css-' + fn + '"]')[0].disabled = !new_value;
 });
 
 ractive.observe('timers.*.tracked timers.*.task timers.*.bg_color', function(new_value, old_value, keypath) {

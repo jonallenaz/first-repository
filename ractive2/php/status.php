@@ -36,6 +36,7 @@ switch($fn){
 			$result = mysql_query($sql);
 			$row = mysql_fetch_array($result);
 			$user_id = $row['ID'];
+			$options = json_encode($row['options']);
 			$sql = "SELECT * FROM $db_r_timers WHERE user='$user_id'";
 			$result = mysql_query($sql);
 			while($r = mysql_fetch_assoc($result)) {
@@ -54,6 +55,8 @@ switch($fn){
 					$rows[] = $r;
 				}
 			}
+			$output['un'] = $r_un;
+			$output['options'] = $options;
 			$output['loggedin'] = true;
 			$output['timers'] = json_encode($rows);
 		}
@@ -103,11 +106,14 @@ switch($fn){
 		if( isset($_SESSION['r_un']) && isset($datain['r_timers']) ){
 			$r_un = $_SESSION['r_un'];
 			$r_timers = $datain['r_timers'];
+			$r_options = $datain['r_options'];
 
 			$sql = "SELECT * FROM $db_table WHERE username='$r_un'";
 			$result = mysql_query($sql);
 			$row = mysql_fetch_array($result);
 			$user_id = $row['ID'];
+			$sql = "UPDATE $db_table SET options='".json_encode($r_options)."' WHERE `username`='$r_un'";
+			$result = mysql_query($sql);
 
 			$sql = "SELECT * FROM $db_r_timers WHERE user='$user_id'";
 			$result = mysql_query($sql);

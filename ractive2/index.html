@@ -6,11 +6,11 @@
 	<title>Ractive Timer</title>
 	<link rel='stylesheet' href='css/reset.css'>
 	<link rel='stylesheet' href='css/style.css'>
-	<link rel='stylesheet' href='css/style-light.css'>
-	<link rel='stylesheet' href='css/style-grid.css'>
+	<link rel='stylesheet' id='css-light' href='css/style-light.css'>
+	<link rel='stylesheet' id='css-grid' href='css/style-grid.css'>
 	<link rel='stylesheet' href='css/dial.css'>
 	<link rel='stylesheet' href='css/colpick.css'>
-	<link href='http://fonts.googleapis.com/css?family=Play:400,700|Ubuntu+Mono' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Play:400,700|Cutive+Mono' rel='stylesheet' type='text/css'>
 </head>
 <!-- choose default colors, show as grid, remove all timers -->
 <!-- show individual times, show hours in total time, set background of entire timer (keep clock gray) -->
@@ -58,6 +58,12 @@
 						{{#sortable:num}}
 							<div class='{{num == options.selectedSortable ? "sel" : ""}}' on-click='fn:sort:{{num}}'>{{name}} {{{dir ? dir == 'up' ? '&#x2193;' : '&#x2191;' : ''}}}</div>
 						{{/sortable}}
+					</div>
+				</div>
+				<div class='btn mult'>options
+					<div class='drop'>
+						<div class='{{options.grid ? "sel" : ""}}' on-click='fn:grid'>Grid: {{options.grid ? "ON" : "off"}}</div>
+						<div class='{{options.light ? "sel" : ""}}' on-click='fn:light'>Light: {{options.light ? "ON" : "off"}}</div>
 					</div>
 				</div>
 				<div class='btn' on-click='fn:logout'>logout</div>
@@ -113,7 +119,7 @@
 				</div>
 				<div class='tracked'>
 					<input class='' type='checkbox' id='tracked{{num}}' checked='{{tracked}}'/>
-					<label for='tracked{{num}}'>tracked</label>
+					<label for='tracked{{num}}'><span>tracked</span></label>
 				</div>
 				<span class='date'>{{date}}</span>
 				<span class='hours'>{{display_hours}}<small> hrs</small></span>
