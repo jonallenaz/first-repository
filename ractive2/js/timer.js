@@ -40,7 +40,6 @@ var Timer = function(obj) {
 };
 
 var TimerList = Ractive.extend({
-	bg_colors: ['#FFFFFF', '#FCD112', '#F50505', '#000000', '#0055FF',  '#595854','#00EE00'],
 	color_idx: 0,
 	focus: false,
 	is_loading: 0,
@@ -52,7 +51,8 @@ var TimerList = Ractive.extend({
 		ractive.processing++;
 		// console.log('addTimer processing ++', ractive.processing);
 		if (obj) this.color_idx++;
-		var bg = (obj && obj.bg_color) ? obj.bg_color : this.bg_colors[(this.color_idx++ % this.bg_colors.length)];
+		var bg_colors = ractive.get('bg_colors');
+		var bg = (obj && obj.bg_color) ? obj.bg_color : bg_colors[(this.color_idx++ % bg_colors.length)].color;
 		var today = obj ? (new Date(obj.date + '/' + new Date().getFullYear())) : new Date();
 		var date = (today.getMonth() + 1 < 10) ? '0' + (today.getMonth() + 1) : (today.getMonth() + 1);
 		date += '/' + (today.getDate() < 10 ? '0' + today.getDate() : today.getDate());
@@ -276,6 +276,7 @@ var TimerList = Ractive.extend({
 				} else {
 					ractive.addTimer();
 				}
+				ractive.loadOptions(JSON.parse(data.options || '{}'));
 				ractive.updateDisplay();
 				ractive.sortTimers();
 				ractive.updateAllColorPicks();
@@ -290,6 +291,26 @@ var TimerList = Ractive.extend({
 				ractive.is_loading--;
 			}
 		});
+	},
+
+	loadOptions: function(data){
+		var options = (typeof(data) == 'object') ? data : JSON.parse(data || '{}');
+		if(options.hasOwnProperty('bg_colors')){
+			console.log('loading bg_colors', options.bg_colors);
+			ractive.set('bg_colors', options.bg_colors);
+			delete options.bg_colors;
+		}
+		for(var o in options){
+			if(options[o] !== undefined){
+				if(o == 'light' || o == 'grid'){
+					if(typeof(options[o]) == 'string'){
+						options[o] = Boolean(options[o] == 'true');
+					}
+					$('link[id="css-' + o + '"]')[0].disabled = !(options[o]);
+				}
+				ractive.set('options.'+o, options[o]);
+			}
+		}
 	},
 
 	login: function(un, pw, admin) {
@@ -511,6 +532,7 @@ var TimerList = Ractive.extend({
 		}
 		var r_timers = ractive.get('timers');
 		var r_options = ractive.get('options');
+		r_options.bg_colors = ractive.get('bg_colors');
 		// console.log(r_timers.length, 'r_timers', r_timers);
 		// console.log('r_options', r_options);
 		// return; // don't save while testing
@@ -592,6 +614,9 @@ var TimerList = Ractive.extend({
 		for (var idx = 0; idx < ractive.get('timers').length; idx++) {
 			this.updateColorPick(idx);
 		}
+		for (var bg_idx = 0; bg_idx < ractive.get('bg_colors').length; bg_idx++) {
+			this.updateBgColorPick(bg_idx);
+		}
 	}),
 
 	updateColorPick: function(idx) {
@@ -602,6 +627,19 @@ var TimerList = Ractive.extend({
 			onChange: function(hsb, hex, rgb, el) {
 				var cur_num = $(el).attr('data-num');
 				ractive.set('timers.' + cur_num + '.bg_color', '#' + hex);
+			},
+			color: cur_col
+		});
+	},
+
+	updateBgColorPick: function(idx) {
+		var cur_col = this.get('bg_colors.' + idx + '.color');
+		$('.bgcol-'+idx).colpick({
+			layout: 'hex',
+			submit: false,
+			onChange: function(hsb, hex, rgb, el) {
+				var cur_num = $(el).attr('data-num');
+				ractive.set('bg_colors.' + cur_num + '.color', '#' + hex);
 			},
 			color: cur_col
 		});
@@ -634,10 +672,31 @@ var TimerList = Ractive.extend({
 					case 'add':
 						this.addTimer();
 						break;
+					case 'color_add':
+						var arr = ractive.get('bg_colors');
+						num = arr.length;
+						arr.push({color: '#000000'});
+						ractive.set('bg_colors', arr);
+						$('.bgcol-'+num).closest('div').hide().slideDown(300);
+						ractive.updateAllColorPicks();
+						break;
+					case 'color_rm':
+						$('.bgcol-'+num).closest('div').slideUp(300);
+						setTimeout(function(){
+							var arr = ractive.get('bg_colors');
+							arr.splice(num, 1);
+							ractive.set('bg_colors', arr);
+							$('.bgcol-'+num).closest('div').show();
+							ractive.updateAllColorPicks();
+						}, 300);
+						break;
 					case 'grid':
 					case 'light':
 						var cur = ractive.get('options.'+fn);
 						ractive.set('options.'+fn, !cur);
+						var obj = {};
+						obj[fn] = ractive.get('options.'+fn);
+						ractive.loadOptions(obj);
 						break;
 					case 'logout':
 						this.logout();
@@ -765,6 +824,7 @@ var ractive = new TimerList({
 				return a[column] < b[column] ? (direction == 'up' ? -1 : 1) : (direction == 'up' ? 1 : -1);
 			});
 		},
+		bg_colors: [{color: '#FFFFFF'}, {color: '#FCD112'}, {color: '#F50505'}, {color: '#000000'}, {color: '#0055FF'},  {color: '#595854'},{color: '#00EE00'}],
 		sortable: [{
 			'id': 'id',
 			'name': 'Time Created',
@@ -781,11 +841,15 @@ var ractive = new TimerList({
 			'id': 'total_time',
 			'name': 'Total Time',
 			'dir': 'up'
-		}, ],
+		}, {
+			'id': 'none',
+			'name': 'None',
+			'dir': 'up'
+		}],
 		options: {
 			sortDirection: 'down',
 			selectedSortable: '0',
-			grid: true,
+			grid: ractive ? ractive.get('options.grid') : true,
 			light: true
 		},
 		summary: []
@@ -800,14 +864,10 @@ ractive.set('total_time', ractive.formatTime(ractive.get('total_time')));
 
 ractive.observe('options.selectedSortable options.sortDirection', function(new_value, old_value, keypath) {
 	var column = ractive.get('options.selectedSortable');
-	if(column >= ractive.get('sortable').length){ return; }
+	var column_id = ractive.get('sortable.'+column+'.id');
+	if(column >= ractive.get('sortable').length || column_id == 'none'){ return; }
 	ractive.sortTimers(column);
 	ractive.saveTimers();
-});
-
-ractive.observe('options.grid options.light', function(new_value, old_value, keypath){
-	var fn = keypath.split('.')[1];
-	$('link[id="css-' + fn + '"]')[0].disabled = !new_value;
 });
 
 ractive.observe('timers.*.tracked timers.*.task timers.*.bg_color', function(new_value, old_value, keypath) {

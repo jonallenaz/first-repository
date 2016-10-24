@@ -100,6 +100,7 @@
 
 		// the target index is now the source index...
 		sourceIndex = targetIndex;
+		info.ractive.set('sourceIndex', sourceIndex);
 
 		// add source back to array in new location
 		array.splice(sourceIndex, 0, source);

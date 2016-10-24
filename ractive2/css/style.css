@@ -167,6 +167,15 @@ input:focus, select:focus, div:focus {
 .drop .sel{
 	text-decoration: underline;
 }
+.bg_color{
+	border: 1px solid black;
+	border-radius: 2px;
+	padding: 0 20px;
+}
+.color_rm{
+	position: relative;
+	right: -10px;
+}
 
 /* login section */
 .loading{
