@@ -198,8 +198,8 @@ header > .mult::after{
 header > .mult:hover::after, header > .mult.on::after{
 	border-left-color: #555;
 }
-header > .mult:hover > .drop, header > .mult.on > .drop{
-	display: block;
+header > .mult:hover > .drop, header > .mult.on > .drop, header > .mult:hover.on > .drop{
+	display: block !important;
 }
 header > .mult > .drop {
     position: absolute;

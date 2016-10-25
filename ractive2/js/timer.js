@@ -885,6 +885,7 @@ $('body').on('click', '.menu', function(e){
 $('body').on('click', 'section', function(e){
 	$('body').removeClass('open');
 	$('.options .on').removeClass('on').find('.drop').slideUp(300);
+	$('header > .mult').removeClass('on').find('.drop').slideUp(300);
 });
 $('body').on('click', '.mult', function(e){
 	if(!e.originalEvent.target.children.length){
