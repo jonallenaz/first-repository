@@ -21,6 +21,7 @@ header{
 	border-bottom: 1px solid black;
 	width: 100%;
 	box-shadow: 0 -0.3em 2em #000;
+	min-width: 300px;
 }
 .untracked, .total-tracked{
 	display: none;
@@ -29,6 +30,12 @@ header{
 .total, .show-tracked .untracked{
 	display: block;
 	margin: 10px;
+}
+.total{
+	text-align: right;
+}
+.total span{
+	font-size: 14px;
 }
 .show-tracked .total{
 	display: none;
@@ -141,7 +148,7 @@ input:focus, select:focus, div:focus {
 .mult:hover::after{
 	border-left: 12px solid #111;
 }
-.mult.on::after{
+.mult.on::after, header > .mult:hover::after{
 	border-left: 12px solid #111;
 	transform: rotate(90deg);
 }
@@ -176,7 +183,42 @@ input:focus, select:focus, div:focus {
 	position: relative;
 	right: -10px;
 }
-
+header.show-tracked > .mult{
+	display: none;
+}
+header > .mult{
+	margin-left: 20px;
+	padding: 10px;
+}
+header > .mult::after{
+	left: inherit;
+	top: inherit;
+	margin: -13px 60px;
+}
+header > .mult:hover::after, header > .mult.on::after{
+	border-left-color: #555;
+}
+header > .mult:hover > .drop, header > .mult.on > .drop{
+	display: block;
+}
+header > .mult > .drop {
+    position: absolute;
+    margin: 0px -18px;
+    background: #222;
+    width: 130px;
+    text-align: center;
+    border: 1px solid black;
+    border-top: none;
+    border-radius: 0 0 6px 6px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+    line-height: 25px;
+    padding-top: 5px;
+}
+@media screen and (min-width:450px) {
+	header.show-tracked > .mult{
+		display: block;
+	}
+}
 /* login section */
 .loading{
 	position: fixed;

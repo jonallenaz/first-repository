@@ -296,7 +296,6 @@ var TimerList = Ractive.extend({
 	loadOptions: function(data){
 		var options = (typeof(data) == 'object') ? data : JSON.parse(data || '{}');
 		if(options.hasOwnProperty('bg_colors')){
-			console.log('loading bg_colors', options.bg_colors);
 			ractive.set('bg_colors', options.bg_colors);
 			delete options.bg_colors;
 		}
@@ -600,6 +599,7 @@ var TimerList = Ractive.extend({
 		this.set('untracked_time', this.formatTime(untracked));
 		this.set('tracked_time', this.formatTime(tracked));
 		this.set('total_time', this.formatTime(current_total));
+		this.set('total_hours', this.formatHours(current_total));
 		current_total = this.get('untracked_time').toString().slice(0,-3);
 		if(prev_total != current_total){
 			document.title = current_total;
@@ -818,6 +818,7 @@ var ractive = new TimerList({
 		untracked_time: 0,
 		tracked_time: 0,
 		total_time: 0,
+		total_hours: 0,
 		sort: function(array, column, direction) {
 			array = array.slice(); // clone, so we don't modify the underlying data
 			return array.sort(function(a, b) {
@@ -861,6 +862,7 @@ ractive.loadTimers();
 ractive.set('untracked_time', ractive.formatTime(ractive.get('untracked_time')));
 ractive.set('tracked_time', ractive.formatTime(ractive.get('tracked_time')));
 ractive.set('total_time', ractive.formatTime(ractive.get('total_time')));
+ractive.set('total_hours', ractive.formatHours(ractive.get('total_hours')));
 
 ractive.observe('options.selectedSortable options.sortDirection', function(new_value, old_value, keypath) {
 	var column = ractive.get('options.selectedSortable');
