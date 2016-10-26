@@ -189,6 +189,7 @@ header.show-tracked > .mult{
 header > .mult{
 	margin-left: 20px;
 	padding: 10px;
+	cursor: pointer;
 }
 header > .mult::after{
 	left: inherit;
