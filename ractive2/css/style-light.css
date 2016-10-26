@@ -59,8 +59,9 @@ li.droptarget{
 @media screen and (min-width:900px) {
 	.close{
 		background-color: #ccc;
-		border-radius: 50%;
+		border-radius: 4px;
 		padding: 1px;
 		line-height: 11px;
+		text-align: center !important;
 	}
 }
